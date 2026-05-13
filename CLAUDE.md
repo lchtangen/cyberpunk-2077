@@ -17,6 +17,19 @@ The **git repo itself only tracks**:
 
 Everything under `01-DEVELOPMENT/` through `08-HACKING-RESEARCH/` is `.gitignore`d. Those directories contain nested git repos tracked by their own remotes (catalogued in `99-MANIFESTS/git-repositories.txt`).
 
+## Cloned reference repos
+
+The workspace maintains shallow `--depth 1` clones of upstream references in these directories:
+
+| Directory | What lives here |
+|-----------|-----------------|
+| `01-DEVELOPMENT/repos/magisk-ecosystem/` | Magisk, KernelSU, APatch, LSPosed, Vector, ZygiskNext, ReZygisk, zygisk-module-sample, MMRL, awesome-android-root |
+| `01-DEVELOPMENT/repos/cyberpunk/` | Primary modules (CP2077-OP7Pro, CP2077-OP7Pro-Ultimate, CP2077-Universal) + reference bootanimation repos |
+| `01-DEVELOPMENT/repos/oneplus-7-pro/` | LineageOS, DerpFest, Evolution-X device trees + kernels |
+| `01-DEVELOPMENT/repos/android-roms/` | TWRP/PBRP recovery trees |
+| `06-UI-THEMES-ANIMATIONS/repos/` | hyprdots, HyprPanel, rofi, plymouth-themes, mechabar, proxzima-plymouth, diinki-retrofuture, dotfiles, dots, widgets, TokyoNight-rofi-theme, catppuccin |
+| `07-KERNEL-PACKAGE-MODULES/repos/` | engstk op8 (blu-spark-16), op5 (blu-spark-10) |
+
 ---
 
 ## Build commands
@@ -181,6 +194,9 @@ Used consistently across WebUI, ADB script ANSI output, Waybar, eww, hyprlock, R
 - **Source** lives in `01-DEVELOPMENT/repos/cyberpunk/<module>/`
 - **Release ZIPs** output to `<module>/release/` and are symlinked from `02-PRODUCTION/magisk-modules/`
 - **Linux host scripts** are in `05-LINUX/arch-host/device-arch-scripts/` — they reference workspace paths relative to `$WORKSPACE_ROOT` (three levels up from the script)
+- **Linux theming references** live in `06-UI-THEMES-ANIMATIONS/repos/` (hyprdots, rofi, plymouth-themes, etc.) and `themes/` (cyberpunk-themed dotfiles)
+- **Magisk/Root ecosystem** references live in `01-DEVELOPMENT/repos/magisk-ecosystem/`
+- **OP7 device trees & kernels** live in `01-DEVELOPMENT/repos/oneplus-7-pro/` and `07-KERNEL-PACKAGE-MODULES/`
 - **Manifests** in `99-MANIFESTS/` are always stale until `generate-manifests.sh` is re-run; never trust them as live state
 
 ---

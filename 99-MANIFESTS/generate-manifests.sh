@@ -40,13 +40,10 @@ echo -e "  ${DIM}[3/5] artifact-inventory.tsv${RST}"
   printf "INDEX\tSIZE_BYTES\tPATH\n"
   find . -type f \
     -not -path '*/.git/*' \
-    -not -name '*.pyc' \
-    | sort \
-    | awk '{
-        cmd = "wc -c < \"" $0 "\" 2>/dev/null"
-        cmd | getline sz
-        close(cmd)
-        printf "%d\t%s\t%s\n", NR, sz, $0
+    -printf '%s\t%p\n' \
+    | sort -t $'\t' -k2,2 \
+    | awk -F '\t' '{
+        printf "%d\t%s\t%s\n", NR, $1, $2
       }'
 } > "$MDIR/artifact-inventory.tsv"
 echo -e "  ${GRN}✓${RST}  $(awk 'NR>1' "$MDIR/artifact-inventory.tsv" | wc -l) files indexed"

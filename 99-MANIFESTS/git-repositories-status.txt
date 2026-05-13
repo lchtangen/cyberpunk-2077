@@ -1,14 +1,20 @@
-# Git repository status — 2026-05-13T18:26:07Z
+# Git repository status — 2026-05-13T21:07:45Z
 # format: path  branch  last-commit  remote  dirty
 
-.                                                                       branch=main                  dirty=15    remote=https://github.com/lchtangen/cyberpunk-2077.git
-  last: 3705353 fix: all 6 bugs resolved, 39/39 tests passing
+.                                                                       branch=main                  dirty=13    remote=https://github.com/lchtangen/cyberpunk-2077.git
+  last: 086481e feat(docs): Enhance documentation with asset dimensions, workspace guide, and agent instructions
+
+./01-DEVELOPMENT/repos/android-roms/android_device_oneplus_guacamole-pbrp  branch=android-9.0           dirty=0     remote=https://github.com/PitchBlackRecoveryProject/android_device_oneplus_guacamole-pbrp
+  last: a7e5ac9 Rename pbrp.yml to pbrp-organization-ci.yml
+
+./01-DEVELOPMENT/repos/android-roms/android_device_oneplus_guacamole_unified_TWRP  branch=android-9.0           dirty=0     remote=https://github.com/mauronofrio/android_device_oneplus_guacamole_unified_TWRP
+  last: f3a667f guacamole: use device bootctrl
 
 ./01-DEVELOPMENT/repos/cyberpunk/AndroidCyberpankIcons                  branch=main                  dirty=0     remote=https://github.com/privatgt/AndroidCyberpankIcons
   last: 7b7a1c6 Update appfilter.xml
 
-./01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro                          branch=master                dirty=18    remote=(no remote)
-  last: 111b96c fix: og1080p variant now installs shutdown animation + update changelog
+./01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro                          branch=master                dirty=7     remote=(no remote)
+  last: 106da5b feat(v3.1.0): add WebUI panel, config tool, CI pipeline, og4k/og1080p shutdown anims
 
 ./01-DEVELOPMENT/repos/cyberpunk/GlitchedCyberBoot                      branch=main                  dirty=0     remote=https://github.com/Magisk-Modules-Alt-Repo/GlitchedCyberBoot
   last: 877912f fixed typo
@@ -16,8 +22,50 @@
 ./01-DEVELOPMENT/repos/cyberpunk/ONEPLUS9-OOS13-BootAnimation           branch=main                  dirty=0     remote=https://github.com/sodasoba1/ONEPLUS9-OOS13-BootAnimation
   last: e970ad6 Update README.md
 
+./01-DEVELOPMENT/repos/magisk-ecosystem/APatch                          branch=main                  dirty=0     remote=https://github.com/bmax121/APatch
+  last: 3c117de fix: add CORS header to ksu://icon/ responses to allow programmatic image loading (#1468)
+
+./01-DEVELOPMENT/repos/magisk-ecosystem/KernelSU                        branch=main                  dirty=0     remote=https://github.com/tiann/KernelSU
+  last: 3f388ef selinux_hide: fix attr/current detection (#3459)
+
+./01-DEVELOPMENT/repos/magisk-ecosystem/LSPosed                         branch=master                dirty=0     remote=https://github.com/LSPosed/LSPosed
+  last: df74d83 set mount ns propagation to slave
+
+./01-DEVELOPMENT/repos/magisk-ecosystem/MMRL                            branch=master                dirty=0     remote=https://github.com/MMRLApp/MMRL
+  last: c2183c0 Merge pull request #629 from weblate/weblate-mmrlapp-mmrl-main
+
+./01-DEVELOPMENT/repos/magisk-ecosystem/Magisk                          branch=master                dirty=0     remote=https://github.com/topjohnwu/Magisk
+  last: 14ea5cf Fix sepolicy parsing for hyphenated identifiers
+
+./01-DEVELOPMENT/repos/magisk-ecosystem/ReZygisk                        branch=main                  dirty=0     remote=https://github.com/PerformanC/ReZygisk
+  last: fcfdfea update: PLTI
+
+./01-DEVELOPMENT/repos/magisk-ecosystem/Vector                          branch=master                dirty=0     remote=https://github.com/JingMatrix/Vector
+  last: cf1153e Fix original method invocation argument spreading (#701)
+
+./01-DEVELOPMENT/repos/magisk-ecosystem/ZygiskNext                      branch=copyright             dirty=0     remote=https://github.com/Dr-TSNG/ZygiskNext
+  last: e03983d Add version requirement of APatch
+
+./01-DEVELOPMENT/repos/magisk-ecosystem/awesome-android-root            branch=main                  dirty=0     remote=https://github.com/awesome-android-root/awesome-android-root
+  last: e2a1be5 Add Google Discover Mods section with Discover Ads Filter
+
+./01-DEVELOPMENT/repos/magisk-ecosystem/zygisk-module-sample            branch=master                dirty=0     remote=https://github.com/topjohnwu/zygisk-module-sample
+  last: 26ae876 Update Zygisk API v4
+
+./01-DEVELOPMENT/repos/oneplus-7-pro/android_kernel_oneplus_sm8150      branch=16.0                  dirty=78288  remote=https://github.com/crdroidandroid/android_kernel_oneplus_sm8150
+  last: 62669882f Revert "devpts: KernelSU: Fix: Failed to execute pm in terminal"
+
+./01-DEVELOPMENT/repos/oneplus-7-pro/device_oneplus_guacamole           branch=15                    dirty=0     remote=https://github.com/DerpFest-Devices/device_oneplus_guacamole
+  last: 14fc95c guacamole: Disable OMX service
+
+./01-DEVELOPMENT/repos/oneplus-7-pro/device_oneplus_sm8150-common       branch=15                    dirty=0     remote=https://github.com/DerpFest-Devices/device_oneplus_sm8150-common
+  last: edaebf3 sm8150-common: overlay: DeviceAsWebcam: Update overlay files path for 15 QPR1
+
 ./01-DEVELOPMENT/repos/oneplus-7-pro/evolution-x-device-guacamole       branch=bka                   dirty=0     remote=https://github.com/Evolution-X-Devices/device_oneplus_guacamole
   last: 898f649 guacamole: Move system to erofs
+
+./01-DEVELOPMENT/repos/oneplus-7-pro/kernel_oneplus_sm8150              branch=15                    dirty=78098  remote=https://github.com/DerpFest-Devices/kernel_oneplus_sm8150
+  last: 3709ae852 UPSTREAM: HID: core: zero-initialize the report buffer
 
 ./03-BUILD/artifacts/cyberpunk-build/CyberPunk-2077-OOS13-Modded-Boot-and-Shutdown-Animation  branch=main                  dirty=0     remote=https://github.com/sodasoba1/CyberPunk-2077-OOS13-Modded-Boot-and-Shutdown-Animation.git
   last: d7cd9f4 CyberGlitch-2077 Oxygen OS 13 Boot & Shutdown Animation
@@ -25,11 +73,50 @@
 ./03-BUILD/artifacts/cyberpunk-build/Magisk-Module-Cyberpunk-2077-Bootanimation-SplashScreen-POCO  branch=main                  dirty=0     remote=https://github.com/ENEIZEM/Magisk-Module-Cyberpunk-2077-Bootanimation-SplashScreen-POCO.git
   last: 16cf51e update descriptions
 
-./06-UI-THEMES-ANIMATIONS/themes/cyber-hyprland-theme                   branch=master                dirty=0     remote=https://github.com/taylor85345/cyber-hyprland-theme
-  last: df6efa9 Updated Hyprland Socket directory
+./06-UI-THEMES-ANIMATIONS/repos/HyprPanel                               branch=master                dirty=0     remote=https://github.com/Jas-SinghFSU/HyprPanel
+  last: 1961ba8 Update readme with archive notice (#1194)
+
+./06-UI-THEMES-ANIMATIONS/repos/Tokyonight-rofi-theme                   branch=main                  dirty=0     remote=https://github.com/w8ste/Tokyonight-rofi-theme
+  last: ad5fc92 Merge pull request #3 from Sit-Back/main
+
+./06-UI-THEMES-ANIMATIONS/repos/catppuccin                              branch=main                  dirty=0     remote=https://github.com/catppuccin/catppuccin
+  last: 61900f1 chore: re-generate data
+
+./06-UI-THEMES-ANIMATIONS/repos/diinki-retrofuture                      branch=main                  dirty=0     remote=https://github.com/diinki/diinki-retrofuture
+  last: 258c0d8 Merge pull request #6 from kradmoned/fix/kitty-font-keybind
+
+./06-UI-THEMES-ANIMATIONS/repos/dotfiles                                branch=master                dirty=0     remote=https://github.com/gh0stzk/dotfiles
+  last: d47ac41 Merge pull request #586 from amywinehousing/patch-2
+
+./06-UI-THEMES-ANIMATIONS/repos/dots                                    branch=main                  dirty=0     remote=https://github.com/1amSimp1e/dots
+  last: 317681e Update settings.json
+
+./06-UI-THEMES-ANIMATIONS/repos/hyprdots                                branch=main                  dirty=0     remote=https://github.com/prasanthrangan/hyprdots
+  last: 3c8b0df Highlight the Deprecation Notice (#2141)
+
+./06-UI-THEMES-ANIMATIONS/repos/mechabar                                branch=main                  dirty=0     remote=https://github.com/sejjy/mechabar
+  last: 5b0d74c docs: clean up README.md
+
+./06-UI-THEMES-ANIMATIONS/repos/plymouth-themes                         branch=master                dirty=0     remote=https://github.com/adi1090x/plymouth-themes
+  last: 5d88174 Updated
+
+./06-UI-THEMES-ANIMATIONS/repos/proxzima-plymouth                       branch=master                dirty=0     remote=https://github.com/PROxZIMA/proxzima-plymouth
+  last: b6e335a 🔥 Initial commit
+
+./06-UI-THEMES-ANIMATIONS/repos/rofi                                    branch=master                dirty=0     remote=https://github.com/adi1090x/rofi
+  last: b0bfe92 Deploying to master from @ adi1090x/rofi@093c1a79f58daab358199c4246de50357e5bf462 🚀
+
+./06-UI-THEMES-ANIMATIONS/repos/widgets                                 branch=main                  dirty=0     remote=https://github.com/adi1090x/widgets
+  last: c16e32c Merge pull request #11 from SakethKanchi/main
 
 ./06-UI-THEMES-ANIMATIONS/themes/Cyberpunk-Neon                         branch=master                dirty=0     remote=https://github.com/Roboron3042/Cyberpunk-Neon
   last: e74c25c Update Mastodon theme for v4.3
+
+./06-UI-THEMES-ANIMATIONS/themes/K-DE-Cyberpunk-Neon                    branch=master                dirty=0     remote=https://github.com/UtkarshKunwar/K-DE-Cyberpunk-Neon
+  last: 2838f73 Added instructions for GRUB theme.
+
+./06-UI-THEMES-ANIMATIONS/themes/cyber-hyprland-theme                   branch=master                dirty=0     remote=https://github.com/taylor85345/cyber-hyprland-theme
+  last: df6efa9 Updated Hyprland Socket directory
 
 ./06-UI-THEMES-ANIMATIONS/themes/cyberpunk-technotronic-icon-theme      branch=main                  dirty=19    remote=https://github.com/dreifacherspass/cyberpunk-technotronic-icon-theme
   last: 20ebb74 Merge pull request #19 from jamesmcewan/slicers
@@ -39,9 +126,6 @@
 
 ./06-UI-THEMES-ANIMATIONS/themes/cybrland                               branch=main                  dirty=0     remote=https://github.com/scherrer-txt/cybrland
   last: 1a14226 mnt: sync submodules to latest
-
-./06-UI-THEMES-ANIMATIONS/themes/K-DE-Cyberpunk-Neon                    branch=master                dirty=0     remote=https://github.com/UtkarshKunwar/K-DE-Cyberpunk-Neon
-  last: 2838f73 Added instructions for GRUB theme.
 
 ./06-UI-THEMES-ANIMATIONS/wallpapers/cybrpapers                         branch=main                  dirty=0     remote=https://github.com/scherrer-txt/cybrpapers
   last: 6c402b5 mnt: move download buttons outside the tables and make them smaller
@@ -54,4 +138,10 @@
 
 ./07-KERNEL-PACKAGE-MODULES/kernel/neptune-kernel-sm8150                branch=U-Ice                 dirty=0     remote=https://github.com/0wnerDied/Neptune_kernel_sm8150_oneplus
   last: 271edab85 defconfig: Remove LOCALVERSION in config
+
+./07-KERNEL-PACKAGE-MODULES/repos/op5                                   branch=blu_spark-10          dirty=56446  remote=https://github.com/engstk/op5
+  last: 452f8a69 boeffla_wl_blocker: Increase blacklist max length
+
+./07-KERNEL-PACKAGE-MODULES/repos/op8                                   branch=blu_spark-16-custom   dirty=73515  remote=https://github.com/engstk/op8
+  last: 8a647011e defconfig: sync with lineage-23.2-20260421-nightly
 
