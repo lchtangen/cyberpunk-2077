@@ -259,7 +259,44 @@ print(f'Frames: {len(frames)}')
 
 ---
 
-## 🔗 Related Docs
+## � Asset Dimensions Reference
+
+```
+╔══════════════════════════════════════════════════════════════════════════╗
+║  ░░░ FRAME COUNT · RESOLUTION · FPS · ZIP SIZE ░░░░░░░░░░░░░░░░░░░░░░  ║
+╚══════════════════════════════════════════════════════════════════════════╝
+```
+
+<div align="center">
+
+### Boot Animations
+
+| 🎬 Variant | 📐 Resolution | ⚡ FPS | 🖼 Frames | 📦 ZIP Size |
+|:----------|:-------------|:------|:---------|:-----------|
+| `glitch` | 1440×3120 | **60** | 227 | 66.0 MB |
+| `flatline` | 1440×3120 | **60** | 227 | 57.0 MB |
+| `reboot` | 1440×3120 | **60** | 227 | 65.9 MB |
+| `og1080p` | 1080×2400 | 30 | 267 | 91.6 MB |
+| `og4k` | 2160×4800 | 30 | 267 | 358.0 MB |
+
+### Shutdown / Reverse-Boot Animations
+
+| 🎬 Variant | 📐 Resolution | ⚡ FPS | 🖼 Frames | 📦 ZIP Size |
+|:----------|:-------------|:------|:---------|:-----------|
+| `glitch` | 1440×3120 | 60 | 58 | 0.6 MB |
+| `flatline` | 1440×3120 | 60 | 64 | 0.9 MB |
+| `reboot` | 1440×3120 | 60 | 58 | 0.5 MB |
+| `og1080p` | 1440×3120 | 60 | 58 | 0.5 MB |
+| `og4k` | 2160×4800 | 30 | 58 | 0.6 MB |
+
+</div>
+
+> Frame counts include all parts (intro + loop). ZIP size is uncompressed (`ZIP_STORED`) on-device.
+> og4k boot animation was upscaled from og1080p via Pillow LANCZOS 2× (2160×4800, 358 MB).
+
+---
+
+## �🔗 Related Docs
 
 | 📄 | 🔗 |
 |:---|:---|
