@@ -1246,12 +1246,12 @@ cpu_temp / sys/class/thermal/thermal_zone0/temp
 - [x] `scripts/check-github-remotes.sh` — GH-OPS-002 HTTP check for all remotes (2026-05-14)
 - [x] `scripts/cp2077-bench.sh` — PERF-01 5-run boot timing benchmark (2026-05-14)
 - [x] `SOURCES` — upstream source inventory file for lock validator (2026-05-14)
-- [ ] `shellcheck` pre-commit hook
-- [ ] `cp2077-ci-local.sh`
-- [ ] Parallel hash in `generate-manifests.sh`
+- [x] `.pre-commit-config.yaml` — shellcheck, shfmt, ruff, ZIP integrity hooks (2026-05-14)
+- [x] `scripts/cp2077-ci-local.sh` — act wrapper for local CI runs (2026-05-14)
+- [x] Parallel hash in `generate-manifests.sh` — 8-worker SHA-256 (2026-05-14)
 - [ ] Per-variant audio tone table
-- [ ] `cp2077-zip-diff.py`
-- [ ] `cp2077-palette-gen.py`
+- [x] `scripts/cp2077-zip-diff.py` — OTA safety ZIP diff tool (2026-05-14)
+- [x] `scripts/cp2077-palette-gen.py` — SVG/CSS/JSON/PNG token generator (2026-05-14)
 - [ ] `cp2077-wallpaper-extract.py`
 - [ ] `build-universal.py --res-matrix`
 - [ ] `cp2077-module-lint.py`
@@ -1333,10 +1333,10 @@ Path: 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/
 |:--|:-:|:----:|:-----|
 | GH-OPS-001 | P1 | 53 | Generate `repo-registry.json` from `git-repositories.txt` |
 | GH-OPS-002 | P1 | all | `scripts/check-github-remotes.sh` HTTP 200/301 + branch check |
-| GH-OPS-003 | P1 | CP2077 | Release workflow inputs: version, variants, audio, retention, draft |
-| GH-OPS-004 | P1 | releases/ | SLSA provenance for every release ZIP |
-| GH-OPS-005 | P1 | root | OpenSSF Scorecard weekly + SARIF publish |
-| GH-OPS-006 | P1 | shell/py/web | CodeQL + SARIF for ShellCheck + Python |
+| GH-OPS-003 | P1 | CP2077 | ✅ Release workflow inputs: version, variants, audio, retention, draft (2026-05-14) |
+| GH-OPS-004 | P1 | releases/ | ✅ SLSA provenance for every release ZIP (2026-05-14) |
+| GH-OPS-005 | P1 | root | ✅ OpenSSF Scorecard weekly + SARIF publish (2026-05-14) |
+| GH-OPS-006 | P1 | shell/py/web | ✅ CodeQL + SARIF for ShellCheck + Python (2026-05-14) |
 | GH-OPS-007 | P1 | all workflows | Pin actions by SHA + upgrade cadence doc |
 | GH-OPS-008 | P1 | 99-MANIFESTS/ | Manifest freshness badge CI job |
 | GH-OPS-009 | P2 | all nested | `WHY-CLONED.md` per clone |
@@ -1596,18 +1596,18 @@ Path: 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/
 | T-16 | Create `.github/workflows/ci.yml` lint→build→test→release | P1 |
 | T-17 | `shellcheck` job for all `*.sh` | P1 |
 | T-18 | `ruff check` Python lint job | P2 |
-| T-19 | CodeQL + SARIF for ShellCheck + Python | P1 |
-| T-20 | `shellcheck` pre-commit via `.husky/` | P2 |
-| T-21 | `shfmt` pass in pre-commit hook | P2 |
+| T-19 | CodeQL + SARIF for ShellCheck + Python | P1 | ✅ 2026-05-14 |
+| T-20 | `shellcheck` pre-commit via `.husky/` | P2 | ✅ 2026-05-14 |
+| T-21 | `shfmt` pass in pre-commit hook | P2 | ✅ 2026-05-14 |
 | T-22 | Pin Actions by SHA + upgrade cadence doc | P1 |
 | T-23 | Manifest freshness badge CI job | P1 |
-| T-24 | OpenSSF Scorecard weekly + SARIF | P1 |
+| T-24 | OpenSSF Scorecard weekly + SARIF | P1 | ✅ 2026-05-14 |
 | T-25 | Artifact retention: 7d CI / 30d RC / 90d stable | P2 |
 | T-26 | Reproducible build gate: SHA-256 compare twice | P1 |
-| T-27 | `gh release create --draft` CI automation | P1 |
-| T-28 | SLSA provenance via `slsa-github-generator` | P1 |
-| T-29 | `cp2077-ci-local.sh` for `act` | P3 |
-| T-30 | Nightly dry-run with `--check-sources` | P3 |
+| T-27 | `gh release create --draft` CI automation | P1 | ✅ 2026-05-14 |
+| T-28 | SLSA provenance via `slsa-github-generator` | P1 | ✅ 2026-05-14 |
+| T-29 | `cp2077-ci-local.sh` for `act` | P3 | ✅ 2026-05-14 |
+| T-30 | Nightly dry-run with `--check-sources` | P3 | ✅ 2026-05-14 |
 
 ### T-Module · 31–45
 
@@ -1710,8 +1710,8 @@ Path: 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/
 |:---|:-----|:-|
 | T-96 | Extended audio pack: Notification/VideoRecord/Screenshot/LowBattery | P2 |
 | T-97 | Loudness normalization -18 LUFS | P3 |
-| T-98 | `cp2077-palette-gen.py` design token assets | P3 |
-| T-99 | `cp2077-zip-diff.py` hotfix patch verifier | P3 |
+| T-98 | `cp2077-palette-gen.py` design token assets | P3 | ✅ 2026-05-14 |
+| T-99 | `cp2077-zip-diff.py` hotfix patch verifier | P3 | ✅ 2026-05-14 |
 | T-100 | Dependency update reminders Python + Actions | P3 |
 
 ---
@@ -1764,23 +1764,23 @@ Phase      Focus                      Tasks   P0   P1   P2   P3
 | ID | Task | P |
 |:---|:-----|:-|
 | PH2-01 | CI pipeline `.github/workflows/ci.yml` | P1 |
-| PH2-02 | `shellcheck` + `shfmt` pre-commit | P2 |
-| PH2-03 | CodeQL + SARIF upload | P1 |
+| PH2-02 | `shellcheck` + `shfmt` pre-commit | P2 | ✅ 2026-05-14 |
+| PH2-03 | CodeQL + SARIF upload | P1 | ✅ 2026-05-14 |
 | PH2-04 | Reproducible build SHA-256 gate | P1 |
 | PH2-05 | `sources.lock.json` + validator | P1 |
 | PH2-06 | `update.json` JSON Schema validator | P1 |
 | PH2-07 | SLSA provenance generator | P1 |
-| PH2-08 | OpenSSF Scorecard weekly | P1 |
+| PH2-08 | OpenSSF Scorecard weekly | P1 | ✅ 2026-05-14 |
 | PH2-09 | Manifest freshness badge | P1 |
 | PH2-10 | Actions pin-by-SHA + upgrade doc | P1 |
 | PH2-11 | `module-lint` check | P2 |
 | PH2-12 | Artifact retention policy | P2 |
-| PH2-13 | `cp2077-ci-local.sh` `act` wrapper | P3 |
-| PH2-14 | Nightly dry-run build | P3 |
+| PH2-13 | `cp2077-ci-local.sh` `act` wrapper | P3 | ✅ 2026-05-14 |
+| PH2-14 | Nightly dry-run build | P3 | ✅ 2026-05-14 |
 | PH2-15 | Dependency update reminders | P3 |
 | PH2-16 | Build matrix JSON output | P2 |
 | PH2-17 | `zipfile -t` CI gate | P1 |
-| PH2-18 | `gh release create --draft` automation | P1 |
+| PH2-18 | `gh release create --draft` automation | P1 | ✅ 2026-05-14 |
 | PH2-19 | `cp2077-release-verify.py` | P1 |
 | PH2-20 | `sources.lock.json` embedded in ZIP | P1 |
 
@@ -1995,7 +1995,7 @@ Phase      Focus                      Tasks   P0   P1   P2   P3
 | `cp2077-slsa-provenance.sh` | P1 | 📋 | SLSA provenance via `slsa-github-generator` |
 | `cp2077-bench.sh` | P2 | 📋 | 5-run boot timing benchmark (mean + stddev) |
 | `cp2077-hud-toggle.sh` | P2 | 📋 | Waybar/eww HUD switcher |
-| `cp2077-ci-local.sh` | P3 | 📋 | Local `act` runner wrapper for GitHub Actions |
+| `cp2077-ci-local.sh` | P3 | ✅ | Local `act` runner wrapper for GitHub Actions |
 | `check-github-remotes.sh` | P1 | 📋 | HTTP 200/301 + branch check for all 53 remotes |
 | `lib/config-v2.sh` | P1 | 🔄 | Atomic read/write, file locking, schema validation |
 | `lib/root-runtime.sh` | P1 | 📋 | `detect_root_manager()` / `detect_module_dir()` / `run_root_command()` |
@@ -2014,8 +2014,8 @@ Phase      Focus                      Tasks   P0   P1   P2   P3
 | `cp2077-version-bumper.py` | P2 | 📋 | Atomic bump: build.py + module.prop + update.json |
 | `cp2077-frame-inspector.py` | P3 | 📋 | Terminal frame preview for bootanimation ZIPs |
 | `cp2077-archive-audit.py` | P3 | 📋 | Workspace ZIP scanner and integrity reporter |
-| `cp2077-palette-gen.py` | P3 | 📋 | Generate palette assets from design tokens for docs |
-| `cp2077-zip-diff.py` | P3 | 📋 | Hotfix frame/audio binary diff verifier |
+| `cp2077-palette-gen.py` | P3 | ✅ | Generate palette assets from design tokens for docs |
+| `cp2077-zip-diff.py` | P3 | ✅ | Hotfix frame/audio binary diff verifier |
 | `cp2077-variant-compare.py` | P2 | 📋 | Side-by-side frame thumbnail comparator |
 | `cp2077-self-check.sh` | P1 | 📋 | Verify mounted ZIPs SHA-256 vs `sources.lock.json` |
 
@@ -2024,10 +2024,10 @@ Phase      Focus                      Tasks   P0   P1   P2   P3
 | Workflow | Priority | Status | Purpose |
 |:---------|:--------:|:------:|:--------|
 | `ci.yml` | P1 | 📋 | Lint → Build → Test → Release 4-stage pipeline |
-| `release.yml` | P1 | 📋 | Tag-triggered release + SLSA + `gh release create` |
-| `scorecard.yml` | P1 | 📋 | Weekly OpenSSF Scorecard + SARIF publish |
-| `codeql.yml` | P1 | 📋 | CodeQL for JS + ShellCheck SARIF + Python audit |
-| `nightly.yml` | P3 | 📋 | Nightly `--check-sources` dry-run (no upload) |
+| `release.yml` | P1 | ✅ | Tag-triggered release + SLSA + `gh release create` |
+| `scorecard.yml` | P1 | ✅ | Weekly OpenSSF Scorecard + SARIF publish |
+| `codeql.yml` | P1 | ✅ | CodeQL for JS + ShellCheck SARIF + Python audit |
+| `nightly.yml` | P3 | ✅ | Nightly `--check-sources` dry-run (no upload) |
 
 ---
 
