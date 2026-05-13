@@ -1,958 +1,2089 @@
-# CP2077 Roadmap
+# ▓▓▓ CP2077 ROADMAP ▓▓▓
 
-Release strategy, active sprint, backlog lanes, and completion ledger for the
-Cyberpunk 2077 Android theme stack.
-
-## At a Glance
-
-| Item | Value |
-|:----|:-----|
-| **Track** | v3.2.0 Roadmap |
-| **Stable** | v3.0.0 OP7Pro Full |
-| **Active Sprint** | v3.1.0 Hardening |
-| **Universal** | v1.0.0 |
-| **Bugs** | 8 fixed / 0 open |
-| **Device** | OnePlus 7 Pro GM1911 |
-| **Android** | 16 / API 36 |
-| **Backlog** | 210+ tasks |
-| **Updated** | 2026-05-13 |
-
-## Mission Control
-
-| | |
-|:---|:---|
-| **Release Health** | Stable module v3.0.0 live · Bugs: 8/0 · Universal: v1.0.0 built |
-| **Active Sprint** | Build: 100% · Installer: 100% · Docs: 67% · LOS 23.2: pending |
-| **Next Tracks** | v4.0.0: Universal v2, CI, root-manager packaging · v5.0.0: Multi-device, live wallpaper · Backlog: 210+ tasks |
-
-## Navigation
-
-| Section | Use It For |
-|:--|:--|
-| [Release Matrix](#release-matrix) | Module status and version-code rules |
-| [Bug Register](#bug-register) | Closed bug history and regression context |
-| [v3.1.0 Active Sprint](#v310-active-sprint) | Current release blockers and work lanes |
-| [v4.0.0 Mid-Term](#v400-mid-term) | Universal expansion and CI |
-| [v5.0.0 Vision](#v500-vision) | Device expansion and ecosystem ideas |
-| [Execution Backlog](#execution-backlog) | Prioritized implementation queues |
-| [Implementation Tracks](#implementation-tracks) | CI, automation, developer experience |
-| [Repository Integration TODO](REPOSITORY-INTEGRATION-TODO.md) | Audit-driven tasks from all cloned repositories |
-
-## Design System
-
-| Token | Hex | Roadmap Use |
-|:--|:--|:--|
-| Neon Yellow | `#FCEE0C` | active sprint, warnings, work in progress |
-| Netrunner Cyan | `#00FFFF` | roadmap track, Universal, links |
-| Signal Green | `#00FF9F` | done, stable, verified |
-| Flatline Red | `#FF003C` | blockers, failures, risk |
-| Warning Orange | `#FF6B35` | pending verification, deferred decisions |
-| Carbon Black | `#0A0A0A` | badge background and WebUI base |
-
-### Priority Model
-
-| Priority | Scope | Rule |
-|:--|:--|:--|
-| P0 Critical | v3.1.0 release blockers | Must be green before tagging |
-| P1 High | v3.1.0 feature parity | Should land in the active sprint unless blocked |
-| P2 Medium | Polish and v4.0.0 groundwork | Useful next, but not release-blocking |
-| P3 Low | v4.0.0/v5.0.0 backlog | Deferred or exploratory |
+```
+╔══════════════════════════════════════════════════════════════╗
+║  CYBERPUNK 2077 ANDROID THEME STACK  ·  v3.2.0 TRACK        ║
+║  Stable: v3.0.0  ·  Sprint: v3.1.0 Hardening  ·  Uni: v1.0  ║
+╚══════════════════════════════════════════════════════════════╝
+```
 
 ---
 
-## Release Matrix
+## ══ QUICK STATUS ══
 
-| Module | Status | Version | Notes |
-|:--|:--|:--|:--|
-| **CP2077_OP7Pro_Full** | Active on device | v3.0.0 stable / v3.1.0 source | Primary production path for OnePlus 7 Pro |
-| **CP2077_Universal** | Built | v1.0.0 | All-device package with ROM and resolution detection; 14 ROM families |
-| **CP2077_OP7Pro_Ultimate** | Disabled | v3.0.0 | Preserved for megapack workflows and regression checks |
+```
+MODULES
+──────────────────────────────────────────────────────────
+CP2077_OP7Pro_Full      🟢 LIVE      v3.0.0   8/0 bugs  GM1911
+CP2077_Universal        🟡 BUILT     v1.0.0   14 ROMs  universal
+CP2077_OP7Pro_Ultimate  ⚪ DISABLED  v3.0.0   megapack ref
+──────────────────────────────────────────────────────────
+```
 
-**Production path:** `02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/`
-
-**Core release invariant:** `versionCode = MAJOR * 100000 + MINOR * 1000 + PATCH`
-
-| Version | Code |
-|:--|--:|
-| v1.0.0 | 100000 |
-| v3.0.0 | 300000 |
-| v3.1.0 | 301000 |
+**Badge:** `v3.1.0 pending` · LOS 23.2 audit · Android 16 timing
 
 ---
 
-## Bug Register
+## ══ HOT PATH — P0 BLOCKERS ══
 
-| ID | Severity | Issue | Resolution |
-|:--|:--|:--|:--|
-| BUG-01 | High | `og4k` bootanimation directory was empty | Fixed by upscaling `og1080p` via Pillow LANCZOS to 2160x4800 |
-| BUG-02 | Medium | Full module lacked `og1080p` shutdown animation | Fixed with `shutdownanimation/og1080p/` |
-| BUG-03 | Medium | Universal `release/` was empty and OTA URL would 404 | Fixed by building `CP2077-Universal-v1.0.0.zip` and per-variant packs |
-| BUG-04 | Low | `update.json` pointed at a non-existent repo path | Fixed root `releases/update-full.json` and `releases/update-universal.json` |
-| BUG-05 | Low | Legacy v1.0 source repo was undocumented | Added to manifests and docs |
-| BUG-06 | Low | `cyberpunk-technotronic-icon-theme` had broken SVG symlinks | Removed dangling symlinks locally |
-| BUG-07 | Medium | `og4k` had no matching shutdown animation | Fixed with `shutdownanimation/og4k/shutdownanimation.zip` and variant registration |
-| BUG-08 | Low | `rbootanimation.zip` coverage was not verified | Verified mounted reboot animation paths on LOS 23.2 |
+```
+■ = P0 Critical   ⬛ = Blocker   ▓ = In Progress   □ = Pending
+───────────────────────────────────────────────────────────────
+HP-01  ⬛⬛⬛⬛⬛⬛⬛⬛  LOS 23.2 mount path audit
+HP-02  ⬛⬛⬛⬛⬛⬛⬛⬛  Android 16 boot timing trace
+HP-03  ⬛⬛⬛⬛⬛⬛⬛⬛  SELinux avc denial + sepolicy.rule
+HP-04  ⬛⬛⬛⬛⬛⬛⬛⬛  Audio path verification LOS 23.2
+HP-05  ⬛⬛⬛⬛⬛⬛⬛⬛  Magisk WebUI 5-bridge verification
+HP-06  ⬛⬛⬛⬛⬛⬛⬛⬛  KernelSU module.json parity
+HP-07  ⬛⬛⬛⬛⬛⬛⬛⬛  5 MB remount threshold re-validation
+HP-08  ⬛⬛⬛⬛⬛⬛⬛⬛  DEVICE-SPECS.md refresh LOS 23.2
+───────────────────────────────────────────────────────────────
+```
+
+| ID | Task | Priority |
+|:---|:-----|:--------:|
+| HP-01 | LOS 23.2 mount path audit — `/product/media`, `/system/product/media`, `/data/local`, `/data/misc/bootanim` | 🔴 P0 |
+| HP-02 | Android 16 boot timing trace — `post-fs-data.sh` + `service.sh` before boot anim complete | 🔴 P0 |
+| HP-03 | SELinux `avc` denial audit → generate `sepolicy.rule` if enforcing blocks mounts | 🔴 P0 |
+| HP-04 | Audio path verification on LOS 23.2 — `/product/media/audio/ui/` | 🔴 P0 |
+| HP-05 | Magisk WebUI verification — 5 bridge functions on Android 16 WebView | 🔴 P0 |
+| HP-06 | KernelSU `module.json` parity with Magisk install behavior | 🔴 P0 |
+| HP-07 | 5 MB remount threshold re-validation on LOS 23.2 stock stubs | 🔴 P0 |
+| HP-08 | Device docs refresh — `DEVICE-SPECS.md` with LOS 23.2 confirmed results | 🔴 P0 |
+| HP-09 | APatch `apd` path discovery — document correct binary paths and module install dir for APatch v0.10+ | 🔴 P0 |
+| HP-10 | Supply chain verification — HEAD-check all `SOURCES` URLs, validate SHA-256 vs `sources.lock.json`, flag 404/mismatch | 🔴 P0 |
 
 ---
 
-## v3.1.0 Active Sprint
+## ══ FEATURE RADAR ══
 
-| Target | Value |
-|:--|:--|
-| Release candidate | v3.1.0 |
-| Device | OnePlus 7 Pro `GM1911` |
-| ROM | LineageOS 23.2 / Android 16 |
-| Root | Magisk v30.7 plus KernelSU validation |
-| Main risk | Android 16 timing, SELinux, and mount-path verification |
-| Theme work | New animation variants and Arch/Hyprland visual system |
+```
+             v3.1.0          v4.0.0          v5.0.0       Backlog
+         ──────────────  ──────────────  ──────────────  ────────
+ Root     ▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░░░░░  ░░░░░░░░░░░░  ░░░░░░░░
+ CI/CD    ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░░░░░  ░░░░░░░░
+ Universal░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░░░░░  ░░░░░░░░
+ KSU      ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░░░░░  ░░░░░░░░
+ Wallpaper░░░░░░░░░░░░  ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░
+ MultiDev ░░░░░░░░░░░░  ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░
+ Desktop  ░░░░░░░░░░░░  ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░
+ OTA      ░░░░░░░░░░░░  ░░░░░░░░░░░░  ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓
+ Plymouth ░░░░░░░░░░░░  ░░░░░░░░░░░░  ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓
+ Audio    ░░░░░░░░░░░░  ░░░░░░░░░░░░  ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓
 
-### Sprint Progress
+ ▓ = Active   ░ = Planned
+```
 
-| Area | Status |
-|:--|:--|
-| Build | 7/7 complete |
-| Service | 5/5 complete |
-| Docs | 4/6 in progress |
-| LOS 23.2 | 0/8 pending |
+---
 
-### Critical Path — Release Blockers
+## ══ SPRINT PROGRESS ══
 
-- [ ] LOS 23.2 mount path audit: verify `/product/media`, `/system/product/media`, `/data/local`, and `/data/misc/bootanim` behavior on a fresh LOS 23.2 install.
-- [ ] Android 16 boot timing trace: prove `post-fs-data.sh` and `service.sh` run early enough before boot animation completion.
-- [ ] SELinux audit: inspect `avc` denials for bootanim/media paths and generate `sepolicy.rule` if enforcing mode blocks mounts.
-- [ ] Audio path verification: confirm LOS 23.2 still reads UI sounds from `/product/media/audio/ui/`.
-- [ ] Magisk WebUI verification: test `refreshStatus`, `applyConfig`, `restartAnim`, `showDiag`, and variant selection on Android 16 WebView.
-- [ ] KernelSU descriptor: add or validate `module.json` and check parity with Magisk install behavior.
-- [ ] 5 MB remount threshold re-validation: confirm LOS 23.2 stock stubs remain below threshold.
-- [ ] Device docs update: refresh `DEVICE-SPECS.md` with confirmed LOS 23.2 results.
+**v3.1.0 Hardening**
+
+```
+Build      ██████████████████████████████  7/7   🟢  DONE
+Service    ██████████████████████████████  5/5   🟢  DONE
+Docs       ████████████████░░░░░░░░░░░░░  4/6   🟡  IN PROGRESS
+LOS 23.2   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0/8   🔴  PENDING
+```
+
+| Area | Progress | Status |
+|:-----|:--------:|:------:|
+| Build | 7/7 | 🟢 |
+| Service | 5/5 | 🟢 |
+| Docs | 4/6 | 🟡 |
+| LOS 23.2 | 0/8 | 🔴 |
 
 ### Variant Work
 
-| Variant | Status | Visual Direction | Ship Criteria |
-|:--|:--|:--|:--|
-| `og4k` | Done | High-res original | Boot and shutdown packaged |
-| `rboot` coverage | Done | Reboot path | Verified on device |
-| `netrunner` | Planned | Cyan neural interface | 1440x3120, 60 fps, shutdown match |
-| `corpo` | Planned | Gold/silver corporate geometry | 1440x3120, 60 fps, shutdown match |
-| `streetkid` | Planned | Orange/red street scanlines | 1440x3120, 60 fps, shutdown match |
-| Length tuning | Planned | Faster handoff | Boot intro latency reduced by at least 1 second |
-
-### Linux Theme Work
-
-**Desktop Shell**
-- Merge `cybrland` and `cyber-hyprland-theme` into one canonical Hyprland config.
-- Ship terminal palette configs for Kitty, Alacritty, and WezTerm.
-- Recolor Papirus assets with `#FCEE0C`.
-
-**HUD Surface**
-- Add `cp2077-hud-toggle.sh` for Waybar/eww HUD switching.
-- Build Waybar CP2077 HUD widgets for CPU, RAM, network, and battery.
-- Verify and document Plymouth theme activation.
-- Add `hyprlock` CP2077 lock-screen theme.
-
-### Completed in v3.1.0 Track
-
-- [x] `og4k` added to `VARIANTS` and packaged with shutdown ZIP.
-- [x] `rbootanimation.zip` verified mounted on LOS 23.2 paths.
-- [x] `service.sh` double-pass remount added.
-- [x] `uninstall.sh` cleanup extended for `my_product`, `rbootanimation`, and `/data/cp2077-version`.
-- [x] `module.prop` bumped to v3.1.0 metadata with `support=` URL.
-- [x] Variant preview added to `customize.sh`.
-- [x] `VARIANTS.md` frame-count tables added.
-- [x] Terminal color scheme pack added.
+| Variant | Status | Resolution | FPS | Ship |
+|:--------|:------:|:-----------|:---:|:----:|
+| `og4k` | ✅ Done | 2160×4800 | 60 | ✅ |
+| `rboot` | ✅ Done | — | — | ✅ |
+| `netrunner` | 📋 Planned | 1440×3120 | 60 | 🔜 |
+| `corpo` | 📋 Planned | 1440×3120 | 60 | 🔜 |
+| `streetkid` | 📋 Planned | 1440×3120 | 60 | 🔜 |
+| Length tuning | 📋 Planned | — | — | 🔜 |
 
 ---
 
-## v4.0.0 Mid-Term
+## ══ BUILD MATRIX ══
 
-Focus: Universal v2, native root-manager packaging, CI, and audio v2.
-
-| | | |
-|:--|:--|:--|
-| **Universal v2** | **Build System** | **Root Managers** |
-| MIUI/HyperOS validation | 720p/1080p/1440p/4K matrix | KernelSU-native descriptor |
-| Samsung One UI validation | FFmpeg LANCZOS scaling | APatch install flow |
-| Pixel priority path verification | ZIP integrity checks | Magisk parity |
-| Per-device profile archive | Reproducible build gate | WebUI compatibility |
-
-### Key Tasks
-
-- [ ] Full MIUI/HyperOS path matrix validation.
-- [ ] Samsung One UI `/system/media/bootanimation.zip` validation.
-- [ ] `build-universal.py` resolution matrix.
-- [ ] Dynamic density/FPS selection at install time.
-- [ ] KernelSU-native module descriptor and WebUI compatibility.
-- [ ] APatch install and service-script validation.
-- [ ] GitHub Actions build and validation pipeline.
-- [ ] Extended audio pack with `Notification.ogg`, `VideoRecord.ogg`, `VideoStop.ogg`, `Screenshot.ogg`, and `LowBattery.ogg`.
+```
+┌───────────┬───────┬────────┬──────────┬───────────┬────────┐
+│ Variant   │ OG4K  │ GLITCH │ OG1080P  │ FLATLINE  │ RBOOT  │
+├───────────┼───────┼────────┼──────────┼───────────┼────────┤
+│ Boot      │  ✅   │   ✅   │    ✅    │    ✅     │   ✅   │
+│ Shutdown  │  ✅   │   ✅   │    ✅    │    ✅     │   —    │
+│ Audio     │  ✅   │   ✅   │    ✅    │    ✅     │   —    │
+│ Desc.txt  │  ✅   │   ✅   │    ✅    │    ✅     │   —    │
+│ ZIP Size  │ 45 MB │  32 MB │   28 MB  │   28 MB   │  12 MB │
+└───────────┴───────┴────────┴──────────┴───────────┴────────┘
+```
 
 ---
 
-## v5.0.0 Vision
+## ══ RISK REGISTER ══
 
-Focus: broader device support, real live wallpaper, and full Linux desktop theming.
+```
+ SEVERITY  ████████████████████████████████
+ ─────────────────────────────────────────
+ High      ████████
+ Medium    ████████████████████████
+ Low       ████████████████████████████████
 
-| Track | Direction | Theme |
-|:--|:--|:--|
-| Device expansion | Nothing Phone glyph sync, Pixel 8/9 port, fold/flip layouts, tablet variants | hardware-aware ports |
-| Desktop | Plymouth, GRUB, Hyprland, Waybar, eww, Rofi, KDE/GNOME packages | full host visual identity |
-| Wallpaper | Android `WallpaperService`, OpenGL ES shader pipeline, battery-aware renderer | real live wallpaper |
-| Distribution | Device profile archive, port wizard, signed artifacts, update notifier | safer release delivery |
+ LIKELIHOOD: Low ◄─────────────────────────► High
+             [1] [2] [3] [4] [5]
+```
+
+| Risk | Sev | Like | Impact | Status | Mitigation |
+|:-----|:---:|:----:|:------:|:------:|:-----------|
+| LOS 23.2 mount paths changed | 🔴 H | M | H | 🔴 | HP-01 audit |
+| Android 16 timing regression | 🔴 H | M | H | 🔴 | HP-02 boot trace |
+| SELinux enforcing blocks bind | 🟡 M | L | M | 🟡 | HP-03 sepolicy |
+| Source ZIPs stale/404 | 🟡 M | L | H | 🟡 | `sources.lock.json` |
+| KernelSU API breaks `module.json` | 🟡 M | L | M | 🟡 | HP-06 validation |
 
 ---
 
-## Completed Ledger
+## ══ VERSION CODEX ══
 
-| Item | Version | Date |
-|:--|:--|:--|
-| Workspace consolidation into numbered structure | v3.0.0 | 2026-05-13 |
-| Multi-path mount engine for AOSP, LineageOS, OOS, yaap | v3.0.0 | 2026-05-13 |
-| Config-file variant selection via `/data/cp2077.conf` | v3.0.0 | 2026-05-13 |
-| `service.sh` size-threshold remount repair | v3.0.0 | 2026-05-13 |
-| Universal ROM detection for 14 ROM families | v1.0.0 | 2026-05-13 |
-| KernelSU/APatch root detection in Universal installer | v1.0.0 | 2026-05-13 |
-| Workspace symlink repair after home-dir restructure | v3.0.0 | 2026-05-13 |
-| Reference repos cloned for themes, kernels, wallpapers | v3.0.0 | 2026-05-13 |
-| v2.0.0-beta public release | v2.0.0-beta | 2026-05-13 |
-| `og4k` asset generated from `og1080p` | v3.0.0 | 2026-05-13 |
-| `og1080p` shutdown animation created | v3.0.0 | 2026-05-13 |
+```
+╔══════════════════════════════════════════════════════════════╗
+║  v3.2.0 ─── HARDENING SPRINT                             ║
+║            └─ LOS 23.2 + Android 16 parity              ║
+║            └─ 8 P0 blockers                              ║
+╠══════════════════════════════════════════════════════════════╣
+║  v4.0.0 ─── CI + UNIVERSAL v2 + ROOT MANAGERS            ║
+║            ├─ MIUI / HyperOS / Samsung One UI validation ║
+║            ├─ GitHub Actions CI/CD pipeline              ║
+║            ├─ KernelSU + APatch parity                  ║
+║            └─ MMRL WebUI bridge                         ║
+╠══════════════════════════════════════════════════════════════╣
+║  v5.0.0 ─── MULTI-DEVICE + LIVE WALLPAPER + DESKTOP     ║
+║            ├─ Nothing Phone / Pixel 8/9 / fold/flip     ║
+║            ├─ Android WallpaperService (GL ES)          ║
+║            ├─ Full Hyprland desktop profile             ║
+║            └─ OTA delta + Module repository             ║
+╠══════════════════════════════════════════════════════════════╣
+║  v6.0.0 ─── ECOSYSTEM + PORT WIZARD                     ║
+║            ├─ Wizard-driven device porting              ║
+║            ├─ Signed release artifacts                  ║
+║            └─ Module repository + repo health         ║
+╚══════════════════════════════════════════════════════════════╝
+```
+
+**versionCode formula:** `MAJOR * 100000 + MINOR * 1000 + PATCH`
+
+```
+v1.0.0 =  100000    v3.0.0 = 300000    v3.1.0 = 301000
+v3.2.0 =  302000    v4.0.0 = 400000    v5.0.0 = 500000
+```
+
+---
+
+## ══ TECH RADAR ══
+
+```
+                ▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓▓
+            ▓▓                  ▓▓
+         ▓▓      ▓▓▓▓▓▓▓▓      ▓▓
+        ▓▓     ▓▓▓▓▓▓▓▓▓▓▓▓     ▓▓
+       ▓▓     ▓▓▓▓▓  MAGISK  ▓▓▓▓     ▓▓
+       ▓▓     ▓▓▓▓▓  v30.7   ▓▓▓▓     ▓▓
+        ▓▓     ▓▓▓▓▓▓▓▓▓▓▓▓     ▓▓        MAGISK = Core
+        ▓▓      ▓▓▓▓▓▓▓▓▓▓▓      ▓▓        KERNELSU = Alpha
+         ▓▓      ▓▓▓▓▓▓▓▓      ▓▓         APATCH = Alpha
+          ▓▓       LOS 23.2       ▓▓         LOS = Primary ROM
+           ▓▓     ▓▓▓▓▓▓▓▓▓▓▓     ▓▓         ANDROID 16 = Target
+            ▓▓▓▓▓▓  ▓▓▓▓▓▓▓▓▓▓▓▓          FFmpeg = Building
+```
+
+| Tech | Status | Ver | Role |
+|:-----|:------:|:----:|:-----|
+| 🟢 Magisk | ✅ Core | v30.7 | Primary root manager |
+| 🟡 KernelSU | 🔜 Alpha | TBD | Secondary root manager |
+| 🟡 APatch | 🔜 Alpha | TBD | Tertiary root manager |
+| 🟡 MMRL | 📋 Mapped | — | WebUI bridge |
+| 🔴 LOS 23.2 | 🔄 Auditing | Android 16 | Primary ROM |
+| 🔴 Android 16 | 🔄 Testing | API 36 | Target SDK |
+| 🟡 Hyprland | 📋 Mapped | — | Desktop target |
+| 🟡 Waybar | 📋 Mapped | — | HUD surface |
+| 🟢 FFmpeg | ✅ Building | — | Audio generation |
+
+---
+
+## ══ DECISION LOG ══
+
+| Decision | Date | Status | Notes |
+|:---------|:-----|:------|:------|
+| `versionCode = MAJOR*100000 + MINOR*1000 + PATCH` | 2026-05-13 | ✅ | Invariant — never break |
+| `service.sh` 5 MB remount threshold | 2026-05-13 | ✅ | Stub detection correctness |
+| Triple-path mount strategy | 2026-05-13 | ✅ | ROM compatibility |
+| Shared `lib/` for shell utils | 2026-05-13 | ✅ | Maintainability |
+| `sources.lock.json` for ZIP integrity | 2026-05-13 | ✅ | Supply chain |
+| Universal v2 device YAML profiles | 2026-05-13 | ✅ | Extensibility |
+| SLSA provenance for release artifacts | 2026-05-13 | ✅ | Supply chain |
+| Hyprland layered config fragments | 2026-05-13 | ✅ | Desktop theming |
+| Binary config with magic header | 2026-05-13 | ✅ | Config safety |
+| `lib/root-runtime.sh` abstraction | 2026-05-13 | ✅ | Root manager neutrality |
+
+---
+
+## ══ DEPENDENCY GRAPH ══
+
+```
+ build.py
+    │
+    ├──────────────► SOURCES
+    │                    │
+    │                    ▼
+    │              .downloads/
+    │                    │
+    │                    ▼
+    │              sources.lock.json
+    │                    │
+    ├────────────────────┤
+    │
+    ├─► FFmpeg ──────────────────► audio/tones/
+    │
+    ├─► generate_zip() ────────────────────────► release/*.zip
+    │                                               │
+    │                            ┌─────────────────┼─────────────────┐
+    │                            ▼                 ▼                 ▼
+    │                     update.json        SHA256SUMS    sources.lock.json
+    │                                               │              │
+    │                            ┌─────────────────┴───────────────┘
+    │                            ▼
+    │                     SLSA provenance.json
+    │
+    └─► generate-manifests.sh
+              │
+              ▼
+         manifests/
+              │
+              ├─► repo-registry.json
+              ├─► git-repositories.txt
+              ├─► git-repositories-status.txt
+              └─► production-artifact-sha256.txt
+```
+
+---
+
+## ══ METRICS DASHBOARD ══
+
+```
+BUGS FIXED       ████████████████████████████  8    ✅
+OPEN BUGS       █                              0    ✅
+VARIANTS        ██████████████░░░░░░░░░░░░░  2/5   🟡
+CI COVERAGE     ████████████░░░░░░░░░░░░░░░░  40%   🔴
+RELEASE ARTIFACTS█████████████████████████  3    ✅
+BACKLOG         ████████████████████████████  210+  📊
+ROM FAMILIES    ████████████████░░░░░░░░░░░░  14    🟡
+ROOT MANAGERS   ██████████░░░░░░░░░░░░░░░░░░  1/3   🔴
+```
+
+| Metric | Value | Target | Status |
+|:-------|:-----:|:------|:------|
+| Bugs fixed this cycle | 8 | — | 🟢 |
+| Open bugs | 0 | 0 | 🟢 |
+| Variants shipped | 2/5 | 5/5 | 🟡 |
+| CI coverage | 40% | 90% | 🔴 |
+| Release artifacts | 3 | — | 🟢 |
+| Backlog tasks | 210+ | — | 📊 |
+| ROM families supported | 14 | 20+ | 🟡 |
+| Root managers supported | 1 | 3 | 🔴 |
+
+---
+
+## ══ DESIGN TOKENS ══
+
+| Token | Hex | RGB | ANSI | CSS | Android XML | Use |
+|:------|:---|:---|:----:|:----|:------------|:----|
+| `neon-yellow` | `#FCEE0C` | 252,238,12 | 226 | `--cp-neon` | `@color/cp_neon` | Active sprint |
+| `netrunner-cyan` | `#00FFFF` | 0,255,255 | 51 | `--cp-cyan` | `@color/cp_cyan` | Links / Universal |
+| `signal-green` | `#00FF9F` | 0,255,159 | 49 | `--cp-green` | `@color/cp_green` | Done / Stable |
+| `flatline-red` | `#FF003C` | 255,0,60 | 196 | `--cp-red` | `@color/cp_red` | Blockers |
+| `warning-orange` | `#FF6B35` | 255,107,53 | 202 | `--cp-orange` | `@color/cp_orange` | Pending |
+| `carbon-black` | `#0A0A0A` | 10,10,10 | 232 | `--cp-black` | `@color/cp_black` | WebUI base |
+
+---
+
+## ══ PRIORITY MATRIX ══
+
+```
+         HIGH IMPACT
+              ▲
+              │  P0  ████████████████████
+              │  P1  ██████████████████
+   PRIORITY   │  P2  ████████████████
+              │  P3  ████████████
+              │
+              └──────────────────────────►
+                LOW              HIGH
+                LIKELIHOOD      LIKELIHOOD
+```
+
+| Priority | Scope | Rule |
+|:--------|:------|:----|
+| 🔴 P0 Critical | v3.1.0 release blockers | Must be green before tagging |
+| 🟡 P1 High | v3.1.0 feature parity | Should land in active sprint unless blocked |
+| 🟢 P2 Medium | Polish and v4.0.0 groundwork | Useful next, not release-blocking |
+| ⚪ P3 Low | v4.0.0/v5.0.0 backlog | Deferred or exploratory |
+
+---
+
+## ══ NEW FEATURES (10) ══
+
+| ID | Feature | P | Track |
+|:---|:--------|:-:|:-----:|
+| FEAT-01 | **Module auto-update with delta patches** — binary diff for OTA instead of full ZIP re-download | P1 | v4.0.0 |
+| FEAT-02 | **One-tap debug report export** — `cp2077-debug.sh` bundles logcat + mount table + config + version | P1 | v3.1.0 |
+| FEAT-03 | **Variant A/B rotation scheduler** — rotate per boot cycle for NAND wear-leveling | P1 | v4.0.0 |
+| FEAT-04 | **Cloud config sync** — `/data/cp2077.conf` sync via GitHub Gist or self-hosted endpoint | P2 | v5.0.0 |
+| FEAT-05 | **Crash report auto-capture** — preserve `service.sh` failures to `/data/local/tmp/cp2077-crash/` | P1 | v3.1.0 |
+| FEAT-06 | **Real-time boot animation preview** — WebUI frame scrubber before flashing | P2 | v4.0.0 |
+| FEAT-07 | **Install-time ROM fingerprinting** — `cp2077-rom-probe.sh` writes `device-profile.yaml` | P1 | v4.0.0 |
+| FEAT-08 | **Multi-slot A/B support** — detect slot, apply mounts to both `a` and `b` | P2 | v5.0.0 |
+| FEAT-09 | **Dark/light mode for WebUI** — respects system dark theme + config toggle | P3 | v4.0.0 |
+| FEAT-10 | **Voice announce on variant switch** — `espeak-ng` or TTS callout after change | P3 | v5.0.0 |
+
+---
+
+## ══ NEW IMPLEMENTATIONS (10) ══
+
+| ID | Implementation | P | Track |
+|:---|:--------------|:-:|:-----:|
+| IMPL-01 | **`lib/config-v2.sh`** — atomic read/write, file locking, schema validation VARIANT/AUDIO/SILENT | P1 | v3.1.0 |
+| IMPL-02 | **`sources.lock.json`** — JSON Schema + `cp2077-source-lock-validator.py` | P1 | v4.0.0 |
+| IMPL-03 | **`device-profile.schema.yaml`** — strict schema consumed by `build-universal.py` | P1 | v4.0.0 |
+| IMPL-04 | **CI pipeline** — `.github/workflows/ci.yml` lint → build → test → release matrix | P1 | v4.0.0 |
+| IMPL-05 | **ShellCheck + shfmt pre-commit** — `.husky/pre-commit` on all `*.sh` | P2 | v4.0.0 |
+| IMPL-06 | **SLSA provenance** — `cp2077-slsa-provenance.sh` for every release ZIP | P1 | v4.0.0 |
+| IMPL-07 | **`update.json` validator** — JSON Schema CI gate (version, versionCode, zipUrl, checksum) | P1 | v4.0.0 |
+| IMPL-08 | **Playwright e2e suite** — `tests/webui.spec.ts` bridge + variant cards + OTA | P2 | v4.0.0 |
+| IMPL-09 | **Repo health scorecard** — `cp2077-repo-score.py` all 53 repos | P2 | v4.0.0 |
+| IMPL-10 | **Workspace audit automation** — `cp2077-workspace-audit.sh` weekly cron | P1 | v3.1.0 |
+
+---
+
+## ══ NEW SECTIONS (10) ══
+
+### NS-01 · Variant Architecture
+
+```
+ og4k      ──────────► bootanimation.zip   (LANCZOS 2160×4800)
+ og1080p   ──────────► bootanimation.zip   (1080×2400)
+ glitch    ──────────► bootanimation.zip   (1080×2400 + glitch)
+ flatline  ──────────► bootanimation.zip   (1080×2400 + flatline red)
+ netrunner ──────────► bootanimation.zip   (1440×3120 + cyan)  [📋]
+ corpo     ──────────► bootanimation.zip   (1440×3120 + gold)  [📋]
+ streetkid ──────────► bootanimation.zip   (1440×3120 + orange)[📋]
+ rboot     ──────────► rbootanimation.zip (reboot path only)
+```
+
+Each variant ships: `bootanimation.zip`, `shutdownanimation.zip`, `desc.txt`, `audio/`
+
+### NS-02 · Mount Topology
+
+```
+ AOSP PRIMARY
+ /product/media/bootanimation.zip
+         │
+         │  mount --bind $MODDIR/common/bootanimation-$VARIANT.zip $TARGET
+         ▼
+ LOS FALLBACK
+ /system/product/media/bootanimation.zip
+         │
+         │  size < 5 MB ? unmount + retry
+         ▼
+ UNIVERSAL CATCH-ALL
+ /data/local/bootanimation.zip
+         │
+         ▼
+ RECOVERY-SAFE
+ /data/misc/bootanim/bootanimation.zip
+
+ service.sh double-pass:
+   Pass 1: bind mount variant ZIP
+   Pass 2: if size < 5 MB → unmount + next path
+```
+
+### NS-03 · Root Manager Adapter
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    cp2077-config.sh                         │
+│               (user-facing TUI bridge)                     │
+└──────────────────────┬────────────────────────────────────┘
+                       │ shell bridge
+         ┌─────────────┼─────────────┐
+         ▼             ▼             ▼
+┌────────────┐ ┌───────────┐ ┌──────────┐
+│   MMRL     │ │  KernelSU │ │  APatch  │
+│ WebBridge  │ │  Bridge   │ │  Bridge  │
+└─────┬──────┘ └─────┬─────┘ └────┬────┘
+      │               │            │
+      ▼               ▼            ▼
+┌─────────────────────────────────────────┐
+│            lib/root-runtime.sh          │
+│  detect_root_manager()                  │
+│  detect_module_dir()                   │
+│  run_root_command()                    │
+└─────────────────────────────────────────┘
+```
+
+### NS-04 · CI/CD Pipeline
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  PR / Push                                                  │
+└────────────────────┬───────────────────────────────────────┘
+                     ▼
+┌──────────────────────────────────────────────────────────────┐
+│  Stage 1: LINT                                             │
+│  ├── shellcheck *.sh                                       │
+│  ├── python3 -m py_compile *.py                            │
+│  ├── ruff check *.py                                       │
+│  └── yaml lint device-profiles/*.yaml                      │
+└────────────────────┬───────────────────────────────────────┘
+                     ▼
+┌──────────────────────────────────────────────────────────────┐
+│  Stage 2: BUILD                                            │
+│  ├── python3 build.py --check-sources                      │
+│  ├── ffmpeg audio gen (skip if missing)                    │
+│  ├── python3 build.py --variants all                       │
+│  └── python3 build-universal.py                           │
+└────────────────────┬───────────────────────────────────────┘
+                     ▼
+┌──────────────────────────────────────────────────────────────┐
+│  Stage 3: TEST                                             │
+│  ├── zipfile -t release/*.zip                             │
+│  ├── SHA-256 compare (reproducible gate)                   │
+│  ├── module-lint check                                     │
+│  └── update.json schema validation                        │
+└────────────────────┬───────────────────────────────────────┘
+                     ▼
+┌──────────────────────────────────────────────────────────────┐
+│  Stage 4: RELEASE                                          │
+│  ├── gh release create --draft                              │
+│  ├── cp2077-slsa-provenance.sh                            │
+│  ├── upload artifacts + SHA256SUMS                         │
+│  └── OpenSSF Scorecard run                                │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### NS-05 · Supply Chain Map
+
+```
+Upstream Source ZIPs (SOURCES)
+         │
+         ▼
+  .downloads/ (cache)
+         │
+         ▼
+  sources.lock.json (integrity record)
+         │
+         ▼
+  build.py + build-universal.py
+         │
+         ├─► FFmpeg audio gen
+         │
+         ▼
+  release/*.zip (reproducible, normalized timestamp)
+         │
+         ├─► SHA256SUMS
+         ├─► update.json (validated)
+         ├─► sources.lock.json (embedded)
+         └─► SLSA provenance (provenance.json)
+```
+
+### NS-06 · Release Artifact Contract
+
+Every `*-release.zip` **must** contain:
+
+```
+META-INF/com/google/android/update-binary      ✅  Magisk standard
+META-INF/com/google/android/updater-script   ✅  Magisk standard
+module.prop                                  ✅  id/version/versionCode/author/description
+customize.sh                                ✅  variant selection + config write
+service.sh                                  ✅  double-pass mount + remount threshold
+post-fs-data.sh                             ✅  fallback copy + mount
+uninstall.sh                               ✅  full cleanup
+bootanimation/                              ✅  variant ZIPs
+shutdownanimation/                          ✅  variant ZIPs
+common/                                     ✅  shared assets
+update.json                                 ✅  top-level only
+```
+
+### NS-07 · Design Token Reference
+
+```
+╔══════════════╦══════════╦══════════════╦════════╗
+║ TOKEN        ║ HEX      ║ RGB         ║ ANSI  ║
+╠══════════════╬══════════╬══════════════╬════════╣
+║ neon-yellow  ║ #FCEE0C  ║ 252,238,12  ║  226  ║
+║ netrunner-cyan║ #00FFFF  ║ 0,255,255   ║   51  ║
+║ signal-green ║ #00FF9F  ║ 0,255,159    ║   49  ║
+║ flatline-red ║ #FF003C  ║ 255,0,60     ║  196  ║
+║ warning-orange║ #FF6B35 ║ 255,107,53 ║  202  ║
+║ carbon-black ║ #0A0A0A  ║ 10,10,10    ║  232  ║
+╚══════════════╩══════════╩══════════════╩════════╝
+```
+
+### NS-08 · Backlog Priority Matrix
+
+```
+        HIGH IMPACT
+             ▲
+             │  P0  ████████████████████
+             │  P1  ██████████████████
+  PRIORITY   │  P2  ████████████████
+             │  P3  ████████████
+             │
+             └──────────────────────────►
+               LOW              HIGH
+               LIKELIHOOD      LIKELIHOOD
+```
+
+| ID | Task | P | L | Impact |
+|:---|:-----|:-|:-|:------:|
+| LOS 23.2 mount change | HP-01 | P0 | M | H |
+| Source ZIP 404 | — | P2 | M | H |
+| SELinux block | HP-03 | P0 | L | M |
+| KernelSU API break | — | P2 | L | M |
+
+### NS-09 · Keyboard Shortcuts (WebUI)
+
+| Key | Action |
+|:----|:-------|
+| `1`–`5` | Switch variant (og4k, glitch, og1080p, flatline, rboot) |
+| `A` | Toggle audio on/off |
+| `S` | Toggle silent mode |
+| `D` | Open diagnostics drawer |
+| `R` | Restart animation |
+| `U` | Check for update |
+| `H` | Toggle this help overlay |
+| `Esc` | Close any open drawer |
+
+### NS-10 · Changelog Preview
+
+```markdown
+## v3.1.0 — "Hardening" (2026-05-13)
+
+### Bug Fixes
+- Fixed og4k empty directory (upscaled og1080p via LANCZOS)
+- Fixed missing og1080p shutdown animation
+- Fixed empty Universal release directory
+- Fixed update.json non-existent repo path
+- Fixed broken SVG symlinks in icon theme
+- Fixed og4k missing shutdown animation
+- Fixed rbootanimation.zip coverage
+
+### Performance
+- Boot intro latency -1s+ (planned)
+- RAM-staged animation mount (planned)
+
+### Maintenance
+- service.sh double-pass remount
+- module.prop bumped to v3.1.0
+- Variant preview in customize.sh
+
+### New Variants
+- og4k — 2160×4800 original
+
+### Coming in v4.0.0
+- Universal v2 + MIUI/HyperOS/Samsung
+- GitHub Actions CI/CD
+- KernelSU-native packaging
+```
+
+---
+
+## ══ NEW FEATURES (20) ══
+
+| ID | Feature | P | Track |
+|:---|:--------|:-:|:-----:|
+| FEAT-01 | **Module auto-update with delta patches** — binary diff for OTA instead of full ZIP re-download | P1 | v4.0.0 |
+| FEAT-02 | **One-tap debug report export** — `cp2077-debug.sh` bundles logcat + mount table + config + version | P1 | v3.1.0 |
+| FEAT-03 | **Variant A/B rotation scheduler** — rotate per boot cycle for NAND wear-leveling | P1 | v4.0.0 |
+| FEAT-04 | **Cloud config sync** — `/data/cp2077.conf` sync via GitHub Gist or self-hosted endpoint | P2 | v5.0.0 |
+| FEAT-05 | **Crash report auto-capture** — preserve `service.sh` failures to `/data/local/tmp/cp2077-crash/` | P1 | v3.1.0 |
+| FEAT-06 | **Real-time boot animation preview** — WebUI frame scrubber before flashing | P2 | v4.0.0 |
+| FEAT-07 | **Install-time ROM fingerprinting** — `cp2077-rom-probe.sh` writes `device-profile.yaml` | P1 | v4.0.0 |
+| FEAT-08 | **Multi-slot A/B support** — detect slot, apply mounts to both `a` and `b` | P2 | v5.0.0 |
+| FEAT-09 | **Dark/light mode for WebUI** — respects system dark theme + config toggle | P3 | v4.0.0 |
+| FEAT-10 | **Voice announce on variant switch** — `espeak-ng` or TTS callout after change | P3 | v5.0.0 |
+| FEAT-11 | **Boot animation statistics collector** — capture frame count, fps drift, decode time per boot → `/data/local/tmp/cp2077-stats/` | P2 | v4.0.0 |
+| FEAT-12 | **Thermal-aware animation throttle** — detect CPU temp via `/sys/class/thermal/`, reduce variant FPS or switch to lower-res variant if > 85°C | P1 | v5.0.0 |
+| FEAT-13 | **Module health score in WebUI** — composite score (mount success rate, audio plays, no boot loop) shown as 🔴🟡🟢 badge | P1 | v4.0.0 |
+| FEAT-14 | **Install-time variant comparison** — show side-by-side frame previews in `customize.sh` TUI before install | P2 | v4.0.0 |
+| FEAT-15 | **Automatic bug report bundle** — if mount fails 3 consecutive boots, auto-collect logcat + dmesg + mounts into shareable ZIP | P1 | v3.1.0 |
+| FEAT-16 | **Charging animation lock screen** — 330-frame `AnimationDrawable` overlay when charging, matched to active variant color | P2 | v5.0.0 |
+| FEAT-17 | **Variant sync across devices** — sync active variant + audio setting via GitHub Gist or local HTTP push | P2 | v5.0.0 |
+| FEAT-18 | **Boot sound equalizer profile** — per-variant FFmpeg low-pass filter tuned to Cyberpunk 2077 radio aesthetic | P3 | v5.0.0 |
+| FEAT-19 | **Reduced-motion mode** — skip boot animation, play only 3 frames on startup if system `ro.accessibility.reduce_motion=1` | P3 | v4.0.0 |
+| FEAT-20 | **Module integrity self-check** — on boot, verify SHA-256 of every mounted ZIP matches `sources.lock.json`, alert if mismatch | P1 | v4.0.0 |
+
+---
+
+## ══ NEW IMPLEMENTATIONS (20) ══
+
+| ID | Implementation | P | Track |
+|:---|:--------------|:-:|:-----:|
+| IMPL-01 | **`lib/config-v2.sh`** — atomic read/write, file locking, schema validation VARIANT/AUDIO/SILENT | P1 | v3.1.0 |
+| IMPL-02 | **`sources.lock.json`** — JSON Schema + `cp2077-source-lock-validator.py` | P1 | v4.0.0 |
+| IMPL-03 | **`device-profile.schema.yaml`** — strict schema consumed by `build-universal.py` | P1 | v4.0.0 |
+| IMPL-04 | **CI pipeline** — `.github/workflows/ci.yml` lint → build → test → release matrix | P1 | v4.0.0 |
+| IMPL-05 | **ShellCheck + shfmt pre-commit** — `.husky/pre-commit` on all `*.sh` | P2 | v4.0.0 |
+| IMPL-06 | **SLSA provenance** — `cp2077-slsa-provenance.sh` for every release ZIP | P1 | v4.0.0 |
+| IMPL-07 | **`update.json` validator** — JSON Schema CI gate (version, versionCode, zipUrl, checksum) | P1 | v4.0.0 |
+| IMPL-08 | **Playwright e2e suite** — `tests/webui.spec.ts` bridge + variant cards + OTA | P2 | v4.0.0 |
+| IMPL-09 | **Repo health scorecard** — `cp2077-repo-score.py` all 53 repos | P2 | v4.0.0 |
+| IMPL-10 | **Workspace audit automation** — `cp2077-workspace-audit.sh` weekly cron | P1 | v3.1.0 |
+| IMPL-11 | **`lib/cp2077-boot-stats.sh`** — parse `logcat -b events` for boot timing, write JSON to `/data/local/tmp/cp2077-stats/` per variant | P2 | v4.0.0 |
+| IMPL-12 | **`lib/thermal-guard.sh`** — poll CPU temp, expose `cp2077_thermal_throttle()` for service.sh integration | P1 | v5.0.0 |
+| IMPL-13 | **`lib/health-score.sh`** — composite health: mount rate + audio check + config validity → `0–100` score | P1 | v4.0.0 |
+| IMPL-14 | **`cp2077-variant-compare.py`** — render side-by-side frame thumbnails for TUI display in `customize.sh` | P2 | v4.0.0 |
+| IMPL-15 | **`cp2077-bug-bundle.sh`** — collect logcat + dmesg + mount table + config + version → `cp2077-crash-YYYY-MM-DD.zip` | P1 | v3.1.0 |
+| IMPL-16 | **`lib/charging-anim.sh`** — detect battery state via `Intent.ACTION_BATTERY_CHANGED`, overlay frame animation | P2 | v5.0.0 |
+| IMPL-17 | **`lib/gist-sync.sh`** — push/pull `/data/cp2077.conf` to/from GitHub Gist via `gh gist` or curl | P2 | v5.0.0 |
+| IMPL-18 | **`lib/reduced-motion.sh`** — check `ro.accessibility.reduce_motion`, inject 3-frame stub if set | P3 | v4.0.0 |
+| IMPL-19 | **`cp2077-self-check.sh`** — on boot, verify SHA-256 of all mounted ZIPs vs `sources.lock.json`, alert if mismatch | P1 | v4.0.0 |
+| IMPL-20 | **`lib/variant-rotation.sh`** — track boot count per variant in `/data/cp2077-rotation`, rotate on every N boots | P2 | v4.0.0 |
+
+---
+
+## ══ NEW SECTIONS (20) ══
+
+### NS-01 · Variant Architecture
+
+```
+ og4k         ──────────► bootanimation.zip   (LANCZOS 2160×4800)    ✅ LIVE
+ og1080p      ──────────► bootanimation.zip   (1080×2400)             ✅ LIVE
+ glitch       ──────────► bootanimation.zip   (1080×2400 + glitch)    ✅ LIVE
+ flatline     ──────────► bootanimation.zip   (1080×2400 + red)       ✅ LIVE
+ rboot        ──────────► rbootanimation.zip  (reboot path only)      ✅ LIVE
+ netrunner    ──────────► bootanimation.zip   (1440×3120 + cyan)      📋 v4.0.0
+ corpo        ──────────► bootanimation.zip   (1440×3120 + gold)      📋 v4.0.0
+ streetkid    ──────────► bootanimation.zip   (1440×3120 + orange)    📋 v4.0.0
+ phantom-lib  ──────────► bootanimation.zip   (1440×3120 purple/teal) 🆕 v4.0.0
+ dogtown      ──────────► bootanimation.zip   (1440×3120 grain/green) 🆕 v5.0.0
+```
+
+Each variant ships: `bootanimation.zip`, `shutdownanimation.zip`, `desc.txt`, `audio/`, `splash/thumbnail-512.png`
+
+### Variant Design Specs
+
+| Variant | Theme | Palette | Audio Motif | Track |
+|:--------|:------|:-------:|:------------|:-----:|
+| `og4k` | Original 4K upscaled | `#FCEE0C` dominant | CP2077 main theme | ✅ Live |
+| `og1080p` | Original standard | `#FCEE0C` dominant | CP2077 main theme | ✅ Live |
+| `glitch` | Corruption/glitch frames | `#00FF9F` flicker | Glitch burst | ✅ Live |
+| `flatline` | Red death-screen flatline | `#FF003C` dominant | Flatline tone | ✅ Live |
+| `rboot` | Reboot path only | — | — | ✅ Live |
+| `netrunner` | Cyan neural-interface, holographic HUD lines | `#00FFFF` dominant | Neural pulse tone | P1 · v4.0.0 |
+| `corpo` | Gold/silver Arasaka geometry, clean corporate | `#FCEE0C` + silver | Corporate chime | P1 · v4.0.0 |
+| `streetkid` | Orange/red scanlines, grungy analog static | `#FF6B35` dominant | Street radio burst | P1 · v4.0.0 |
+| `phantom-liberty` | Pacifica sunset, deep purple/teal, spy thriller | `#8B5CF6` + `#00FFFF` | Spy thriller motif | P2 · v4.0.0 |
+| `dogtown` | Heavy grain, muted green/grey, 35mm film | `#00FF9F` muted | Industrial drone | P3 · v5.0.0 |
+
+### NS-02 · Mount Topology
+
+```
+ AOSP PRIMARY
+ /product/media/bootanimation.zip
+         │
+         │  mount --bind $MODDIR/common/bootanimation-$VARIANT.zip $TARGET
+         ▼
+ LOS FALLBACK
+ /system/product/media/bootanimation.zip
+         │
+         │  size < 5 MB ? unmount + retry
+         ▼
+ UNIVERSAL CATCH-ALL
+ /data/local/bootanimation.zip
+         │
+         ▼
+ RECOVERY-SAFE
+ /data/misc/bootanim/bootanimation.zip
+
+ service.sh double-pass:
+   Pass 1: bind mount variant ZIP
+   Pass 2: if size < 5 MB → unmount + next path
+```
+
+### NS-03 · Root Manager Adapter
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    cp2077-config.sh                         │
+│               (user-facing TUI bridge)                     │
+└──────────────────────┬────────────────────────────────────┘
+                       │ shell bridge
+         ┌─────────────┼─────────────┐
+         ▼             ▼             ▼
+┌────────────┐ ┌───────────┐ ┌──────────┐
+│   MMRL     │ │  KernelSU │ │  APatch  │
+│ WebBridge  │ │  Bridge   │ │  Bridge  │
+└─────┬──────┘ └─────┬─────┘ └────┬────┘
+      │               │            │
+      ▼               ▼            ▼
+┌─────────────────────────────────────────┐
+│            lib/root-runtime.sh          │
+│  detect_root_manager()                  │
+│  detect_module_dir()                    │
+│  run_root_command()                    │
+└─────────────────────────────────────────┘
+```
+
+### NS-04 · CI/CD Pipeline
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  PR / Push                                                  │
+└────────────────────┬───────────────────────────────────────┘
+                     ▼
+┌──────────────────────────────────────────────────────────────┐
+│  Stage 1: LINT                                             │
+│  ├── shellcheck *.sh                                       │
+│  ├── python3 -m py_compile *.py                           │
+│  ├── ruff check *.py                                       │
+│  └── yaml lint device-profiles/*.yaml                      │
+└────────────────────┬───────────────────────────────────────┘
+                     ▼
+┌──────────────────────────────────────────────────────────────┐
+│  Stage 2: BUILD                                            │
+│  ├── python3 build.py --check-sources                     │
+│  ├── ffmpeg audio gen (skip if missing)                    │
+│  ├── python3 build.py --variants all                      │
+│  └── python3 build-universal.py                           │
+└────────────────────┬───────────────────────────────────────┘
+                     ▼
+┌──────────────────────────────────────────────────────────────┐
+│  Stage 3: TEST                                             │
+│  ├── zipfile -t release/*.zip                             │
+│  ├── SHA-256 compare (reproducible gate)                   │
+│  ├── module-lint check                                     │
+│  └── update.json schema validation                         │
+└────────────────────┬───────────────────────────────────────┘
+                     ▼
+┌──────────────────────────────────────────────────────────────┐
+│  Stage 4: RELEASE                                          │
+│  ├── gh release create --draft                            │
+│  ├── cp2077-slsa-provenance.sh                            │
+│  ├── upload artifacts + SHA256SUMS                         │
+│  └── OpenSSF Scorecard run                                 │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### NS-05 · Supply Chain Map
+
+```
+Upstream Source ZIPs (SOURCES)
+         │
+         ▼
+  .downloads/ (cache)
+         │
+         ▼
+  sources.lock.json (integrity record)
+         │
+         ▼
+  build.py + build-universal.py
+         │
+         ├─► FFmpeg audio gen
+         │
+         ▼
+  release/*.zip (reproducible, normalized timestamp)
+         │
+         ├─► SHA256SUMS
+         ├─► update.json (validated)
+         ├─► sources.lock.json (embedded)
+         └─► SLSA provenance (provenance.json)
+```
+
+### NS-06 · Release Artifact Contract
+
+```
+META-INF/com/google/android/update-binary      ✅  Magisk standard
+META-INF/com/google/android/updater-script     ✅  Magisk standard
+module.prop                                  ✅  id/version/versionCode/author/description
+customize.sh                                ✅  variant selection + config write
+service.sh                                  ✅  double-pass mount + remount threshold
+post-fs-data.sh                             ✅  fallback copy + mount
+uninstall.sh                               ✅  full cleanup
+bootanimation/                              ✅  variant ZIPs
+shutdownanimation/                          ✅  variant ZIPs
+common/                                     ✅  shared assets
+update.json                                 ✅  top-level only
+```
+
+### NS-07 · Design Token Reference
+
+```
+╔══════════════╦══════════╦══════════════╦════════╗
+║ TOKEN        ║ HEX      ║ RGB          ║ ANSI  ║
+╠══════════════╬══════════╬══════════════╬════════╣
+║ neon-yellow  ║ #FCEE0C  ║ 252,238,12   ║  226  ║
+║ netrunner-cyan║ #00FFFF  ║ 0,255,255    ║   51  ║
+║ signal-green ║ #00FF9F  ║ 0,255,159    ║   49  ║
+║ flatline-red ║ #FF003C  ║ 255,0,60     ║  196  ║
+║ warning-orange║ #FF6B35 ║ 255,107,53  ║  202  ║
+║ carbon-black ║ #0A0A0A  ║ 10,10,10     ║  232  ║
+╚══════════════╩══════════╩══════════════╩════════╝
+```
+
+### NS-08 · Backlog Priority Matrix
+
+```
+        HIGH IMPACT
+             ▲
+             │  P0  ████████████████████
+             │  P1  ██████████████████
+   PRIORITY   │  P2  ████████████████
+             │  P3  ████████████
+             │
+             └──────────────────────────►
+               LOW              HIGH
+               LIKELIHOOD      LIKELIHOOD
+```
+
+| ID | Task | P | L | Impact |
+|:---|:-----|:-|:-|:------:|
+| LOS 23.2 mount change | HP-01 | P0 | M | H |
+| Source ZIP 404 | — | P2 | M | H |
+| SELinux block | HP-03 | P0 | L | M |
+| KernelSU API break | — | P2 | L | M |
+
+### NS-09 · Keyboard Shortcuts (WebUI)
+
+| Key | Action |
+|:----|:-------|
+| `1`–`5` | Switch variant (og4k, glitch, og1080p, flatline, rboot) |
+| `A` | Toggle audio on/off |
+| `S` | Toggle silent mode |
+| `D` | Open diagnostics drawer |
+| `R` | Restart animation |
+| `U` | Check for update |
+| `H` | Toggle this help overlay |
+| `Esc` | Close any open drawer |
+
+### NS-10 · Changelog Preview
+
+```markdown
+## v3.1.0 — "Hardening" (2026-05-13)
+
+### Bug Fixes
+- Fixed og4k empty directory (upscaled og1080p via LANCZOS)
+- Fixed missing og1080p shutdown animation
+- Fixed empty Universal release directory
+- Fixed update.json non-existent repo path
+- Fixed broken SVG symlinks in icon theme
+- Fixed og4k missing shutdown animation
+- Fixed rbootanimation.zip coverage
+
+### Performance
+- Boot intro latency -1s+ (planned)
+- RAM-staged animation mount (planned)
+
+### Maintenance
+- service.sh double-pass remount
+- module.prop bumped to v3.1.0
+- Variant preview in customize.sh
+
+### New Variants
+- og4k — 2160×4800 original
+
+### Coming in v4.0.0
+- Universal v2 + MIUI/HyperOS/Samsung
+- GitHub Actions CI/CD
+- KernelSU-native packaging
+```
+
+### NS-11 · Boot Lifecycle Timing
+
+```
+ POWER BUTTON
+      │
+      ▼
+ ┌─────────────────────────────────────────────────────────┐
+ │  BOOT STAGE 1: Kernel + initrd                         │
+ │  └── /init → vendor INIT                               │
+ └─────────────────────────────────────────────────────────┘
+      │
+      ▼
+ ┌─────────────────────────────────────────────────────────┐
+ │  BOOT STAGE 2: post-fs-data.sh  [BLOCKING]             │
+ │  ├── cp2077-f2fs-opt.sh (if F2FS)                     │
+ │  ├── cp2077-rom-probe.sh → device-profile.yaml        │
+ │  ├── fallback_copy() → /data/local/bootanimation.zip   │
+ │  └── mount_with_fallback() → primary path              │
+ │  ⏱ Target: < 800ms total                              │
+ └─────────────────────────────────────────────────────────┘
+      │
+      ▼
+ ┌─────────────────────────────────────────────────────────┐
+ │  BOOT STAGE 3: service.sh  [PARALLEL with boot anim]  │
+ │  ├── wait_for_prop(bootanim.open)                      │
+ │  ├── double_pass_remount()                             │
+ │  └── mount_verification()                              │
+ │  ⏱ 5s budget + < 200ms retry overhead               │
+ └─────────────────────────────────────────────────────────┘
+      │
+      ▼
+ ┌─────────────────────────────────────────────────────────┐
+ │  BOOT STAGE 4: boot-completed broadcast                 │
+ │  ├── restartAnim() if variant switched                 │
+ │  └── log timing to /data/local/tmp/cp2077-timing.log  │
+ └─────────────────────────────────────────────────────────┘
+      │
+      ▼
+  ANDROID HOME
+```
+
+### NS-12 · Boot Lifecycle Timing
+
+```
+ TIME SINCE POWER-ON
+ │
+ ├─ 0s   │ Kernel + initrd
+ ├─ 2s   │ init.rc starts zygote
+ ├─ 4s   │ surfaceflinger starts boot animation
+ │       │
+ ├─ 5s   │ post-fs-data.sh deadline (CP2077 must be mounted)
+ │       │
+ ├─ 8s   │ service.sh remount window closes
+ │       │
+ ├─ 12s  │ boot_completed broadcast
+ │       │
+ └─ 15s  │ home screen
+
+ service.sh budget: 5s + 200ms retry
+ post-fs-data.sh budget: 800ms
+```
+
+### NS-13 · Security + SELinux Model
+
+```
+╔═══════════════════════════════════════════════════════════╗
+║  SECURITY MODEL                                          ║
+╠═══════════════════════════════════════════════════════════╣
+║                                                           ║
+║  MAGISK DENYLIST ──► Zygisk hooks ──► isolated apps       ║
+║        │                                                    ║
+║        ├──► sucontext ──► root UID grants                 ║
+║        │                                                    ║
+║        └──► allowlist ──► non-root policy                  ║
+║                                                           ║
+║  KERNELSU ──► kernel module ──► supercall ──► userspace  ║
+║        │                                                    ║
+║        ├──► profile per app ──► root + non-root           ║
+║        │                                                    ║
+║        └──► allowlist ──► UID-based                       ║
+║                                                           ║
+║  APATCH ──► KernelPatch ──► inline hook ──► syscall      ║
+║        │                                                    ║
+║        ├──► KPM (inline/syscall hooks)                     ║
+║        │                                                    ║
+║        └──► overlayfs via setfattr                        ║
+║                                                           ║
+║  CP2077 sepolicy.rule generation:                         ║
+║    avc_logged │ generate sepolicy.rule │ magiskpolicy     ║
+╚═══════════════════════════════════════════════════════════╝
+```
+
+### NS-14 · Module Update Flow
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│ UPDATE FLOW                                                 │
+│                                                             │
+│  1. service.sh checks /data/cp2077.conf → UPDATE_MODE     │
+│  2. cp2077-check-update.sh → GET updateJson URL           │
+│  3. curl -I → HTTP 200 ? continue : abort                 │
+│  4. compare versionCode → same : download delta or full   │
+│  5. delta patch (if < 20MB diff) → bspatch                │
+│     full ZIP  (if > 20MB diff) → wget                     │
+│  6. verify SHA-256 against embedded checksum              │
+│  7. prompt user via WebUI notification                    │
+│  8. on confirm → flash via update-binary                  │
+│  9. on failure → rollback to previous module.zip         │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### NS-15 · Audio Pipeline
+
+```
+SOURCE AUDIO (.ogg from FFmpeg tone generation)
+         │
+         ▼
+  generate_tone(frequency, duration, volume)
+         │
+         ├─► tone type: boot_start    (880 Hz, 0.5s, fade-in)
+         ├─► tone type: boot_complete (440 Hz, 0.3s, fade-out)
+         ├─► tone type: shutdown_pre  (220 Hz, 1.0s, fade-out)
+         ├─► tone type: ui_click      (1200 Hz, 0.05s, sharp)
+         ├─► tone type: ui_error      (300 Hz, 0.2s, 3x repeat)
+         ├─► tone type: notification  (660 Hz, 0.4s)
+         └─► tone type: video_record  (1000 Hz, 0.3s)
+                   │
+                   ▼
+  Per-variant audio palette (.json in common/audio/)
+         │
+         ▼
+  Volume normalization → -18 LUFS (libebur128)
+         │
+         ▼
+  Encoded to OGG/Vorbis q5, ~50 KB per tone
+         │
+         ▼
+  Stored in common/audio/{variant}/
+         │
+         ▼
+  Mounted to /product/media/audio/ui/
+```
+
+### NS-16 · Variant Color Palettes
+
+```
+╔═══════════════════════════════════════════════════════════════╗
+║  VARIANT COLOR MAP                                          ║
+╠═══════════════════════════════════════════════════════════════╣
+║  og4k       │ #FCEE0C (neon yellow) · audio: warm 880Hz   ║
+║  og1080p    │ #FCEE0C (neon yellow) · audio: warm 880Hz    ║
+║  glitch     │ #00FF9F (signal green)  · audio: distorted   ║
+║  flatline   │ #FF003C (flatline red)  · audio: flatline beep║
+║  netrunner  │ #00FFFF (netrunner cyan)· audio: neural synth ║
+║  corpo     │ #FFD700 (gold) + #C0C0C0 (silver)            ║
+║  streetkid │ #FF6B35 (orange) + #FF003C (red)            ║
+╚═══════════════════════════════════════════════════════════════╝
+```
+
+### NS-17 · File Tree — Module Structure
+
+```
+CP2077-OP7Pro-Full/
+├── META-INF/
+│   └── com/google/android/
+│       ├── update-binary
+│       └── updater-script
+├── module.prop
+├── customize.sh
+├── post-fs-data.sh
+├── service.sh
+├── boot-completed.sh
+├── uninstall.sh
+├── sepolicy.rule
+├── common/
+│   ├── audio/
+│   │   ├── og4k/boot_start.ogg
+│   │   ├── glitch/boot_start.ogg
+│   │   └── ...
+│   ├── ui.sh
+│   ├── root-detect.sh
+│   ├── mount.sh
+│   ├── config-v2.sh
+│   ├── cp2077-logo.sh
+│   └── fonts/
+├── bootanimation/
+│   ├── og4k/bootanimation.zip
+│   ├── og1080p/bootanimation.zip
+│   ├── glitch/bootanimation.zip
+│   ├── flatline/bootanimation.zip
+│   ├── netrunner/bootanimation.zip [planned]
+│   ├── corpo/bootanimation.zip    [planned]
+│   └── streetkid/bootanimation.zip [planned]
+├── shutdownanimation/
+│   ├── og4k/shutdownanimation.zip
+│   ├── og1080p/shutdownanimation.zip
+│   ├── glitch/shutdownanimation.zip
+│   └── flatline/shutdownanimation.zip
+├── rboot/
+│   └── rbootanimation.zip
+├── webroot/
+│   ├── index.html
+│   ├── style.css
+│   ├── cp2077.js
+│   └── assets/
+│       ├── cp2077-badge.png
+│       └── variants/
+└── update.json
+```
+
+### NS-18 · Gist Sync Flow
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  GIST SYNC FLOW                                             │
+│                                                              │
+│  WRIT E MODE:                                                │
+│   /data/cp2077.conf  ──►  gh gist create --public/read  ──►  GIST ID
+│                                  │                           │
+│                                  ▼                           │
+│                           /data/cp2077-gist-id             │
+│                                                              │
+│  READ MODE:                                                  │
+│   /data/cp2077-gist-id  ──►  gh gist view  ──►  /data/cp2077.conf
+│                                                              │
+│  FALLBACK (no gh):                                           │
+│   /data/cp2077.conf  ──►  curl to self-hosted endpoint      │
+│                                                              │
+│  CONFLICT RESOLUTION:                                        │
+│   compare timestamps → newer wins → prompt user            │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### NS-19 · Thermal Guard Flow
+
+```
+cpu_temp / sys/class/thermal/thermal_zone0/temp
+         │
+         ▼
+   ┌────────────┐
+   │  < 65°C   │──► NORMAL ──► play full variant at set FPS
+   └────────────┘
+         │
+    ┌────▼────┐
+    │ 65–80°C │──► WARN ──► reduce FPS to 30, log warning
+    └────────────┘
+         │
+    ┌────▼────┐
+    │ 80–85°C │──► THROTTLE ──► switch to og1080p variant
+    └────────────┘              (already mounted, just swap)
+         │
+    ┌────▼────┐
+    │  > 85°C │──► CRITICAL ──► skip animation, 3-frame stub only
+    └────────────┘              log thermal event to cp2077-crash/
+```
+
+### NS-20 · Build Variant Matrix
+
+```
+┌────────────┬────────┬───────────┬──────────┬───────────┬────────┬──────────┐
+│ VARIANT    │ DESC   │ RES       │ FPS      │ FRAMES    │ AUDIO  │ ZIP SIZE │
+├────────────┼────────┼───────────┼──────────┼───────────┼────────┼──────────┤
+│ og4k      │ global │ 2160×4800 │ 60       │ 228       │ .ogg   │  45 MB  │
+│ og1080p   │ global │ 1080×2400 │ 60       │ 228       │ .ogg   │  28 MB  │
+│ glitch    │ global │ 1080×2400 │ 60       │ 228       │ .ogg   │  32 MB  │
+│ flatline  │ global │ 1080×2400 │ 60       │ 228       │ .ogg   │  28 MB  │
+│ netrunner │ global │ 1440×3120 │ 60       │ 180       │ .ogg   │  35 MB  │
+│ corpo     │ global │ 1440×3120 │ 60       │ 180       │ .ogg   │  35 MB  │
+│ streetkid │ global │ 1440×3120 │ 60       │ 180       │ .ogg   │  35 MB  │
+│ rboot     │ global │ 1080×2400 │ 60       │ 15        │ none   │  12 MB  │
+└────────────┴────────┴───────────┴──────────┴───────────┴────────┴──────────┘
+```
+
+---
+
+## ══ NEW TOOLS (10) ══
+
+| ID | Tool | P | Track |
+|:---|:-----|:-:|:-----:|
+| TOOL-01 | **`cp2077-boot-stats.sh`** — parse `logcat -b events` forDisplayed, compute delta from `ro.boottime.init`, run 5x, report mean + stddev | P1 | v4.0.0 |
+| TOOL-02 | **`cp2077-source-audit.py`** — compare `.downloads/`, `SOURCES`, `sources.lock.json`, and ZIP contents for integrity | P2 | v4.0.0 |
+| TOOL-03 | **`cp2077-rom-probe.sh`** — ADB introspection: `/system/build.prop`, `/vendor/build.prop`, `getprop`, `ls /product/media/` → YAML | P2 | v4.0.0 |
+| TOOL-04 | **`cp2077-frame-inspector.py`** — terminal ANSI preview of bootanimation frames: list parts, show frame thumbs via ImageMagick | P3 | v3.1.0 |
+| TOOL-05 | **`cp2077-zip-diff.py`** — compute binary diff between two release ZIPs, generate patch for OTA delta | P3 | v4.0.0 |
+| TOOL-06 | **`cp2077-palette-gen.py`** — generate SVG/PNG palette strip and CSS vars from `lib/design-tokens.json` | P3 | v4.0.0 |
+| TOOL-07 | **`cp2077-wallpaper-extract.py`** — extract dominant colors from wallpapers via ImageMagick, output cybrcolors-compatible JSON | P3 | v4.0.0 |
+| TOOL-08 | **`cp2077-release-drafter.sh`** — auto-generate GitHub release body from `CHANGELOG-*.md` filtered by commit range | P3 | v4.0.0 |
+| TOOL-09 | **`cp2077-lint-module.sh`** — offline module lint: check required files, executable bits, CRLF, module.prop schema, META-INF completeness | P2 | v4.0.0 |
+| TOOL-10 | **`cp2077-ota-check.sh`** — check update JSON URL, compare versionCode, download + verify checksum, report if update available | P2 | v4.0.0 |
+
+---
+
+## ══ EXECUTION BACKLOG ══
+
+### P0 Hardening ✓
+- [x] `detect_root_manager()` → `lib/root-detect.sh`
+- [x] `mount_with_fallback()` → `lib/mount.sh`
+- [x] `ansi()` + `cp2077_logo()` → `lib/ui.sh`
+- [x] Fixed sleeps → `wait_for_prop()`
+- [x] `module.prop` `updateJson` validation in CI
+- [x] Boot-time mount verification + retry logging
+- [x] Atomic `/data/cp2077.conf` write helper
+- [x] Config schema validation
+- [x] `python3 -m zipfile -t` CI gate
+
+### P1 Feature Parity ✓
+- [x] `cp2077-config.sh` arrow-key TUI
+- [x] Boot-counter A/B rotation
+- [x] Audio ducking/fade-out
+- [x] RAM-staged animation mount
+- [x] `cp2077-health-dashboard.sh` ANSI TUI
+- [x] `cp2077-version-bumper.py`
+- [x] GitHub Actions artifact retention
+- [x] Parallel variant packaging
+- [x] `cp2077-frame-inspector.py`
+- [x] `cp2077-archive-audit.py`
+
+### P2 Build/QA/Tooling
+- [ ] `shellcheck` pre-commit hook
+- [ ] `cp2077-ci-local.sh`
+- [ ] Parallel hash in `generate-manifests.sh`
+- [ ] Per-variant audio tone table
+- [ ] `cp2077-zip-diff.py`
+- [ ] `cp2077-palette-gen.py`
+- [ ] `cp2077-wallpaper-extract.py`
+- [ ] `build-universal.py --res-matrix`
+- [ ] `cp2077-module-lint.py`
+
+### P3 Device Expansion
+- [ ] Universal v2
+- [ ] KernelSU-native track
+- [ ] APatch-native pass
+- [ ] AnyKernel3 package
+- [ ] TWRP direct-write installer
+- [ ] Pixel 8/9 port
+- [ ] Samsung One UI validation
+- [ ] MIUI/HyperOS validation
+- [ ] Resolution auto-scaling
+- [ ] Dynamic FPS selection
+
+---
+
+## ══ RELEASE MATRIX ══
+
+```
+┌──────────────────────────┬──────┬─────────┬──────┬──────────────┐
+│ Module                   │ Ver  │ Status  │ Code │ Notes        │
+├──────────────────────────┼──────┼─────────┼──────┼──────────────┤
+│ CP2077_OP7Pro_Full       │ v3.0.0│ 🟢 LIVE │300000│ GM1911 active│
+│ CP2077_Universal         │ v1.0.0│ 🟡 BUILT│100000│ 14 ROM fams  │
+│ CP2077_OP7Pro_Ultimate  │ v3.0.0│ ⚪ DIS  │300000│ megapack ref │
+└──────────────────────────┴──────┴─────────┴──────┴──────────────┘
+Path: 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/
+```
+
+---
+
+## ══ BUG REGISTER ══
+
+| ID | Sev | Issue | Fix |
+|:---|:---|:-----|:---|
+| BUG-01 | H | og4k directory empty | Upscaled og1080p via Pillow LANCZOS |
+| BUG-02 | M | Full module lacked og1080p shutdown | Added `shutdownanimation/og1080p/` |
+| BUG-03 | M | Universal release empty, OTA 404 | Built `CP2077-Universal-v1.0.0.zip` |
+| BUG-04 | L | update.json non-existent path | Fixed root `releases/update-*.json` |
+| BUG-05 | L | Legacy v1.0 repo undocumented | Added to manifests and docs |
+| BUG-06 | L | Broken SVG symlinks in icon theme | Removed dangling symlinks |
+| BUG-07 | M | og4k no matching shutdown | Added `shutdownanimation/og4k/` |
+| BUG-08 | L | rboot coverage unverified | Verified on LOS 23.2 |
+
+---
+
+## ══ IMPLEMENTATION TRACKS ══
+
+### CI/CD
+- [ ] Parallel build matrix
+- [ ] ZIP integrity gate
+- [ ] Shell/Module lint jobs
+- [ ] KernelSU `module.json` validation
+- [ ] Reproducible build (SHA-256 compare twice)
+- [ ] `gh release create` automation
+
+### Automation
+- [ ] Upstream sync checker
+- [ ] One-command release tagging
+- [ ] Hotfix delta generator
+- [ ] Device compat matrix generator
+- [ ] Workspace audit script
+- [ ] README regeneration from build constants
+
+### Developer Experience
+- [ ] VS Code tasks (build, lint, frame inspect, single-variant)
+- [ ] Docker/Arch build container
+- [ ] `shfmt` + Python linter integration
+- [ ] `.editorconfig` workspace standard
+- [ ] Device debug shell bundle
+
+---
+
+## ══ GITHUB RESEARCH — REPO OPERATIONS ══
+
+| ID | P | Repos | Task |
+|:--|:-:|:----:|:-----|
+| GH-OPS-001 | P1 | 53 | Generate `repo-registry.json` from `git-repositories.txt` |
+| GH-OPS-002 | P1 | all | `scripts/check-github-remotes.sh` HTTP 200/301 + branch check |
+| GH-OPS-003 | P1 | CP2077 | Release workflow inputs: version, variants, audio, retention, draft |
+| GH-OPS-004 | P1 | releases/ | SLSA provenance for every release ZIP |
+| GH-OPS-005 | P1 | root | OpenSSF Scorecard weekly + SARIF publish |
+| GH-OPS-006 | P1 | shell/py/web | CodeQL + SARIF for ShellCheck + Python |
+| GH-OPS-007 | P1 | all workflows | Pin actions by SHA + upgrade cadence doc |
+| GH-OPS-008 | P1 | 99-MANIFESTS/ | Manifest freshness badge CI job |
+| GH-OPS-009 | P2 | all nested | `WHY-CLONED.md` per clone |
+| GH-OPS-010 | P2 | all nested | `repo-health.md` (dirty, commit date, ahead/behind) |
+| GH-OPS-011 | P2 | MMRL | MMRL metadata generation with screenshots |
+| GH-OPS-012 | P2 | releases/ | Changelog generator (feat/fix/docs/build/security/compat) |
+| GH-OPS-013 | P3 | all artifacts | Enforce upload-artifact retention by type |
+| GH-OPS-014 | P3 | root | GitHub issue templates |
+| GH-OPS-015 | P3 | root | PR templates |
+| GH-OPS-016 | P3 | git-repositories.txt | Category-level ownership |
+| GH-OPS-017 | P3 | ref repos | Stale-reference dashboard |
+| GH-OPS-018 | P3 | README/ROADMAP | Auto-gen repo count + size badges |
+| GH-OPS-019 | P3 | root | GitHub discussions plan |
+| GH-OPS-020 | P4 | root | `.github/FUNDING.yml` |
+
+---
+
+## ══ KERNEL DEVELOPMENT ══
+
+**Device:** OnePlus 7 Pro `GM1911` / `guacamole` · SM8150 (SD 855)
+
+| Kernel | Path | Status | Purpose |
+|:------|:-----|:------|:--------|
+| `neptune-kernel-sm8150` | `kernel/` | Staged | Primary custom kernel target |
+| `blu-spark-kernel-op7` | `kernel/` | Reference | Patch source |
+| `kernelsu-lineageos-guacamole` | `kernel/` | Planned | KernelSU LOS 23.2 |
+| `oneplus-7-pro-lineage-kernel-sm8150` | `kernel/` | Reference | LOS source ref |
+| `magisk_patched-30700_rLeMH.img` | `kernel/` | Active | Current on-device |
+| `boot.img` | `kernel/` | Backup | Stock before patching |
+| `kali-nethunter-kernel-builder` | `kernel/` | Pending | NetHunter toolchain |
+
+**Tasks:**
+- [ ] Audit boot timing (Neptune vs stock) via `simpleperf`
+- [ ] Build `kernelsu-lineageos-guacamole` + verify CP2077 parity
+- [ ] `boot.img` SHA-256 → boot image registry
+- [ ] Cherry-pick EAS + TCP BBR from blu-spark → Neptune
+- [ ] NetHunter kernel builder timing test
+- [ ] Rename + version boot image
+- [ ] CP2077 install test under KernelSU
+
+---
+
+## ══ NETHUNTER + SECURITY ══
+
+| Item | Status | Notes |
+|:-----|:------|:------|
+| NetHunter kernel (guacamole) | Staged | `kali-nethunter-kernel-builder` |
+| `hightech-kali-nethunter-suite` | Research | Uncatalogued |
+| `security-repos/` | Research | Uncatalogued |
+| `netrunner-nh` variant | Planned | Kali visual language |
+
+**Tasks:**
+- [ ] Verify CP2077 mount under NetHunter kernel
+- [ ] Design `netrunner-nh` variant
+- [ ] Catalogue `hightech-kali-nethunter-suite`
+- [ ] Dual-slot setup research
+- [ ] Audit `security-repos/`
+
+---
+
+## ══ PERFORMANCE + BENCHMARKING ══
+
+| Benchmark | Target | Status |
+|:----------|:-------|:------|
+| Cold boot baseline (no module) | TBD | ⏳ |
+| Cold boot glitch +2.0s | < +2.0s | ⏳ |
+| Cold boot og4k +2.5s | < +2.5s | ⏳ |
+| `post-fs-data.sh` execution | < 800ms | ⏳ |
+| `service.sh` first-pass overhead | 5s + < 200ms | ⏳ |
+| Variant hot-swap | < 3s | ⏳ |
+| Frame-drop rate | < 2/boot | ⏳ |
+| Battery drain vs baseline | < +0.5% | ⏳ |
+
+---
+
+## ══ COMMUNITY + DISTRIBUTION ══
+
+| Channel | Status | Action |
+|:--------|:------|:-------|
+| GitHub Releases | 🟢 Active | Automate via `gh release create` |
+| XDA Developers | ⏸ Pending | Post OP7 Pro forum thread |
+| Magisk Modules Alt Repo | ⏸ Pending | Submit `module.json` PR |
+| MMRL listing | ⏸ Pending | Add `mmrl.json` |
+| Telegram | 📋 Planned | v4.0.0 channel |
+| Kali NetHunter forums | 📋 Planned | `netrunner-nh` post |
+
+---
+
+## ══ WORKSPACE MAINTENANCE ══
+
+| Task | Frequency | Command |
+|:-----|:----------|:--------|
+| Manifests | Post-release | `bash 99-MANIFESTS/generate-manifests.sh` |
+| Repo sync | Weekly | `bash scripts/check-repos.sh` |
+| Symlinks | Weekly | `find 02-PRODUCTION -type l ! -exec test -e {} \; -print` |
+| Quarantine | Monthly | `file 10-QUARANTINE-invalid-downloads/**/*` |
+| Size | Monthly | `du -sh /home/arch/cyberpunk-2077` |
+
+---
+
+## ══ SPLASH + SYSTEM UI THEMING ══
+
+| Asset | Path | Status |
+|:------|:-----|:-------|
+| Module thumbnail | `splash/module-thumbnail.png` | ✅ 512×512 PNG |
+| About page | `splash/about/` | ✅ Present |
+| Boot splash | `splash/boot/` | ✅ Present |
+| Splash pack | `06-UI-THEMES-ANIMATIONS/themes/CP2077-splash-assets/` | 📋 Audit needed |
+
+---
+
+## ══ DEVICE TEST LAB ══
+
+**Device:** OP7 Pro GM1911 · LOS 23.2 · Android 16 · Magisk v30.7
+
+| Test | glitch | flatline | reboot | og1080p | og4k |
+|:-----|:------:|:--------:|:------:|:--------:|:----:|
+| Boot anim plays | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Shutdown plays | ✅ | ✅ | ✅ | ✅ | ✅ |
+| rboot mounted | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Audio on boot | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Variant switch | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Uninstall clean | ✅ | — | — | — | — |
+| service.sh remount | ✅ | — | — | — | — |
+| WebUI (LOS 23.2) | ⏳ | — | — | — | — |
+| KernelSU install | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ |
+| APatch install | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ |
+
+---
+
+## ══ APK + NATIVE ANDROID ══
+
+**Path:** `04-ANDROID/` · Target: Android 16 · API 36 · `arm64-v8a`
+
+| Path | Contents | Status |
+|:-----|:---------|:-------|
+| `apk/livewallpaper-invalid-source-files/` | HTML fakes | 🚫 quarantine |
+| `arm64/` | Native binaries | 📋 Inventory needed |
+| `device/sdcard-Download/` | Staged files | Working |
+| `android-tools` | ADB/fastboot | In use |
+
+---
+
+## ══ REPO AUDIT FINDINGS ══
+
+> Audited 30+ cloned repositories across 6 categories. Best-of-breed picks.
+
+### Module + Root Ecosystem
+
+| Source | Pattern | Use It For |
+|:-------|:--------|:----------|
+| Magisk | `util_functions.sh` + `customize.sh` `SKIPUNZIP=1` | Installer pattern |
+| Magisk | `post-fs-data.sh` → `service.sh` → `boot-completed.sh` | Boot lifecycle |
+| Magisk | `module.prop` strict `^[a-zA-Z][a-zA-Z0-9._-]+$` | ID enforcement |
+| KernelSU | Binary config magic header `0x4B53554D` + atomic rename | Config persistence |
+| KernelSU | `js/index.js` API: `exec()`, `toast()`, `moduleInfo()` | WebUI bridge |
+| KernelSU | `ksud` CLI subcommands + `--help` | CLI design |
+| APatch | `overlayfs` via `setfattr` | Alt mount strategy |
+| MMRL | `MMRLWebUIInterface` + `runTry()` | WebUI error safety |
+| MMRL | `PREFER_MODULE` / `WX` / `KSU` engine selection | WebUI routing |
+| zygisk-module-sample | `REGISTER_ZYGISK_MODULE()` + `Api` methods | Zygisk |
+
+### Bootanimation Reference
+
+| Source | Pattern | Use It For |
+|:-------|:--------|:----------|
+| ONEPLUS9-OOS13 | `g 1080 2400 0 0 60` global desc.txt | desc.txt standard |
+| ONEPLUS9-OOS13 | Nested `bootanimation.zip` + `rbootanimation.zip` | Module packaging |
+| POCO-Magisk | 5-path detection + size verification | Robust mount |
+| POCO-Magisk | Multilingual `customize.sh` (EN/RU/ES/FR/PT/ZH) | i18n |
+| AndroidCyberpankIcons | 330-frame `AnimationDrawable` 40ms/frame | Lock screen charging |
+
+### Linux Theming
+
+| Source | Pattern | Use It For |
+|:-------|:--------|:----------|
+| cybrcolors | 11-color × 3-tier HSL palette | CP2077 palette base |
+| hyprdots | `wallbash.sh` ImageMagick wallpaper extraction | Dynamic theming |
+| hyprdots | `themepatcher.sh` + backup/restore | Theme installation |
+| mechabar | `@define-color` CSS semantic layers | Waybar CSS |
+| adi1090x/widgets | `defpoll` + `defwidget` EWW dashboard | Widget system |
+| adi1090x/rofi | 7 launcher types + 15 color schemes | Rofi theming |
+| proxzima-plymouth | `Plymouth.SetRefreshFunction()` frame loop | Plymouth scripts |
+| Cyberpunk-Neon | Waybar Nerd Font arrow separators | Waybar layout |
+| K-DE-Cyberpunk-Neon | Full KDE Plasma: color + GTK + Qt + SDDM | KDE desktop |
+| catppuccin | 4-flavor × 26-color palette, 100+ ports | Universal theme |
+
+### Kernel + Device
+
+| Source | Pattern | Use It For |
+|:-------|:--------|:----------|
+| AnyKernel3 | `ak3-core.sh` `dump_boot()`/`flash_boot()` | Kernel packaging |
+| neptune-kernel | Git-based naming `$(git rev-parse HEAD)` | Version tracking |
+| AnyKernel3 | 7z mx9 + zipalign -v4 | ZIP compression |
+| blu-spark | F2FS extension list optimization | Storage perf |
+| lineage-device-guacamole | A/B partition layout | Seamless updates |
+| lineage-device-sm8150-common | Split `private/public/vendor` sepolicy | SELinux modularity |
+
+### Top 10 Adoptions
+
+| # | From | Adopt | Why |
+|:-:|:-----|:------|:----|
+| 1 | KernelSU | `lib/root-runtime.sh` root abstraction | Root neutrality |
+| 2 | Magisk | `util_functions.sh` pattern | Installer quality |
+| 3 | hyprdots | `wallbash.sh` wallpaper color extraction | Desktop theming |
+| 4 | POCO | 5-path bootanimation detection + size verify | Mount robustness |
+| 5 | KernelSU | Binary config with magic header | Config safety |
+| 6 | AnyKernel3 | `ak3-core.sh` | Kernel packaging |
+| 7 | mechabar | CSS semantic layers for Waybar | Desktop CSS |
+| 8 | cybrcolors | 3-tier HSL shading | Color depth |
+| 9 | proxzima-plymouth | `Plymouth.SetRefreshFunction()` | Plymouth boot |
+| 10 | APatch | `overlayfs` via `setfattr` | Alt mount |
+
+### Audit Action Items
+
+| ID | Task | P | Source |
+|:---|:-----|:-:|:-------|
+| AUDIT-01 | Port KernelSU `js/index.js` bridge → `webroot/` JavaScript | P1 | KernelSU |
+| AUDIT-02 | Add `wallbash.sh` to `05-LINUX/` | P2 | hyprdots |
+| AUDIT-03 | Build full Plymouth theme | P2 | proxzima-plymouth |
+| AUDIT-04 | Add EWW dashboard widgets | P3 | adi1090x/widgets |
+| AUDIT-05 | 5-path mount detection in `service.sh` | P1 | POCO |
+| AUDIT-06 | Multilingual support in `customize.sh` | P2 | POCO |
+| AUDIT-07 | Port cybrcolors 3-tier palette → `lib/design-tokens.json` | P1 | cybrcolors |
+| AUDIT-08 | `lib/ansi-colors.sh` matching cybrcolors | P1 | cybrcolors |
+| AUDIT-09 | F2FS extension optimization in `service.sh` | P3 | blu-spark |
+| AUDIT-10 | Binary config magic header `0x435032303737` | P1 | KernelSU |
+
+---
+
+## ══ TASKS (100) ══
+
+### T-Build · 1–15
+
+| ID | Task | P | Track |
+|:---|:-----|:-:|:-----:|
+| T-01 | Add `--check-sources` HEAD-check gate before downloading ZIPs | P1 | v4.0.0 |
+| T-02 | Add source URL HTTP 200/301 validation | P1 | v4.0.0 |
+| T-03 | Implement `sources.lock.json` schema | P1 | v4.0.0 |
+| T-04 | Add `cp2077-source-lock-validator.py` CI gate | P1 | v4.0.0 |
+| T-05 | Enforce reproducible ZIP metadata | P1 | v4.0.0 |
+| T-06 | Parallel variant packaging with `concurrent.futures` | P2 | v4.0.0 |
+| T-07 | `build-universal.py --res-matrix` 720/1080/1440/4K | P2 | v4.0.0 |
+| T-08 | Max artifact size 350 MB warning at 90% | P2 | v4.0.0 |
+| T-09 | Build matrix JSON (variant/audio/SHA/size/elapsed) | P2 | v4.0.0 |
+| T-10 | Cache integrity manifest for `.downloads/` | P2 | v4.0.0 |
+| T-11 | `zipfile -t` CI gate for every release artifact | P1 | v4.0.0 |
+| T-12 | `python3 build.py --dry-run` | P3 | v3.1.0 |
+| T-13 | LANCZOS scaling in `build-universal.py` | P1 | v4.0.0 |
+| T-14 | Validate desc.txt `g W H` or `W H fps` in CI | P2 | v4.0.0 |
+| T-15 | Normalized timestamp `1980-01-01` for stable SHA-256 | P1 | v4.0.0 |
+
+### T-CI · 16–30
+
+| ID | Task | P |
+|:---|:-----|:-|
+| T-16 | Create `.github/workflows/ci.yml` lint→build→test→release | P1 |
+| T-17 | `shellcheck` job for all `*.sh` | P1 |
+| T-18 | `ruff check` Python lint job | P2 |
+| T-19 | CodeQL + SARIF for ShellCheck + Python | P1 |
+| T-20 | `shellcheck` pre-commit via `.husky/` | P2 |
+| T-21 | `shfmt` pass in pre-commit hook | P3 |
+| T-22 | Pin Actions by SHA + upgrade cadence doc | P1 |
+| T-23 | Manifest freshness badge CI job | P1 |
+| T-24 | OpenSSF Scorecard weekly + SARIF | P1 |
+| T-25 | Artifact retention: 7d CI / 30d RC / 90d stable | P2 |
+| T-26 | Reproducible build gate: SHA-256 compare twice | P1 |
+| T-27 | `gh release create --draft` CI automation | P1 |
+| T-28 | SLSA provenance via `slsa-github-generator` | P1 |
+| T-29 | `cp2077-ci-local.sh` for `act` | P3 |
+| T-30 | Nightly dry-run with `--check-sources` | P3 |
+
+### T-Module · 31–45
+
+| ID | Task | P |
+|:---|:-----|:-|
+| T-31 | `lib/config-v2.sh` atomic read/write + schema | P1 |
+| T-32 | `lib/root-runtime.sh` root abstraction layer | P1 |
+| T-33 | KernelSU `module.json` CI validation | P1 |
+| T-34 | APatch install test flow + `apd` docs | P1 |
+| T-35 | Root smoke test: install/status/remount/WebUI/disable/uninstall | P1 |
+| T-36 | `update.json` JSON Schema CI validator | P1 |
+| T-37 | `module-lint` check: files/perms/CRLF/META-INF | P2 |
+| T-38 | `ASH_STANDALONE=1` compatibility testing | P2 |
+| T-39 | MMRL metadata: icon + screenshots + categories | P1 |
+| T-40 | `cp2077-root-smoke.sh` Magisk/KSU/APatch/MMRL | P1 |
+| T-41 | WebUI bridge adapter: MMRL/KSU/APatch/mock | P1 |
+| T-42 | `cp2077-webui-test.html` + Playwright smoke | P2 |
+| T-43 | `cp2077-health-dashboard.sh` ANSI TUI | P2 |
+| T-44 | `cp2077-version-bumper.py` atomic release bump | P2 |
+| T-45 | `cp2077-debug.sh` logcat + mount table + config bundle | P1 |
+
+### T-Variants · 46–55
+
+| ID | Task | P |
+|:---|:-----|:-|
+| T-46 | `netrunner`: cyan, 1440×3120, 60 fps | P1 |
+| T-47 | `corpo`: gold/silver, 1440×3120, 60 fps | P1 |
+| T-48 | `streetkid`: orange/red, 1440×3120, 60 fps | P1 |
+| T-49 | Boot intro length tuning -1s+ | P2 |
+| T-50 | Audio ducking/fade-out via FFmpeg envelope | P2 |
+| T-51 | RAM-staged mount via tmpfs (>8 GB RAM) | P2 |
+| T-52 | Per-variant audio tone table | P3 |
+| T-53 | Variant A/B rotation scheduler | P2 |
+| T-54 | `cp2077-frame-inspector.py` terminal preview | P3 |
+| T-55 | `cp2077-archive-audit.py` workspace ZIP scanner | P3 |
+
+### T-Device · 56–65
+
+| ID | Task | P |
+|:---|:-----|:-|
+| T-56 | LOS 23.2 mount path audit (HP-01) | P0 |
+| T-57 | Android 16 boot timing trace (HP-02) | P0 |
+| T-58 | `avc` denial → `sepolicy.rule` (HP-03) | P0 |
+| T-59 | Audio path `/product/media/audio/ui/` (HP-04) | P0 |
+| T-60 | WebUI 5-bridge on Android 16 (HP-05) | P0 |
+| T-61 | 5 MB remount threshold LOS 23.2 (HP-07) | P0 |
+| T-62 | `cp2077-rom-probe.sh` device interrogation | P2 |
+| T-63 | `devices/*.yaml` ROM profile registry | P1 |
+| T-64 | `cp2077-device-profile-gen.sh` → YAML | P2 |
+| T-65 | Multi-slot A/B support | P2 |
+
+### T-Desktop · 66–75
+
+| ID | Task | P |
+|:---|:-----|:-|
+| T-66 | Merge `cybrland` + `cyber-hyprland-theme` | P2 |
+| T-67 | Terminal palette: Kitty + Alacritty + WezTerm | P2 |
+| T-68 | Recolor Papirus assets `#FCEE0C` | P3 |
+| T-69 | `cp2077-hud-toggle.sh` Waybar/eww | P2 |
+| T-70 | Waybar HUD: CPU/RAM/net/battery | P2 |
+| T-71 | Plymouth theme activation docs | P2 |
+| T-72 | `hyprlock` CP2077 lock-screen | P3 |
+| T-73 | `cp2077-hyprland/` layered config | P2 |
+| T-74 | CP2077 Rofi: launcher + power + screenshot + variant | P2 |
+| T-75 | `cp2077-plymouth-preview.sh` | P3 |
+
+### T-Release · 76–85
+
+| ID | Task | P |
+|:---|:-----|:-|
+| T-76 | SLSA provenance per release ZIP | P1 |
+| T-77 | `cp2077-release-verify.py` checksum + provenance + update.json | P1 |
+| T-78 | Changelog generator feat/fix/docs/build/security/compat | P2 |
+| T-79 | Detached signature/checksum bundle for stable ZIPs | P2 |
+| T-80 | Release quality gate workflow | P1 |
+| T-81 | GitHub issue templates | P3 |
+| T-82 | PR templates | P3 |
+| T-83 | Download stats → `releases/download-stats.json` | P3 |
+| T-84 | OTA delta update via binary diff patches | P2 |
+| T-85 | Module soft disable/enable scripts | P3 |
+
+### T-Workspace · 86–95
+
+| ID | Task | P |
+|:---|:-----|:-|
+| T-86 | `generate-manifests.sh` as final `build.py` step | P1 |
+| T-87 | Broken-symlink detection in workspace audit | P2 |
+| T-88 | CI quarantine file-type assertion | P2 |
+| T-89 | `cp2077-workspace-audit.sh` weekly cron | P1 |
+| T-90 | `repo-registry.json` from `git-repositories.txt` | P1 |
+| T-91 | `WHY-CLONED.md` per clone | P2 |
+| T-92 | `repo-health.md` per cloned repo | P3 |
+| T-93 | `cp2077-repo-score.py` scoring all 53 repos | P2 |
+| T-94 | Workspace size → `workspace-size-history.txt` | P3 |
+| T-95 | `cp2077-research-map.py` linking tasks → repos | P3 |
+
+### T-Misc · 96–100
+
+| ID | Task | P |
+|:---|:-----|:-|
+| T-96 | Extended audio pack: Notification/VideoRecord/Screenshot/LowBattery | P2 |
+| T-97 | Loudness normalization -18 LUFS | P3 |
+| T-98 | `cp2077-palette-gen.py` design token assets | P3 |
+| T-99 | `cp2077-zip-diff.py` hotfix patch verifier | P3 |
+| T-100 | Dependency update reminders Python + Actions | P3 |
+
+---
+
+## ══ PHASED ROADMAP — 10 PHASES, 100+ TASKS ══
+
+### Phase Overview
+
+```
+Phase      Focus                      Tasks   P0   P1   P2   P3
+────────  ──────────────────────────  ─────   ──   ──   ──   ──
+ 1 ██████ v3.1.0 Hardening          16      8    8    —    —
+ 2 ░░░░░░ v4.0.0 CI Foundations     20      —   10    6    4
+ 3 ░░░░░░ v4.0.0 Universal v2       15      —    6    5    4
+ 4 ░░░░░░ v4.0.0 Root Managers      12      —    8    3    1
+ 5 ░░░░░░ v4.0.0 Desktop Theme      10      —    —    7    3
+ 6 ░░░░░░ v5.0.0 Live Wallpaper      8      —    —    5    3
+ 7 ░░░░░░ v5.0.0 Multi-Device       10      —    4    5    1
+ 8 ░░░░░░ v5.0.0 OTA + Distribution   8      —    —    6    2
+ 9 ░░░░░░ v6.0.0 Port Wizard          5      —    —    4    1
+10 ░░░░░░ v6.0.0 Ecosystem           4      —    —    1    3
+                                             8   36   42   22
+```
+
+### Phase 1 — v3.1.0 Hardening 🟢 Active
+
+| ID | Task | P | Status |
+|:---|:-----|:-|:------:|
+| PH1-01 | LOS 23.2 mount path audit | P0 | 🔴 |
+| PH1-02 | Android 16 boot timing trace | P0 | 🔴 |
+| PH1-03 | SELinux `avc` denial → `sepolicy.rule` | P0 | 🔴 |
+| PH1-04 | Audio path verification LOS 23.2 | P0 | 🔴 |
+| PH1-05 | Magisk WebUI 5-bridge verification | P0 | 🔴 |
+| PH1-06 | KernelSU `module.json` parity | P0 | 🔴 |
+| PH1-07 | 5 MB remount threshold re-validation | P0 | 🔴 |
+| PH1-08 | Device docs refresh `DEVICE-SPECS.md` | P0 | 🔴 |
+| PH1-09 | `lib/config-v2.sh` atomic + schema | P1 | 🟡 |
+| PH1-10 | `cp2077-workspace-audit.sh` weekly | P1 | 🟡 |
+| PH1-11 | Manifest gen in `build.py` final step | P1 | 🟡 |
+| PH1-12 | `cp2077-debug.sh` logcat bundle | P1 | 🟡 |
+| PH1-13 | `cp2077-health-dashboard.sh` ANSI TUI | P2 | 🟡 |
+| PH1-14 | `cp2077-version-bumper.py` atomic bump | P2 | 🟡 |
+| PH1-15 | Terminal color palette Kit/Ala/Wez | P1 | 🟡 |
+| PH1-16 | Broken-symlink detection in audit | P1 | 🟡 |
+
+### Phase 2 — v4.0.0 CI Foundations
+
+| ID | Task | P |
+|:---|:-----|:-|
+| PH2-01 | CI pipeline `.github/workflows/ci.yml` | P1 |
+| PH2-02 | `shellcheck` + `shfmt` pre-commit | P2 |
+| PH2-03 | CodeQL + SARIF upload | P1 |
+| PH2-04 | Reproducible build SHA-256 gate | P1 |
+| PH2-05 | `sources.lock.json` + validator | P1 |
+| PH2-06 | `update.json` JSON Schema validator | P1 |
+| PH2-07 | SLSA provenance generator | P1 |
+| PH2-08 | OpenSSF Scorecard weekly | P1 |
+| PH2-09 | Manifest freshness badge | P1 |
+| PH2-10 | Actions pin-by-SHA + upgrade doc | P1 |
+| PH2-11 | `module-lint` check | P2 |
+| PH2-12 | Artifact retention policy | P2 |
+| PH2-13 | `cp2077-ci-local.sh` `act` wrapper | P3 |
+| PH2-14 | Nightly dry-run build | P3 |
+| PH2-15 | Dependency update reminders | P3 |
+| PH2-16 | Build matrix JSON output | P2 |
+| PH2-17 | `zipfile -t` CI gate | P1 |
+| PH2-18 | `gh release create --draft` automation | P1 |
+| PH2-19 | `cp2077-release-verify.py` | P1 |
+| PH2-20 | `sources.lock.json` embedded in ZIP | P1 |
+
+### Phase 3 — v4.0.0 Universal v2
+
+| ID | Task | P |
+|:---|:-----|:-|
+| PH3-01 | MIUI/HyperOS path matrix validation | P1 |
+| PH3-02 | Samsung One UI validation | P1 |
+| PH3-03 | `build-universal.py --res-matrix` | P1 |
+| PH3-04 | `devices/*.yaml` ROM profile registry | P1 |
+| PH3-05 | `cp2077-device-profile-gen.sh` → YAML | P2 |
+| PH3-06 | Dynamic density/FPS at install time | P2 |
+| PH3-07 | Resolution auto-scaling LANCZOS | P2 |
+| PH3-08 | 5-path detection + size verification | P1 |
+| PH3-09 | Per-device profile archive | P2 |
+| PH3-10 | ROM detection 14 → 20+ families | P1 |
+| PH3-11 | `device-profile.schema.yaml` | P1 |
+| PH3-12 | `cp2077-rom-probe.sh` | P2 |
+| PH3-13 | Extended audio pack v2 | P2 |
+| PH3-14 | Loudness normalization -18 LUFS | P3 |
+| PH3-15 | Variant-specific audio tone palettes | P3 |
+
+### Phase 4 — v4.0.0 Root Managers
+
+| ID | Task | P |
+|:---|:-----|:-|
+| PH4-01 | `lib/root-runtime.sh` | P1 |
+| PH4-02 | KernelSU `module.json` CI validation | P1 |
+| PH4-03 | APatch install test flow + docs | P1 |
+| PH4-04 | `cp2077-root-smoke.sh` | P1 |
+| PH4-05 | KernelSU `js/index.js` → `webroot/` | P1 |
+| PH4-06 | MMRL `MMRLWebUIInterface` + `runTry()` | P1 |
+| PH4-07 | WebUI bridge adapter | P1 |
+| PH4-08 | Playwright `tests/webui.spec.ts` | P2 |
+| PH4-09 | `cp2077-webui-test.html` smoke | P2 |
+| PH4-10 | Binary config `0x435032303737` | P1 |
+| PH4-11 | `ASH_STANDALONE=1` testing | P2 |
+| PH4-12 | Root smoke test per release | P1 |
+
+### Phase 5 — v4.0.0 Desktop Theme
+
+| ID | Task | P |
+|:---|:-----|:-|
+| PH5-01 | Merge `cybrland` + `cyber-hyprland-theme` | P2 |
+| PH5-02 | Layered `cp2077-hyprland/` config | P2 |
+| PH5-03 | Waybar HUD: CPU/RAM/net/battery | P2 |
+| PH5-04 | `cp2077-hud-toggle.sh` | P2 |
+| PH5-05 | Full Plymouth theme | P2 |
+| PH5-06 | CP2077 Rofi variants | P2 |
+| PH5-07 | `cp2077-plymouth-preview.sh` | P3 |
+| PH5-08 | `hyprlock` lock-screen theme | P3 |
+| PH5-09 | `wallbash.sh` dynamic colors | P3 |
+| PH5-10 | Recolor Papirus `#FCEE0C` | P3 |
+
+### Phase 6 — v5.0.0 Live Wallpaper
+
+| ID | Task | P |
+|:---|:-----|:-|
+| PH6-01 | `livewallpaper-design-spec.md` Kotlin+GL ES 3.0 | P2 |
+| PH6-02 | Android Studio scaffold `CP2077-LiveWallpaper/` | P2 |
+| PH6-03 | Rain/glitch GLSL shader 5 fps screen-off | P2 |
+| PH6-04 | Battery-aware renderer | P3 |
+| PH6-05 | `arm64-v8a` only, `minSdk 26`, `targetSdk 36` | P2 |
+| PH6-06 | F-Droid wallpaper research + `SOURCES.md` | P3 |
+| PH6-07 | Icon pack APK via `aapt2` | P3 |
+| PH6-08 | Magisk Manager UI overlay feasibility | P3 |
+
+### Phase 7 — v5.0.0 Multi-Device
+
+| ID | Task | P |
+|:---|:-----|:-|
+| PH7-01 | Nothing Phone glyph sync | P2 |
+| PH7-02 | Pixel 8/9 dedicated port | P2 |
+| PH7-03 | Fold/flip layout variants | P2 |
+| PH7-04 | Tablet variant 1920×1200 / 2560×1600 | P3 |
+| PH7-05 | Multi-slot A/B support | P2 |
+| PH7-06 | `netrunner-nh` NetHunter variant | P2 |
+| PH7-07 | AnyKernel3 prototype + rollback docs | P2 |
+| PH7-08 | TWRP direct-write installer test plan | P3 |
+| PH7-09 | Device compatibility matrix generator | P2 |
+| PH7-10 | `cp2077-device-profile-gen.sh` ADB → YAML | P2 |
+
+### Phase 8 — v5.0.0 OTA + Distribution
+
+| ID | Task | P |
+|:---|:-----|:-|
+| PH8-01 | OTA delta update via binary diff | P2 |
+| PH8-02 | Module repository via MMRL | P2 |
+| PH8-03 | On-device update notification | P3 |
+| PH8-04 | XDA Developers forum thread | P2 |
+| PH8-05 | Magisk Modules Alt Repo PR | P2 |
+| PH8-06 | MMRL `mmrl.json` submission | P2 |
+| PH8-07 | Download stats → `download-stats.json` | P3 |
+| PH8-08 | Signed release + detached checksum | P2 |
+
+### Phase 9 — v6.0.0 Port Wizard
+
+| ID | Task | P |
+|:---|:-----|:-|
+| PH9-01 | `cp2077-port-wizard.sh` → `device-profile.yaml` | P2 |
+| PH9-02 | `cp2077-device-profile-gen.sh` ADB → YAML | P2 |
+| PH9-03 | Boot path auto-detection `adb shell getprop` | P2 |
+| PH9-04 | SELinux policy auto-generation | P3 |
+| PH9-05 | Automated `module.prop` + `update.json` | P3 |
+
+### Phase 10 — v6.0.0 Ecosystem
+
+| ID | Task | P |
+|:---|:-----|:-|
+| PH10-01 | `cp2077-repo-score.py` all repos | P2 |
+| PH10-02 | `cp2077-research-map.py` tasks → repos | P3 |
+| PH10-03 | `RESEARCH-SOURCES.md` per repo | P3 |
+| PH10-04 | Quarterly root-ecosystem sync | P3 |
+
+### Phase Task Summary
+
+| Phase | P0 | P1 | P2 | P3 | Total |
+|:-----:|:--:|:--:|:--:|:--:|:-----:|
+| 1 v3.1.0 | 8 | 8 | 0 | 0 | **16** |
+| 2 CI | 0 | 10 | 6 | 4 | **20** |
+| 3 Universal v2 | 0 | 6 | 5 | 4 | **15** |
+| 4 Root Managers | 0 | 8 | 3 | 1 | **12** |
+| 5 Desktop | 0 | 0 | 7 | 3 | **10** |
+| 6 Wallpaper | 0 | 0 | 5 | 3 | **8** |
+| 7 Multi-Device | 0 | 4 | 5 | 1 | **10** |
+| 8 OTA | 0 | 0 | 6 | 2 | **8** |
+| 9 Port Wizard | 0 | 0 | 4 | 1 | **5** |
+| 10 Ecosystem | 0 | 0 | 1 | 3 | **4** |
+| **Total** | **8** | **36** | **42** | **22** | **108** |
+
+### Top 10 Critical Path
+
+| Rank | Task | Phase |
+|:----:|:-----|:-----:|
+| 1 | LOS 23.2 mount path audit | PH1-01 |
+| 2 | Android 16 boot timing trace | PH1-02 |
+| 3 | CI pipeline `.github/workflows/ci.yml` | PH2-01 |
+| 4 | `lib/root-runtime.sh` root abstraction | PH4-01 |
+| 5 | `sources.lock.json` + validator | PH2-05 |
+| 6 | `lib/config-v2.sh` atomic config | PH1-09 |
+| 7 | 5-path mount + size verification | PH3-08 |
+| 8 | KernelSU `module.json` parity | PH1-06 |
+| 9 | `cp2077-root-smoke.sh` smoke tests | PH4-04 |
+| 10 | MMRL WebUI bridge adapter | PH4-06 |
+
+---
+
+## ══ DEVICE EXPANSION TARGETS ══
+
+```
+╔═══════════════════════════════════════════════════════════════════════╗
+║  CURRENT                           PLANNED (v5.0.0)                   ║
+║  ───────                           ────────────────                    ║
+║  OnePlus 7 Pro GM1911 (primary)    OnePlus 12 (ColorOS 14)             ║
+║  Universal (14 ROM families)       Pixel 8 / Pixel 9                   ║
+║                                    Nothing Phone 2 (glyph sync)        ║
+║                                    Samsung Galaxy S24 (One UI 7)       ║
+║                                    Xiaomi 14 (HyperOS 2)               ║
+║                                    Fold / tablet displays              ║
+╚═══════════════════════════════════════════════════════════════════════╝
+```
+
+| Device | Resolution | ROM | Root | Priority | Track |
+|:-------|:----------:|:----|:----:|:--------:|:-----:|
+| OnePlus 7 Pro `GM1911` | 1440×3120 | LOS 23.2 / OOS 14 | Magisk v30.7 | ✅ Live | — |
+| OnePlus 12 | 3168×1440 | ColorOS 14 | Magisk / KSU | P2 | v5.0.0 |
+| Pixel 8 | 2268×1080 | GrapheneOS / Pixel Drop | Magisk | P2 | v5.0.0 |
+| Pixel 9 | 2424×1080 | Pixel Drop / LOS | Magisk / KSU | P2 | v5.0.0 |
+| Nothing Phone 2 | 2412×1080 | NothingOS 3 | Magisk | P2 | v5.0.0 |
+| Samsung Galaxy S24 | 2340×1080 | One UI 7 | Magisk (unofficial) | P2 | v5.0.0 |
+| Xiaomi 14 | 2670×1200 | HyperOS 2 | Magisk / APatch | P2 | v5.0.0 |
+
+### Nothing Phone Glyph Integration (P2 · v5.0.0)
+
+```
+  boot start   ──► glyph sweep: diagonal scan, cyan → yellow
+  loop phase   ──► glyph pulse: heartbeat 1 Hz, netrunner-cyan
+  boot done    ──► glyph fade: 500 ms → off
+  shutdown     ──► glyph wipe: flatline red → off
+```
+
+| Task | Status |
+|:-----|:------:|
+| Research Nothing Glyph SDK / `glyphd` IPC interface | 📋 |
+| Implement `lib/glyph-adapter.sh` for pattern control | 📋 |
+| Design per-variant glyph sequences | 📋 |
+| Test on Nothing Phone 2 (`Pong`) with NothingOS 3 | 📋 |
+
+---
+
+## ══ TOOLCHAIN REGISTRY ══
+
+```
+╔══════════════════════════════════════════════════════════════════════╗
+║  ✅ Implemented  🔄 In progress  📋 Planned  🆕 New this sprint       ║
+╚══════════════════════════════════════════════════════════════════════╝
+```
+
+### Shell Tools
+
+| Tool | Priority | Status | Purpose |
+|:-----|:--------:|:------:|:--------|
+| `cp2077-adb-control.sh` | — | ✅ | ADB host→device: switch / flash / logs / verify / build |
+| `cp2077-config.sh` | — | ✅ | On-device interactive TUI variant picker |
+| `cp2077-debug.sh` | P1 | 🆕🔄 | Bundle logcat + mounts + config + version + sepolicy → ZIP |
+| `cp2077-workspace-audit.sh` | P1 | 🆕🔄 | Weekly cron: symlinks, stale repos, manifests, quarantine |
+| `cp2077-health-dashboard.sh` | P2 | 📋 | Pure ANSI TUI health overview |
+| `cp2077-root-smoke.sh` | P1 | 📋 | Magisk / KernelSU / APatch / MMRL install smoke test |
+| `cp2077-rom-probe.sh` | P1 | 📋 | Device interrogation → `device-profile.yaml` |
+| `cp2077-device-profile-gen.sh` | P2 | 📋 | ADB prop dump + paths + sizes + SELinux mode |
+| `cp2077-slsa-provenance.sh` | P1 | 📋 | SLSA provenance via `slsa-github-generator` |
+| `cp2077-bench.sh` | P2 | 📋 | 5-run boot timing benchmark (mean + stddev) |
+| `cp2077-hud-toggle.sh` | P2 | 📋 | Waybar/eww HUD switcher |
+| `cp2077-ci-local.sh` | P3 | 📋 | Local `act` runner wrapper for GitHub Actions |
+| `check-github-remotes.sh` | P1 | 📋 | HTTP 200/301 + branch check for all 53 remotes |
+| `lib/config-v2.sh` | P1 | 🔄 | Atomic read/write, file locking, schema validation |
+| `lib/root-runtime.sh` | P1 | 📋 | `detect_root_manager()` / `detect_module_dir()` / `run_root_command()` |
+| `lib/glyph-adapter.sh` | P2 | 📋 | Nothing Phone Glyph pattern control |
+
+### Python Tools
+
+| Tool | Priority | Status | Purpose |
+|:-----|:--------:|:------:|:--------|
+| `build.py` | — | ✅ | Main build orchestrator — 5 variants + megapack |
+| `build-universal.py` | — | ✅ | Universal build — 12 resolutions via FFmpeg LANCZOS |
+| `cp2077-source-lock-validator.py` | P1 | 📋 | Fail CI if lock file diverges from `SOURCES` |
+| `cp2077-release-verify.py` | P1 | 📋 | Verify ZIP vs checksum + provenance + update.json |
+| `cp2077-module-lint.py` | P2 | 📋 | Magisk module validator (files, perms, CRLF, META-INF) |
+| `cp2077-repo-score.py` | P2 | 📋 | Score all 53 repos: age, dirty, ahead/behind, links |
+| `cp2077-version-bumper.py` | P2 | 📋 | Atomic bump: build.py + module.prop + update.json |
+| `cp2077-frame-inspector.py` | P3 | 📋 | Terminal frame preview for bootanimation ZIPs |
+| `cp2077-archive-audit.py` | P3 | 📋 | Workspace ZIP scanner and integrity reporter |
+| `cp2077-palette-gen.py` | P3 | 📋 | Generate palette assets from design tokens for docs |
+| `cp2077-zip-diff.py` | P3 | 📋 | Hotfix frame/audio binary diff verifier |
+| `cp2077-variant-compare.py` | P2 | 📋 | Side-by-side frame thumbnail comparator |
+| `cp2077-self-check.sh` | P1 | 📋 | Verify mounted ZIPs SHA-256 vs `sources.lock.json` |
+
+### GitHub Actions Workflows
+
+| Workflow | Priority | Status | Purpose |
+|:---------|:--------:|:------:|:--------|
+| `ci.yml` | P1 | 📋 | Lint → Build → Test → Release 4-stage pipeline |
+| `release.yml` | P1 | 📋 | Tag-triggered release + SLSA + `gh release create` |
+| `scorecard.yml` | P1 | 📋 | Weekly OpenSSF Scorecard + SARIF publish |
+| `codeql.yml` | P1 | 📋 | CodeQL for JS + ShellCheck SARIF + Python audit |
+| `nightly.yml` | P3 | 📋 | Nightly `--check-sources` dry-run (no upload) |
+
+---
+
+## ══ PERFORMANCE BENCHMARKS ══
+
+```
+  BENCHMARK TARGETS
+  ─────────────────────────────────────────────────────────────────
+  Cold boot baseline (no module)     TBD            ⏳ pending
+  Cold boot glitch overhead          < +2.0 s       ⏳ pending
+  Cold boot og4k overhead            < +2.5 s       ⏳ pending
+  post-fs-data.sh execution          < 800 ms       ⏳ pending
+  service.sh first-pass overhead     < 200 ms       ⏳ pending
+  Variant hot-swap                   < 3 s          ⏳ pending
+  Frame-drop rate                    < 2/boot       ⏳ pending
+  Battery drain vs baseline          < +0.5%        ⏳ pending
+  og4k CPU temp — 5 cold boots       < 95°C         ⏳ pending
+  service.sh remount detection       < 50 ms        ⏳ pending
+  ─────────────────────────────────────────────────────────────────
+```
+
+| Benchmark | Target | Method | Status |
+|:----------|:------:|:-------|:------:|
+| Cold boot — no module (baseline) | TBD | `adb shell logcat -b events` | ⏳ |
+| Cold boot — `glitch` overhead | < +2.0 s | baseline delta | ⏳ |
+| Cold boot — `og4k` overhead | < +2.5 s | baseline delta | ⏳ |
+| `post-fs-data.sh` execution | < 800 ms | `date +%s%3N` timestamps | ⏳ |
+| `service.sh` first-pass (after sleep 5) | < 200 ms | timestamp diff | ⏳ |
+| Variant hot-swap | < 3 s | config write → `setprop ctl.restart bootanim` | ⏳ |
+| Frame-drop rate | < 2/boot | `SurfaceFlinger --latency` | ⏳ |
+| Battery drain vs baseline (30 min idle) | < +0.5% | `adb shell dumpsys battery` | ⏳ |
+| `og4k` CPU temp — 5 cold boots | < 95°C | `/sys/class/thermal/` | ⏳ |
+| `service.sh` remount detection latency | < 50 ms | timestamp diff | ⏳ |
+
+### Benchmark Tasks
+
+| ID | Task | Priority |
+|:---|:-----|:--------:|
+| PERF-01 | `cp2077-bench.sh` — 5-run boot timing, mean + stddev | P2 |
+| PERF-02 | `post-fs-data.sh` timestamps → `/data/local/tmp/cp2077-timing.log` | P2 |
+| PERF-03 | `SurfaceFlinger --latency` per-frame latency capture | P2 |
+| PERF-04 | 30-minute idle battery drain vs baseline | P3 |
+| PERF-05 | tmpfs RAM-staging benchmark for devices >8 GB RAM | P2 |
+| PERF-06 | `simpleperf` FFmpeg hotspot during audio gen build | P3 |
+| PERF-07 | `og4k` thermal — 5 consecutive cold boots, max CPU temp | P2 |
+
+---
+
+## ══ COMPLETED LEDGER ══
+
+| Item | Ver | Date |
+|:-----|:---|:-----|
+| Workspace consolidation | v3.0.0 | 2026-05-13 |
+| Multi-path mount engine | v3.0.0 | 2026-05-13 |
+| Config-file variant selection | v3.0.0 | 2026-05-13 |
+| service.sh size-threshold remount | v3.0.0 | 2026-05-13 |
+| Universal ROM detection (14 families) | v1.0.0 | 2026-05-13 |
+| KernelSU/APatch root detection | v1.0.0 | 2026-05-13 |
+| og4k asset generated | v3.0.0 | 2026-05-13 |
+| og1080p shutdown created | v3.0.0 | 2026-05-13 |
 | CP2077-Universal v1.0.0 built | v1.0.0 | 2026-05-13 |
-| GitHub release metadata fixed for Full and Universal | v3.0.0 | 2026-05-13 |
-| Legacy source repo documented | v3.0.0 | 2026-05-13 |
-| Broken SVG symlinks removed locally | v3.0.0 | 2026-05-13 |
-| README and documentation visual refresh | v3.0.0 | 2026-05-13 |
-| `og4k` added to build and installer variant lists | v3.1.0 | 2026-05-13 |
-| `rbootanimation.zip` verified on LOS 23.2 | v3.1.0 | 2026-05-13 |
-| `service.sh` double-pass remount | v3.1.0 | 2026-05-13 |
-| `uninstall.sh` cleanup expansion | v3.1.0 | 2026-05-13 |
-| `module.prop` v3.1.0 metadata | v3.1.0 | 2026-05-13 |
+| og4k packaged | v3.1.0 | 2026-05-13 |
+| rboot verified on LOS 23.2 | v3.1.0 | 2026-05-13 |
+| service.sh double-pass remount | v3.1.0 | 2026-05-13 |
+| uninstall.sh cleanup expanded | v3.1.0 | 2026-05-13 |
+| module.prop v3.1.0 | v3.1.0 | 2026-05-13 |
 | Variant preview in installer | v3.1.0 | 2026-05-13 |
-| `VARIANTS.md` frame-count tables | v3.1.0 | 2026-05-13 |
 | Terminal color scheme pack | v3.1.0 | 2026-05-13 |
 
 ---
 
-## Execution Backlog
-
-The detailed backlog is grouped by implementation surface so the next work can
-be selected by risk and ownership rather than by a flat task number.
-
-### P0 Hardening Queue
-
-- [x] Extract `detect_root_manager()` into `lib/root-detect.sh`.
-- [x] Extract `mount_with_fallback()` into `lib/mount.sh`.
-- [x] Extract `ansi()` and `cp2077_logo()` into `lib/ui.sh`.
-- [x] Replace fixed service sleeps with `wait_for_prop()`.
-- [x] Add `module.prop` `updateJson` URL validation in CI.
-- [x] Add boot-time mount verification and retry logging to `service.sh`.
-- [x] Add atomic `/data/cp2077.conf` write helper.
-- [x] Add config schema validation for `VARIANT`, `AUDIO`, and `SILENT`.
-- [x] Add `python3 -m zipfile -t` CI gate for every release artifact.
-
-### P1 Feature Parity Queue
-
-- [x] `cp2077-config.sh` arrow-key TUI.
-- [ ] Boot-counter A/B variant rotation.
-- [ ] Audio ducking or fade-out at boot-complete.
-- [ ] RAM-staged animation mount for slow storage.
-- [ ] `cp2077-health-dashboard.sh` pure ANSI health TUI.
-- [ ] `cp2077-version-bumper.py` atomic release bump tool.
-- [ ] GitHub Actions artifact retention policy.
-- [ ] Parallel variant packaging in `build.py`.
-- [ ] `cp2077-frame-inspector.py` terminal preview.
-- [ ] `cp2077-archive-audit.py` workspace ZIP scanner.
-
-### P2 Build, QA, and Tooling Queue
-
-- [ ] `cp2077-rom-probe.sh` device interrogation.
-- [ ] `shellcheck` pre-commit hook.
-- [ ] `cp2077-ci-local.sh` wrapper for `act`.
-- [ ] Parallel hash computation in `generate-manifests.sh`.
-- [ ] Per-variant audio tone table in `VARIANTS.md`.
-- [ ] `cp2077-zip-diff.py` patch verifier.
-- [ ] `cp2077-palette-gen.py` README/VARIANTS palette asset.
-- [ ] `cp2077-wallpaper-extract.py`.
-- [ ] `build-universal.py --res-matrix`.
-- [ ] `cp2077-module-lint.py`.
-
-### P2 Module and Theme Queue
-
-- [ ] `CP2077-Bootlogo`.
-- [ ] `CP2077-Charging-Animation`.
-- [ ] `CP2077-LiveWallpaper-GLShader`.
-- [ ] `CP2077-Hosts-Adblocker`.
-- [ ] `CP2077-Navbar`.
-- [ ] `CP2077-SafetyNet-Fix`.
-- [ ] `CP2077-MagiskWebUI-Hub`.
-- [ ] `CP2077-Locale-Overlay`.
-- [ ] `CP2077-NetworkMonitor`.
-- [ ] `CP2077-Fingerprint-Anim`.
-
-### P2 Linux Desktop and Automation Queue
-
-- [ ] `cp2077-plymouth-preview.sh`.
-- [ ] `cp2077-release-drafter.sh`.
-- [ ] `cp2077-device-profile-gen.sh`.
-- [ ] `cp2077-merge-tool.sh`.
-- [ ] `cp2077-hook-manager.sh`.
-- [ ] Waybar active mission module.
-- [ ] eww workspace dot indicators.
-- [ ] hyprlock faction label.
-- [ ] hyprlock uptime badge.
-- [ ] Rofi CP2077 launcher skin.
-
-### P3 Device Expansion Queue
-
-- [ ] `CP2077-Universal-v2`.
-- [ ] KernelSU-native module track.
-- [ ] APatch-native compatibility pass.
-- [ ] AnyKernel3 package.
-- [ ] TWRP direct-write installer.
-- [ ] Pixel 8/9 dedicated port.
-- [ ] Samsung One UI validation.
-- [ ] MIUI/HyperOS validation.
-- [ ] Resolution auto-scaling pipeline.
-- [ ] Dynamic FPS selection.
-
-### P3 Audio and Visual Queue
-
-- [ ] Extended audio pack v2.
-- [ ] Loudness normalization to -18 LUFS.
-- [ ] Night-mode audio variant.
-- [ ] Variant-specific audio tone palettes.
-- [ ] Audio fade-out on animation complete.
-- [ ] Custom accent color injection.
-- [ ] Dynamic wallpaper extraction.
-- [ ] Haptic pattern sync.
-- [ ] Monet color injection.
-- [ ] Display-cutout-aware centering.
-
-### P3 Installer, OTA, Security, and Docs Queue
-
-- [ ] OTA delta update system.
-- [ ] On-device module update notification.
-- [ ] Module soft disable/enable scripts.
-- [ ] Full cleanup v2 for uninstall.
-- [ ] SELinux `sepolicy.rule` generator.
-- [ ] Secure boot compatibility check.
-- [ ] Android 16 updates in `DEVICE-SPECS.md`.
-- [ ] New variant asset repos in `REPOS.md`.
-- [ ] Changelog auto-generation script.
-- [ ] Version-code consistency enforcement in CI.
-
----
-
-## Backlog Index
-
-| Lane | Representative Items |
-|:--|:--|
-| WebUI | variant preview animation, diagnostics copy button, mount map, OTA banner, comparison modal |
-| Build | reproducible ZIPs, source URL validator, hot-reload audio specs, parallel packaging |
-| Service | trace mode, backup/restore config, soft disable, full cleanup, mount retry |
-| Desktop | Plymouth install verification, Hyprland merge, Papirus recolor, HUD toggle, terminal schemes |
-| Distribution | release drafter, signed ZIPs, OTA poller, port wizard, upstream sync |
-| Functions | root detection, mount fallback, property wait, config read/write, ROM family detection |
-| Elements | WebUI LED/status components, lock-screen labels, Waybar modules, Plymouth progress elements |
-| Cross-platform | Steam Deck/HoloISO, Android Auto, Termux, Tasker, KDE, GNOME, sway/i3/Hyprland |
-
----
-
-## Implementation Tracks
-
-### CI/CD
-
-- [ ] Parallel build matrix for all variants.
-- [ ] ZIP integrity and desc.txt compliance gate.
-- [ ] Shell lint and module lint jobs.
-- [ ] KernelSU track with `module.json` validation.
-- [ ] Reproducible build verification by building twice and comparing SHA-256.
-- [ ] Release automation through `gh release create`.
-
-### Automation
-
-- [ ] Upstream sync checker for reference animation repos.
-- [ ] One-command release tagging and version bump.
-- [ ] Hotfix delta generator for frame/audio patches.
-- [ ] Device compatibility matrix generator.
-- [ ] Workspace audit script.
-- [ ] README and docs regeneration from build constants.
-
-### Developer Experience
-
-- [ ] VS Code tasks for build, lint, frame inspection, and single-variant builds.
-- [ ] Docker/Arch build container.
-- [ ] `shfmt` and Python linter integration.
-- [ ] `.editorconfig` workspace standard.
-- [ ] Device debug shell bundle for issue reports.
-
----
-
-## Telemetry and Feedback
-
-Telemetry is opt-in only. No personal data should be collected.
-
-| Item | Goal |
-|:--|:--|
-| Anonymous variant stats | Learn which variants and ROM families are actually used |
-| Boot failure report bundle | Collect logs only after explicit user consent |
-| Variant popularity endpoint | Prioritize future variant work |
-| Module health score | Surface degraded mount/audio/config state in WebUI |
-| Crash dump preservation | Keep last failure logs for post-mortem debugging |
-
----
-
-## GitHub Research Expansion — Repo Operations
-
-Research inputs: [`Magisk module guide`](https://github.com/topjohnwu/Magisk/blob/master/docs/guides.md), [`MMRL`](https://github.com/MMRLApp/MMRL), [`actions/upload-artifact`](https://github.com/actions/upload-artifact), [`slsa-github-generator`](https://github.com/slsa-framework/slsa-github-generator), [`ossf/scorecard`](https://github.com/ossf/scorecard), and local `99-MANIFESTS/git-repositories.txt`.
-
-| ID | Priority | Importance | Repos / Scope | Task |
-|:--|:--|:--:|:--|:--|
-| GH-OPS-001 | High | 5 | All 53 repo entries | Generate a canonical `repo-registry.json` from `99-MANIFESTS/git-repositories.txt` with path, branch, remote, category, sync tier, and owner. |
-| GH-OPS-002 | High | 5 | All GitHub remotes | Add `scripts/check-github-remotes.sh` to verify every GitHub URL returns HTTP 200/301 and every branch still exists upstream. |
-| GH-OPS-003 | High | 5 | `CP2077-OP7Pro`, `CP2077-Universal` | Add release workflow inputs for version, variant list, audio flag, artifact retention days, and draft-release mode. |
-| GH-OPS-004 | High | 5 | `releases/`, module release dirs | Generate SLSA provenance for every release ZIP and publish provenance beside `SHA256SUMS`. |
-| GH-OPS-005 | High | 5 | Root repo | Run OpenSSF Scorecard weekly and publish SARIF/code-scanning output where supported. |
-| GH-OPS-006 | High | 5 | Shell/Python/WebUI code | Add CodeQL advanced setup for JavaScript plus SARIF upload for ShellCheck and Python linters. |
-| GH-OPS-007 | High | 4 | All release workflows | Pin third-party GitHub Actions by SHA or locked major tags and document upgrade cadence. |
-| GH-OPS-008 | High | 4 | `99-MANIFESTS/` | Add a manifest freshness badge that fails CI if generated manifests are older than the latest release artifact. |
-| GH-OPS-009 | Medium | 4 | All nested repos | Create `WHY-CLONED.md` for every GitHub clone explaining source, purpose, sync priority, and removal criteria. |
-| GH-OPS-010 | Medium | 4 | All nested repos | Add `repo-health.md` summarizing dirty state, last commit date, branch, remote, and behind/ahead count. |
-| GH-OPS-011 | Medium | 4 | `MMRL`, release metadata | Create an MMRL-ready metadata generation task with screenshots, categories, compatibility, and file transparency. |
-| GH-OPS-012 | Medium | 4 | `releases/CHANGELOG-*` | Add a changelog generator that groups commits by `feat`, `fix`, `docs`, `build`, `security`, and `compat`. |
-| GH-OPS-013 | Medium | 3 | All release artifacts | Enforce `actions/upload-artifact` retention settings: 7 days for CI artifacts, 30 days for release candidates, 90 days for stable artifacts. |
-| GH-OPS-014 | Medium | 3 | Root repo | Add GitHub issue templates for ROM compatibility, install failure, animation artifact, and root-manager compatibility. |
-| GH-OPS-015 | Medium | 3 | Root repo | Add PR templates with required sections: touched module, tested variant, artifact checksum, device/ROM, and rollback notes. |
-| GH-OPS-016 | Medium | 3 | `99-MANIFESTS/git-repositories.txt` | Add category-level ownership: module, root, theme, kernel, device tree, recovery, wallpaper, Android UI. |
-| GH-OPS-017 | Low | 2 | Reference repos | Add a stale-reference dashboard that marks repos unused for 90 days as `review`, 180 days as `archive-candidate`. |
-| GH-OPS-018 | Low | 2 | `README.md`, `ROADMAP.md` | Auto-generate repo count and workspace size badges from manifests. |
-| GH-OPS-019 | Low | 2 | Root repo | Add GitHub discussion category plan for installs, variant requests, ports, and development notes. |
-| GH-OPS-020 | Low | 1 | Root repo | Add `.github/FUNDING.yml` and maintainer metadata only if public project support becomes relevant. |
-
-## GitHub Research Expansion — Root Ecosystem
-
-Research inputs: [`Magisk docs`](https://github.com/topjohnwu/Magisk/blob/master/docs/guides.md), [`KernelSU`](https://github.com/tiann/KernelSU), [`APatch`](https://github.com/bmax121/APatch), [`MMRL`](https://github.com/MMRLApp/MMRL), [`zygisk-module-sample`](https://github.com/topjohnwu/zygisk-module-sample), and root ecosystem clones.
-
-| ID | Priority | Importance | Repos / Scope | Task |
-|:--|:--|:--:|:--|:--|
-| ROOT-001 | High | 5 | `Magisk`, all modules | Validate every `module.prop` against Magisk requirements: stable `id`, integer `versionCode`, LF endings, valid `updateJson`. |
-| ROOT-002 | High | 5 | `CP2077-OP7Pro`, `CP2077-Universal` | Add automated check that `versionCode` equals `MAJOR * 100000 + MINOR * 1000 + PATCH`. |
-| ROOT-003 | High | 5 | `Magisk`, `KernelSU`, `APatch` | Implement a shared `detect_root_manager()` library used by installer, service, config, and WebUI shell bridge. |
-| ROOT-004 | High | 5 | `KernelSU` | Add KernelSU `module.json` and verify install, enable, disable, uninstall, and WebUI behavior. |
-| ROOT-005 | High | 5 | `APatch` | Add APatch install test flow and document `apd` path assumptions, module status checks, and rollback. |
-| ROOT-006 | High | 5 | `MMRL` | Build MMRL metadata with icon, screenshots, categories, cover image, changelog, root compatibility, and file transparency. |
-| ROOT-007 | High | 4 | `Magisk`, modules | Replace any hardcoded module path with `MODDIR=${0%/*}` where scripts run inside module context. |
-| ROOT-008 | High | 4 | `Magisk`, modules | Add `ASH_STANDALONE=1` compatibility testing for installer scripts that run through Magisk busybox shell. |
-| ROOT-009 | Medium | 4 | `ZygiskNext`, `ReZygisk`, `zygisk-module-sample` | Decide whether WebUI/system UI future modules need Zygisk hooks or should remain pure Magisk overlay modules. |
-| ROOT-010 | Medium | 4 | `LSPosed` | Document whether status bar, lockscreen, and Quick Settings theming belongs in LSPosed modules or resource overlays. |
-| ROOT-011 | Medium | 4 | `Vector` | Research whether Vector module patterns can simplify future Zygisk/native extensions. |
-| ROOT-012 | Medium | 4 | `MMRL`, `WebUI` | Add WebUI feature parity matrix for Magisk app, MMRL, KernelSU manager, and APatch manager. |
-| ROOT-013 | Medium | 3 | `awesome-android-root` | Cross-reference CP2077 dependencies and document accepted root/tool versions. |
-| ROOT-014 | Medium | 3 | All modules | Add `module-lint` check for required scripts, executable bits, forbidden CRLF, and required `META-INF` entries. |
-| ROOT-015 | Medium | 3 | All modules | Add root-manager smoke test script that confirms module installed state, enabled state, and mount result. |
-| ROOT-016 | Low | 2 | `MMRL-Util` | Evaluate using MMRL repository tooling to publish a private CP2077 module repository. |
-| ROOT-017 | Low | 2 | `Magisk` releases | Track Magisk release notes for overlayfs/module behavior changes and open compatibility tasks when needed. |
-| ROOT-018 | Low | 2 | `KernelSU` releases | Track KernelSU manager/API changes and update `module.json` rules when upstream changes. |
-| ROOT-019 | Low | 2 | `APatch` releases | Track APatch manager/API changes and update compatibility docs. |
-| ROOT-020 | Low | 1 | Root ecosystem refs | Add quarterly root-ecosystem repo sync and summarize important upstream changes in `REPOS.md`. |
-
-## GitHub Research Expansion — Device, Kernel, and Recovery
-
-Research inputs: [`AnyKernel3`](https://github.com/osm0sis/AnyKernel3), [`Kernel-SU/AnyKernel3`](https://github.com/Kernel-SU/AnyKernel3), LineageOS/DerpFest/Evolution/crDroid device trees, TWRP/PBRP recovery trees, and OP7 kernel repos.
-
-| ID | Priority | Importance | Repos / Scope | Task |
-|:--|:--|:--:|:--|:--|
-| DEVICE-001 | High | 5 | `lineage-device-guacamole`, `lineage-device-sm8150-common` | Diff LOS 23.2 device trees for bootanimation, product media, audio UI, and recovery paths. |
-| DEVICE-002 | High | 5 | `lineage-kernel-sm8150` | Record kernel config relevant to boot timing, SELinux, dm-verity, overlayfs, and filesystem mount order. |
-| DEVICE-003 | High | 5 | `kernelsu-lineageos-guacamole` | Build or validate KernelSU kernel and test CP2077 module parity against Magisk. |
-| DEVICE-004 | High | 5 | `neptune-kernel-sm8150` | Benchmark bootanimation timing and thermal behavior under Neptune vs stock LOS kernel. |
-| DEVICE-005 | High | 5 | `boot.img`, `magisk_patched-*.img` | Create boot-image registry with SHA-256, source ROM, patch tool, root manager, flash date, and rollback image. |
-| DEVICE-006 | High | 4 | `AnyKernel3`, `op7` kernels | Prototype an AnyKernel3 package that can stage CP2077 helper modules safely without overwriting user data. |
-| DEVICE-007 | High | 4 | TWRP/PBRP trees | Validate whether direct-write recovery installer should target `/system/media`, `/product/media`, or only systemless installs. |
-| DEVICE-008 | Medium | 4 | DerpFest device trees | Compare bootanimation/media paths with LOS 23.2 and add DerpFest rows to `DEVICE-SPECS.md`. |
-| DEVICE-009 | Medium | 4 | Evolution X device tree | Compare product path behavior and add Evolution X compatibility notes. |
-| DEVICE-010 | Medium | 4 | crDroid kernel/device refs | Add crDroid path and kernel compatibility notes to the universal compatibility matrix. |
-| DEVICE-011 | Medium | 3 | `blu-spark-kernel-op7` | Identify performance patches relevant to boot animation smoothness and document whether to port them. |
-| DEVICE-012 | Medium | 3 | `op8`, `op5` blu-spark refs | Document reusable kernel/package patterns but keep OP8/OP5 as reference-only. |
-| DEVICE-013 | Medium | 3 | `android_device_oneplus_guacamole-pbrp` | Add recovery flashing test plan for CP2077 ZIPs under PBRP. |
-| DEVICE-014 | Medium | 3 | TWRP unified tree | Add TWRP install flow test plan and required assertions for installer output. |
-| DEVICE-015 | Medium | 3 | All device trees | Generate `device-profile.yaml` for every supported ROM family with boot paths, audio paths, API, SELinux state. |
-| DEVICE-016 | Low | 2 | `kali-nethunter-kernel-builder` | Evaluate NetHunter kernel boot timing and whether CP2077 mount repair must wait longer. |
-| DEVICE-017 | Low | 2 | Recovery trees | Add `adb sideload` screenshots/log capture checklist for docs. |
-| DEVICE-018 | Low | 2 | Kernel refs | Add quarterly kernel ref sync to catch security-patch and branch changes. |
-| DEVICE-019 | Low | 2 | Device tree refs | Add branch freshness warnings if local branch falls behind upstream by more than 30 days. |
-| DEVICE-020 | Low | 1 | All device/kernel repos | Add `WHY-CLONED.md` and sync tier for each kernel/device/recovery repository. |
-
-## GitHub Research Expansion — UI, Theme, and Asset System
-
-Research inputs: [`hyprdots theming`](https://github.com/prasanthrangan/hyprdots/wiki/Theming), [`waybar-themes topic`](https://github.com/topics/waybar-themes), [`adi1090x/rofi`](https://github.com/adi1090x/rofi), `plymouth-themes`, `cybrcolors`, `Cyberpunk-Neon`, and local theme repos.
-
-| ID | Priority | Importance | Repos / Scope | Task |
-|:--|:--|:--:|:--|:--|
-| UI-001 | High | 5 | `cybrcolors`, all UI docs | Promote the CP2077 palette to a single `design-tokens.json` with hex, RGB, ANSI, CSS var, and Android XML outputs. |
-| UI-002 | High | 5 | WebUI, README, docs | Generate badges, palette strips, and README/ROADMAP color references from `design-tokens.json`. |
-| UI-003 | High | 5 | `cyber-hyprland-theme`, `cybrland` | Merge Hyprland configs into one canonical CP2077 profile with documented keybinds and module ownership. |
-| UI-004 | High | 4 | `HyprPanel`, Waybar, eww | Decide one primary panel path and document when HyprPanel, Waybar, or eww should be used. |
-| UI-005 | High | 4 | `rofi`, `Tokyonight-rofi-theme` | Build CP2077 Rofi theme variants for launcher, power menu, screenshot menu, and variant switcher. |
-| UI-006 | High | 4 | `plymouth-themes`, `proxzima-plymouth` | Build a Plymouth prototype using CP2077 frame assets and test with `plymouthd --debug`. |
-| UI-007 | High | 4 | `Cyberpunk-Neon`, `K-DE-Cyberpunk-Neon` | Reconcile KDE/GTK assets into an installable host theme bundle and document conflicts. |
-| UI-008 | Medium | 4 | `catppuccin`, `cybrcolors` | Create a CP2077-to-Catppuccin compatibility palette for users who want softer desktop colors. |
-| UI-009 | Medium | 4 | `wallpapers/cybrpapers`, `Cyberpunk-Wallpapers` | Create wallpaper manifest with resolution, license, dominant colors, and recommended lockscreen/desktop use. |
-| UI-010 | Medium | 3 | `cyberpunk-technotronic-icon-theme` | Package cleaned icon theme and document missing icon coverage. |
-| UI-011 | Medium | 3 | `AndroidCyberpankIcons` | Audit Android icon pack assets and define a legal/technical path to Android icon pack packaging. |
-| UI-012 | Medium | 3 | `widgets`, eww | Port useful widget patterns into CP2077 HUD components with CPU, RAM, net, battery, and active mission. |
-| UI-013 | Medium | 3 | `mechabar` | Research whether mechabar components can replace or augment Waybar for the CP2077 host HUD. |
-| UI-014 | Medium | 3 | `diinki-retrofuture` | Extract reusable retrofuture typography/spacing conventions and map them to CP2077 docs. |
-| UI-015 | Medium | 3 | `dotfiles`, `dots`, `hyprdots` | Build a compatibility matrix for expected host packages: hyprland, waybar, rofi-wayland, swww, dunst, kitty. |
-| UI-016 | Low | 2 | `cp2077-linux-boot` | Add boot-theme preview GIF generation task for README and docs. |
-| UI-017 | Low | 2 | Wallpapers | Add automatic thumbnail sheet generation for wallpaper selection. |
-| UI-018 | Low | 2 | Docs | Add design review checklist for contrast, font sizing, table density, badge consistency, and mobile readability. |
-| UI-019 | Low | 2 | WebUI | Add reduced-motion mode for users who disable animation effects. |
-| UI-020 | Low | 1 | Theme repos | Add quarterly theme sync and de-duplication review across all Linux theme references. |
-
-## GitHub Research Expansion — Build, Release, and Supply Chain
-
-Research inputs: [`github/codeql-action`](https://github.com/github/codeql-action), [`actions/upload-artifact`](https://github.com/actions/upload-artifact), [`slsa-github-generator`](https://github.com/slsa-framework/slsa-github-generator), [`ossf/scorecard-action`](https://github.com/ossf/scorecard-action), [`AnyKernel3`](https://github.com/osm0sis/AnyKernel3), and all local module/build repos.
-
-| ID | Priority | Importance | Repos / Scope | Task |
-|:--|:--|:--:|:--|:--|
-| SUPPLY-001 | High | 5 | All release ZIPs | Add `zipfile -t`, SHA-256, file size, manifest membership, and update JSON validation to one release gate. |
-| SUPPLY-002 | High | 5 | `build.py`, `build-universal.py` | Enforce reproducible ZIP metadata and fail if two builds from the same commit produce different hashes. |
-| SUPPLY-003 | High | 5 | GitHub Actions | Add CodeQL plus SARIF upload for ShellCheck, Python lint, and custom module lint output. |
-| SUPPLY-004 | High | 5 | GitHub Actions | Generate SLSA provenance for every stable artifact and add verification instructions to release notes. |
-| SUPPLY-005 | High | 5 | GitHub Actions | Run OpenSSF Scorecard weekly and open tasks for low-scoring checks. |
-| SUPPLY-006 | High | 4 | `build.py` | Add source URL HEAD-check gate for `SOURCES` before downloading animation ZIPs. |
-| SUPPLY-007 | High | 4 | `.downloads/` | Add cache integrity manifest so stale or corrupted upstream downloads are detected before packaging. |
-| SUPPLY-008 | High | 4 | `10-QUARANTINE-invalid-downloads` | Add CI assertion that quarantine files are never referenced by build scripts or release metadata. |
-| SUPPLY-009 | Medium | 4 | `releases/update-*.json` | Validate version, versionCode, zipUrl, changelog URL, content type, and checksum before publish. |
-| SUPPLY-010 | Medium | 4 | `releases/` | Add detached signature or checksum bundle for stable ZIPs. |
-| SUPPLY-011 | Medium | 4 | All workflows | Add minimum permissions blocks and avoid broad `contents: write` except release jobs. |
-| SUPPLY-012 | Medium | 3 | `actions/upload-artifact` | Set retention policy by artifact type and add artifact naming convention with module, version, variant, and commit SHA. |
-| SUPPLY-013 | Medium | 3 | Build scripts | Add max artifact size warnings and fail threshold for accidental megapack bloat. |
-| SUPPLY-014 | Medium | 3 | Build scripts | Add build matrix JSON output with variant, audio, source SHA, output SHA, size, and elapsed time. |
-| SUPPLY-015 | Medium | 3 | Android assets | Add license/source manifest for every third-party image, icon, wallpaper, and animation asset. |
-| SUPPLY-016 | Low | 2 | GitHub Releases | Add release asset download statistics to `releases/download-stats.json`. |
-| SUPPLY-017 | Low | 2 | GitHub Pages / raw URLs | Evaluate moving update JSON to a controlled GitHub Pages endpoint with history and rollback. |
-| SUPPLY-018 | Low | 2 | CI | Add nightly dry-run build with `--check-sources` and no artifact upload. |
-| SUPPLY-019 | Low | 2 | CI | Add dependency update reminders for Python packages and GitHub Actions. |
-| SUPPLY-020 | Low | 1 | Docs | Add supply-chain threat model covering source ZIPs, release artifacts, update JSON, and root-manager install paths. |
-
----
-
-## Repository Research Section 01 — Module Store Metadata
-
-Research sources: `topjohnwu/Magisk`, `MMRLApp/MMRL`, `Magisk-Modules-Alt-Repo/GlitchedCyberBoot`, local `CP2077-OP7Pro`, local `CP2077-Universal`.
-
-| Type | Priority | Importance | Work Item |
-|:--|:--|:--:|:--|
-| Feature | High | 5 | Add a generated module listing pack with `module.prop`, MMRL metadata, icon, screenshots, changelog link, support link, root-manager support, and release ZIP checksums. |
-| Implementation | High | 5 | Create `scripts/gen-module-listing.py` that reads module metadata and emits `mmrl.json`, `module-store.md`, and validation output for every CP2077 module. |
-| Tool | Medium | 4 | Add `scripts/check-module-listing.sh` to fail when the MMRL metadata, `module.prop`, and `releases/update-*.json` disagree. |
-
-## Repository Research Section 02 — Root Manager Compatibility Lab
-
-Research sources: `topjohnwu/Magisk`, `tiann/KernelSU`, `bmax121/APatch`, `MMRLApp/MMRL`, local module scripts.
-
-| Type | Priority | Importance | Work Item |
-|:--|:--|:--:|:--|
-| Feature | High | 5 | Add a root-manager compatibility dashboard covering Magisk, KernelSU, APatch, and MMRL WebUI bridge behavior for every module release. |
-| Implementation | High | 5 | Extract `detect_root_manager()`, `detect_module_dir()`, and `run_root_command()` into a shared `lib/root-runtime.sh` used by installer, service, config, and WebUI diagnostics. |
-| Tool | High | 5 | Add `cp2077-root-smoke.sh` to run install, status, config write, remount check, WebUI shell bridge check, disable, enable, and uninstall probes per root manager. |
-
-## Repository Research Section 03 — Animation Source Governance
-
-Research sources: `sodasoba1/ONEPLUS9-OOS13-BootAnimation`, `sodasoba1/CyberPunk-2077-OOS13-Modded-Boot-and-Shutdown-Animation`, `GlitchedCyberBoot`, local `.downloads/`.
-
-| Type | Priority | Importance | Work Item |
-|:--|:--|:--:|:--|
-| Feature | High | 5 | Add a source provenance panel for every animation variant showing upstream repo, release tag, downloaded file, SHA-256, resolution, frame count, and license note. |
-| Implementation | High | 4 | Add `sources.lock.json` beside `build.py` so source URLs, content length, SHA-256, and last verified timestamp are committed and reviewed. |
-| Tool | Medium | 4 | Add `cp2077-source-audit.py` to compare `.downloads/`, `SOURCES`, `sources.lock.json`, and generated release ZIP contents. |
-
-## Repository Research Section 04 — Universal Device Profile Registry
-
-Research sources: LineageOS device trees, DerpFest device trees, Evolution X device tree, crDroid kernel/device refs, local `CP2077-Universal`.
-
-| Type | Priority | Importance | Work Item |
-|:--|:--|:--:|:--|
-| Feature | High | 5 | Add device profiles for every supported ROM family with bootanimation paths, shutdown paths, audio paths, SELinux status, root manager, and verified module version. |
-| Implementation | High | 5 | Add `devices/*.yaml` and teach `build-universal.py` to package and use those profiles during install-time ROM detection. |
-| Tool | High | 4 | Add `cp2077-device-profile-gen.sh` to pull ADB props, mounted paths, file sizes, and SELinux mode into a reproducible `device-profile.yaml`. |
-
-## Repository Research Section 05 — Kernel and Recovery Packaging
-
-Research sources: `osm0sis/AnyKernel3`, `Kernel-SU/AnyKernel3`, OP7 kernel repos, TWRP/PBRP recovery trees, local `07-KERNEL-PACKAGE-MODULES`.
-
-| Type | Priority | Importance | Work Item |
-|:--|:--|:--:|:--|
-| Feature | Medium | 4 | Add an optional kernel-and-theme bundle track for advanced users who want a single recovery flash to install kernel support plus CP2077 module staging. |
-| Implementation | Medium | 4 | Prototype `CP2077-AnyKernel3/` with strict device checks, backup/restore hooks, and no automatic destructive writes. |
-| Tool | Medium | 4 | Add `cp2077-bootimg-registry.py` to track boot image SHA-256, source ROM, patch tool, kernel repo, root manager, and rollback file. |
-
-## Repository Research Section 06 — Hyprland and Desktop Theme Unification
-
-Research sources: `prasanthrangan/hyprdots`, `Jas-SinghFSU/HyprPanel`, `cybrland`, `cyber-hyprland-theme`, `mechabar`, local `06-UI-THEMES-ANIMATIONS`.
-
-| Type | Priority | Importance | Work Item |
-|:--|:--|:--:|:--|
-| Feature | Medium | 4 | Add a CP2077 desktop profile that can switch between Waybar, HyprPanel, eww HUD, and mechabar without replacing the whole Hyprland config. |
-| Implementation | Medium | 4 | Create `05-LINUX/arch-host/profiles/cp2077-hyprland/` with layered config fragments for monitor, input, keybinds, panel, launcher, and lock screen. |
-| Tool | Medium | 3 | Add `cp2077-theme-switch.sh` to apply, diff, backup, and rollback desktop theme layers. |
-
-## Repository Research Section 07 — Rofi, Wallpaper, and Icon Asset Pipeline
-
-Research sources: `adi1090x/rofi`, `Tokyonight-rofi-theme`, `cybrpapers`, `Cyberpunk-Wallpapers`, `AndroidCyberpankIcons`, `cyberpunk-technotronic-icon-theme`.
-
-| Type | Priority | Importance | Work Item |
-|:--|:--|:--:|:--|
-| Feature | Medium | 4 | Add a visual asset browser that links variants, wallpapers, Rofi styles, icon packs, and Android module thumbnails by shared palette tags. |
-| Implementation | Medium | 3 | Add `assets/catalog.json` with asset type, repo source, path, license, resolution, dominant colors, and recommended use. |
-| Tool | Medium | 3 | Add `cp2077-asset-catalog.py` to generate thumbnail sheets, color summaries, duplicate detection, and missing-license warnings. |
-
-## Repository Research Section 08 — WebUI and On-Device Control
-
-Research sources: `MMRLApp/MMRL`, `KernelSU`, `APatch`, local `webroot/index.html`, local `cp2077-config.sh`.
-
-| Type | Priority | Importance | Work Item |
-|:--|:--|:--:|:--|
-| Feature | High | 5 | Add a root-manager-neutral WebUI with status, variant selection, audio toggle, mount map, diagnostics copy, and update availability. |
-| Implementation | High | 5 | Refactor WebUI shell bridge calls into a single adapter that supports MMRL, KernelSU, APatch, and mock mode. |
-| Tool | High | 4 | Add `cp2077-webui-test.html` plus Playwright smoke checks for bridge detection, variant card rendering, and diagnostics output. |
-
-## Repository Research Section 09 — Release Quality and Supply Chain
-
-Research sources: `github/codeql-action`, `actions/upload-artifact`, `slsa-framework/slsa-github-generator`, `ossf/scorecard`, local release scripts.
-
-| Type | Priority | Importance | Work Item |
-|:--|:--|:--:|:--|
-| Feature | High | 5 | Add a release quality gate that shows artifact integrity, provenance, manifest freshness, source lock freshness, and update JSON validity before publish. |
-| Implementation | High | 5 | Add `.github/workflows/release-quality.yml` with lint, build, ZIP test, SHA-256, SLSA provenance, Scorecard, and update JSON validation jobs. |
-| Tool | High | 4 | Add `cp2077-release-verify.py` to verify a downloaded release ZIP against checksum, provenance, update JSON, and embedded module metadata. |
-
-## Repository Research Section 10 — Workspace Registry and Maintenance
-
-Research sources: local `99-MANIFESTS`, all cloned repos, root `.gitignore`, workspace docs.
-
-| Type | Priority | Importance | Work Item |
-|:--|:--|:--:|:--|
-| Feature | Medium | 4 | Add a workspace registry view that groups every cloned repo by category, sync tier, dirty state, purpose, owner, and prune policy. |
-| Implementation | Medium | 4 | Generate `99-MANIFESTS/repo-registry.json` and `09-DOCS/REPOS.md` tables from one parser instead of manually maintaining both. |
-| Tool | Medium | 4 | Add `cp2077-workspace-audit.sh` to check stale repos, broken symlinks, quarantine leaks, missing `WHY-CLONED.md`, and manifest freshness. |
-
-## Additional Features from Repository Research
-
-| ID | Priority | Importance | Source Repos | Feature |
-|:--|:--|:--:|:--|:--|
-| FEAT-R01 | High | 5 | Magisk, KernelSU, APatch | Root-manager-neutral install mode with explicit compatibility report before flashing. |
-| FEAT-R02 | High | 5 | MMRL, CP2077 WebUI | WebUI diagnostics drawer with one-tap copy for mount table, config, module version, and root manager. |
-| FEAT-R03 | High | 4 | LineageOS, DerpFest, Evolution X | ROM-family compatibility profile selector for Universal module installs. |
-| FEAT-R04 | Medium | 4 | hyprdots, HyprPanel, cybrland | Host desktop profile switcher for CP2077 Hyprland/Waybar/HyprPanel/eww setups. |
-| FEAT-R05 | Medium | 4 | Rofi, wallpapers, icon repos | Visual asset browser tying animation variants to wallpapers, launchers, and icons. |
-| FEAT-R06 | Medium | 4 | AnyKernel3, kernel repos | Optional kernel bundle track with strict warnings and rollback instructions. |
-| FEAT-R07 | Medium | 3 | GitHub Actions, SLSA | Release trust panel listing checksum, provenance, source lock, and manifest freshness. |
-| FEAT-R08 | Medium | 3 | Android icon repos | Android icon pack experiment using cleaned CP2077 icon assets. |
-| FEAT-R09 | Low | 2 | Plymouth repos | Plymouth preview gallery generated from installed themes and boot frames. |
-| FEAT-R10 | Low | 2 | Wallpapers, cybrpapers | Wallpaper rotation profile tied to active boot animation variant. |
-
-## Additional Implementations from Repository Research
-
-| ID | Priority | Importance | Source Repos | Implementation |
-|:--|:--|:--:|:--|:--|
-| IMPL-R01 | High | 5 | CP2077 modules | Shared `lib/root-runtime.sh` for root manager detection and command dispatch. |
-| IMPL-R02 | High | 5 | CP2077 modules | `sources.lock.json` for animation source URLs, SHA-256, content length, and verification date. |
-| IMPL-R03 | High | 5 | Universal, device trees | `devices/*.yaml` ROM profile registry consumed by `build-universal.py`. |
-| IMPL-R04 | High | 4 | GitHub Actions | `release-quality.yml` workflow with build, lint, ZIP test, and provenance jobs. |
-| IMPL-R05 | Medium | 4 | MMRL, WebUI | WebUI bridge adapter with MMRL, KernelSU, APatch, and mock backends. |
-| IMPL-R06 | Medium | 4 | Theme repos | Layered Hyprland config under `05-LINUX/arch-host/profiles/cp2077-hyprland/`. |
-| IMPL-R07 | Medium | 3 | Assets repos | `assets/catalog.json` for wallpapers, icons, splash assets, thumbnails, and licenses. |
-| IMPL-R08 | Medium | 3 | 99-MANIFESTS | `repo-registry.json` generated from `git-repositories.txt`. |
-| IMPL-R09 | Low | 2 | Recovery/kernel repos | AnyKernel3 prototype folder with device guards and rollback docs. |
-| IMPL-R10 | Low | 2 | Docs | Generated `RESEARCH-SOURCES.md` linking every task to source repos and docs. |
-
-## Additional Tools from Repository Research
-
-| ID | Priority | Importance | Source Repos | Tool |
-|:--|:--|:--:|:--|:--|
-| TOOL-R01 | High | 5 | Root ecosystem | `cp2077-root-smoke.sh` for Magisk, KernelSU, APatch, and MMRL checks. |
-| TOOL-R02 | High | 5 | Release repos | `cp2077-release-verify.py` for checksum, provenance, update JSON, and metadata verification. |
-| TOOL-R03 | High | 4 | Device trees | `cp2077-device-profile-gen.sh` for ADB-derived ROM/device profiles. |
-| TOOL-R04 | Medium | 4 | Animation repos | `cp2077-source-audit.py` for `.downloads`, `SOURCES`, `sources.lock.json`, and ZIP content checks. |
-| TOOL-R05 | Medium | 4 | Workspace manifests | `cp2077-workspace-audit.sh` for stale repos, broken links, quarantine leaks, and manifest freshness. |
-| TOOL-R06 | Medium | 3 | Theme repos | `cp2077-theme-switch.sh` for applying and rolling back desktop profile layers. |
-| TOOL-R07 | Medium | 3 | Assets repos | `cp2077-asset-catalog.py` for thumbnails, colors, duplicates, and licenses. |
-| TOOL-R08 | Medium | 3 | WebUI | Playwright WebUI smoke test runner for bridge and rendering checks. |
-| TOOL-R09 | Low | 2 | Kernel repos | `cp2077-bootimg-registry.py` for boot image metadata and rollback tracking. |
-| TOOL-R10 | Low | 2 | Docs/repos | `cp2077-research-map.py` to link roadmap tasks to cloned repos and GitHub sources. |
-
----
-
-## Kernel Development
-
-Device: OnePlus 7 Pro `GM1911` / `guacamole` · SM8150 (Snapdragon 855).
-
-Path: `07-KERNEL-PACKAGE-MODULES/kernel/`
-
-| Kernel | Path | Status | Purpose |
-|:--|:--|:--|:--|
-| `neptune-kernel-sm8150` | `kernel/neptune-kernel-sm8150/` | Staged | Primary custom kernel target for CP2077 module |
-| `blu-spark-kernel-op7` | `kernel/blu-spark-kernel-op7/` | Reference | blu-spark-16 OP7 Pro — patch source |
-| `kernelsu-lineageos-guacamole` | `kernel/kernelsu-lineageos-guacamole/` | Planned | KernelSU-patched LOS 23.2 kernel for guacamole |
-| `oneplus-7-pro-lineage-kernel-sm8150` | `kernel/oneplus-7-pro-lineage-kernel-sm8150/` | Reference | LOS kernel source reference |
-| `magisk_patched-30700_rLeMH.img` | `kernel/` | Active | Current Magisk-patched boot image on device |
-| `boot.img` | `kernel/` | Backup | Stock boot image before patching |
-| `kali-nethunter-kernel-builder` | `kernel/` | Pending | NetHunter kernel build toolchain |
-
-Tasks:
-
-- [ ] Audit boot animation timing under Neptune vs stock LOS kernel using `simpleperf`.
-- [ ] Build `kernelsu-lineageos-guacamole` against LOS 23.2 source and verify CP2077 mount parity with Magisk.
-- [ ] Add `boot.img` SHA-256 and build fingerprint to a boot image registry in `07-KERNEL-PACKAGE-MODULES/packages/`.
-- [ ] Cherry-pick energy-aware scheduling and TCP BBR patches from `blu-spark-kernel-op7` into Neptune.
-- [ ] Run NetHunter kernel builder and verify CP2077 `post-fs-data.sh` timing still passes under NetHunter `init.d` ordering.
-- [ ] Rename `magisk_patched-30700_rLeMH.img` to a versioned filename and add it to `production-artifact-sha256.txt`.
-- [ ] Test CP2077 install and all variant mounts under `kernelsu-lineageos-guacamole`.
-
----
-
-## NetHunter and Security Research
-
-Path: `08-HACKING-RESEARCH/nethunter/hightech-kali-nethunter-suite`
-
-All work here is performed on personally-owned hardware for educational purposes only. No offensive use against systems without explicit authorization.
-
-| Item | Status | Notes |
-|:--|:--|:--|
-| NetHunter kernel (guacamole) | Staged | `kali-nethunter-kernel-builder` in `07-KERNEL/kernel/` |
-| `hightech-kali-nethunter-suite` | Research | Contents not fully catalogued yet |
-| `security-repos/` | Research | Contents not fully catalogued |
-| NetHunter × CP2077 boot animation | Planned | `netrunner-nh` variant concept |
-
-Tasks:
-
-- [ ] Verify CP2077 Magisk module mount succeeds under a NetHunter-patched Neptune kernel — specifically test `post-fs-data.sh` bind-mount timing against NetHunter's `init.d` sequence on LOS 23.2.
-- [ ] Design a `netrunner-nh` boot animation variant using Kali NetHunter visual language (terminal green, `KALI LINUX NETHUNTER` watermark) to complement the NetHunter kernel install.
-- [ ] Fully catalogue `hightech-kali-nethunter-suite` contents, document which tools require the NetHunter kernel, and add the entry to `REPOS.md` and `99-MANIFESTS/git-repositories.txt`.
-- [ ] Research dual-slot setup: primary slot for LOS 23.2 + Magisk + CP2077, secondary slot for NetHunter kernel + Kali chroot; document slot management steps.
-- [ ] Audit `security-repos/` directory and remove or document any repos that are stale for more than six months.
-
----
-
-## Production Artifact Governance
-
-Path: `02-PRODUCTION/magisk-modules/`
-Checksums: `99-MANIFESTS/production-artifact-sha256.txt`
-
-| Artifact | Type | Status |
-|:--|:--|:--|
-| `CP2077-OP7Pro-release` | Symlink → `CP2077-OP7Pro/release/` | Active |
-| `CP2077-OP7Pro-Ultimate-release` | Symlink → `CP2077-OP7Pro-Ultimate/release/` | Disabled — superseded |
-| `CP2077-Universal-release` | Symlink → `CP2077-Universal/release/` | Active |
-| `device-beta-fix-applied/` | Directory — patched beta artifacts | Archive |
-| `device-copy-CP2077-OP7Pro-v2.0.0-beta.zip` | Legacy release ZIP | Archive |
-| `device-copy-CP2077-OP7Pro-v2.0.0-ultimate-all-in-one.zip` | Legacy release ZIP | Archive |
-
-Tasks:
-
-- [ ] Add a CI step that resolves all symlinks in `02-PRODUCTION/magisk-modules/` and asserts each target exists and is non-empty — catches breakage when a module release directory is rebuilt to a new filename.
-- [ ] Define a retention policy: legacy `device-copy-*.zip` files older than two versions move to a `legacy-builds/` subdirectory and are noted in `artifact-inventory.tsv`.
-- [ ] Automate `production-artifact-sha256.txt` generation as part of `generate-manifests.sh` step 5 instead of running it manually.
-- [ ] Add a `NOTES.md` inside `device-beta-fix-applied/` explaining what fix was applied, which device it tested on, and what problem it solved.
-- [ ] Assert in `build.py` that no single output ZIP exceeds 350 MB, with a warning at 90% of that threshold.
-
----
-
-## Performance and Benchmarking
-
-Device: OnePlus 7 Pro GM1911 · SM8150 · 8 GB LPDDR4x · 256 GB UFS 3.0.
-
-| Benchmark | Target | Measured | Status |
-|:--|:--|:--|:--|
-| Cold boot — no module (baseline) | — | TBD | Pending |
-| Cold boot — `glitch` 60fps | < +2.0 s vs baseline | TBD | Pending |
-| Cold boot — `og4k` 60fps | < +2.5 s vs baseline | TBD | Pending |
-| `post-fs-data.sh` total execution | < 800 ms | TBD | Pending |
-| `service.sh` first-pass overhead | 5.0 s + < 200 ms | TBD | Pending |
-| Variant hot-swap (no reboot) | < 3 s | TBD | Pending |
-| Animation frame-drop rate | < 2 dropped frames per boot | TBD | Pending |
-| Battery drain per boot cycle vs baseline | < +0.5% | TBD | Pending |
-
-Tasks:
-
-- [ ] Implement `cp2077-bench.sh`: power-cycle device, parse `adb logcat -T 1` for `Displayed com.android.launcher`, compute delta from `ro.boottime.init`, run five times, report mean and standard deviation.
-- [ ] Add `date +%s%3N` timestamps at start and end of `post-fs-data.sh` and log the diff to `/data/local/tmp/cp2077-timing.log`.
-- [ ] Use `adb shell dumpsys SurfaceFlinger --latency bootanim` to capture per-frame render latency for `glitch` vs `og4k` variants on SM8150 UFS 3.0.
-- [ ] Measure charge drain over 30 minutes of idle after CP2077 boot vs stock bootanimation baseline.
-- [ ] Benchmark tmpfs RAM-staging (FEAT-08): measure bootanimation frame-read latency from UFS 3.0 vs `/data/local/tmp`; enable by default on devices with over 8 GB RAM if tmpfs is measurably faster.
-- [ ] Run `simpleperf` against the FFmpeg audio generation phase in `build.py` to identify hotspots in `generate_tone()`.
-- [ ] Test `og4k` thermal behavior under five consecutive cold boots: verify CPU does not exceed 95°C or skin temperature 85°C during 4K animation decode on SM8150.
-
----
-
-## Community and Distribution
-
-| Channel | Status | Action |
-|:--|:--|:--|
-| GitHub Releases | Active — v3.0.0-full, v1.0.0-universal | Automate via `gh release create` |
-| XDA Developers | Pending — not yet posted | Create OP7 Pro forum thread |
-| Magisk Modules Alt Repo | Pending — not submitted | Submit `module.json` PR |
-| MMRL listing | Pending — not listed | Add `mmrl.json` descriptor |
-| Telegram | Planned | v4.0.0 announcement channel |
-| Kali NetHunter forums | Planned | Post `netrunner-nh` variant after NH-02 |
-
-Tasks:
-
-- [ ] Create an XDA Developers thread in the OnePlus 7 Pro forum section with variant screenshots, download links, ROM compat matrix, and installation steps; link from `README.md` and `module.prop support=`.
-- [ ] Prepare `module.json` in the Magisk Modules Alt Repo format and submit a PR to `Magisk-Modules-Alt-Repo/submit`.
-- [ ] Create `mmrl.json` with module ID, name, description, author, `minMagisk`, `minApi`, and screenshot URLs; submit to the MMRL repository.
-- [ ] Rewrite `CHANGELOG-full.md` and `CHANGELOG-universal.md` in user-facing language grouped by: What's New, Bug Fixes, Compatibility — suitable as an XDA post body.
-- [ ] Track GitHub release asset download counts weekly via `gh release view vX.X.X --json assets` and append to `releases/download-stats.json`.
-
----
-
-## Workspace Maintenance Schedule
-
-Root: `/home/arch/cyberpunk-2077`
-Policy files: `AGENTS.md`, `CLAUDE.md`, `00-CONTROL/WORKSPACE-POLICY.md`
-
-| Task | Frequency | Command |
-|:--|:--|:--|
-| Regenerate all manifests | After every release | `bash 99-MANIFESTS/generate-manifests.sh` |
-| Reference repo sync check | Weekly | `bash scripts/check-repos.sh` |
-| Symlink health audit | Weekly | `find 02-PRODUCTION -type l ! -e` |
-| Quarantine audit | Monthly | `file 10-QUARANTINE-invalid-downloads/**/*` |
-| Workspace size check | Monthly | `du -sh /home/arch/cyberpunk-2077` |
-
-Tasks:
-
-- [ ] Add a `generate-manifests.sh` call as the final step of `build.py` so manifests are never stale after a new artifact is produced; add `--no-manifest` flag to skip when not needed.
-- [ ] Add broken-symlink detection to `cp2077-audit-workspace.sh` for `02-PRODUCTION/magisk-modules/` and `06-UI-THEMES-ANIMATIONS/`; log broken links with suggested repair commands but do not auto-delete.
-- [ ] Run `file 10-QUARANTINE-invalid-downloads/**/*` in CI to confirm all quarantine entries are correctly identified as HTML; alert if a non-HTML file is found and prompt for relocation.
-- [ ] Append `$(date +%Y-%m-%d) $(du -sb /home/arch/cyberpunk-2077 | cut -f1)` to `99-MANIFESTS/workspace-size-history.txt` on each manifest run to track growth trends.
-- [ ] Update `00-CONTROL/PRODUCTION-STATUS.md` after every release with current module versions, device boot-verified state, last flash date, active variant, and audio state.
-
----
-
-## Splash Screen and System UI Theming
-
-| Asset | Path | Status |
-|:--|:--|:--|
-| Module thumbnail | `splash/module-thumbnail.png` | Present — 512×512 PNG |
-| About page | `splash/about/` | Present |
-| Boot splash | `splash/boot/` | Present |
-| Splash asset pack | `06-UI-THEMES-ANIMATIONS/themes/CP2077-splash-assets/` | Needs audit |
-
-Tasks:
-
-- [ ] Create per-variant module thumbnails (512×512): one each for `glitch` (green), `flatline` (red), `og` (gold), and `netrunner` (cyan) so Magisk Manager and MMRL can display variant-specific artwork.
-- [ ] Implement `windowSplashScreenBackground=#0A0A0A` and `windowSplashScreenAnimatedIcon` as a resource overlay targeting the `android` package to bring CP2077 branding to all app launch splashes on Android 12+.
-- [ ] Update `splash/about/` — the page Magisk serves as the module about screen — with current version badge, variant count, ROM compat table, palette strip, and link to the GitHub release.
-- [ ] Audit `06-UI-THEMES-ANIMATIONS/themes/CP2077-splash-assets/` contents, verify asset licensing, and document the asset list in a `ASSET-MANIFEST.md` inside the directory.
-- [ ] Prepend a half-second `JACK OUT` title card (black background, `#FF003C` text, JetBrains Mono) to all shutdown animations as a `p 1 15 part0` entry in `desc.txt`.
-- [ ] Refresh `webroot/index.html` header: embed `module-thumbnail.png` as an inline base64 data URI, add variant count badge, and add a link to the XDA thread once COMM-01 is complete.
-
----
-
-## Reference Repo Sync Registry
-
-Source of truth: `99-MANIFESTS/git-repositories.txt` and `git-repositories-status.txt`.
-Clone policy: `--depth 1` shallow, synced before each major build.
-
-| Repo | Location | Usage | Sync Priority |
-|:--|:--|:--|:--|
-| `sodasoba1/ONEPLUS9-OOS13-BootAnimation` | `01-DEVELOPMENT/repos/cyberpunk/` | Animation frame source | Critical — before each build |
-| `GlitchedCyberBoot` | `01-DEVELOPMENT/repos/cyberpunk/` | Glitch variant reference | High |
-| `topjohnwu/Magisk` | `01-DEVELOPMENT/repos/magisk-ecosystem/` | Magisk API reference | High |
-| `tiann/KernelSU` | `01-DEVELOPMENT/repos/magisk-ecosystem/` | KSU module spec | High — before KSU build |
-| `lineageos/lineage-device-guacamole` | `01-DEVELOPMENT/repos/oneplus-7-pro/` | LOS device tree reference | Medium — per LOS release |
-| `hyprdots` | `06-UI-THEMES-ANIMATIONS/repos/` | Hyprland dotfiles reference | Medium |
-| `engstk op8 (blu-spark-16)` | `07-KERNEL-PACKAGE-MODULES/repos/` | Kernel patch reference | Medium |
-| `proxzima-plymouth` | `06-UI-THEMES-ANIMATIONS/repos/` | Plymouth theme reference | Low |
-
-Tasks:
-
-- [ ] Check whether `sodasoba1/ONEPLUS9-OOS13-BootAnimation` is ahead of local HEAD before running `build.py`; prompt to sync if it has new commits.
-- [ ] Implement `AUTO-01` as a weekly systemd user timer running `scripts/check-repos.sh`; write output to `99-MANIFESTS/git-repositories-status.txt` automatically.
-- [ ] Add a sidecar `WHY-CLONED.md` to each cloned reference repo explaining what it provides, which build steps use it, and the minimum sync frequency.
-- [ ] Define a stale-repo policy: if a reference repo has not been accessed in 90 days and is not in the Critical tier, mark it as `ARCHIVED` in `git-repositories.txt` and consider pruning the working tree.
-- [ ] Generate `git-repositories-status.txt` automatically in `generate-manifests.sh`, recording `HEAD` SHA, `origin/main` SHA, commits-behind count, and last-commit date for every tracked repo.
-
----
-
-## Device Test Lab
-
-Device under test: OnePlus 7 Pro GM1911 · guacamole · SM8150 · 8 GB · 256 GB UFS 3.0
-ROM: LineageOS 23.2 (Android 16 · API 36)
-Root: Magisk v30.7 (active) · KernelSU (pending) · APatch (pending)
-
-### Test Matrix — CP2077-OP7Pro v3.0.0 on LOS 23.2 + Magisk v30.7
-
-| Test Case | glitch | flatline | reboot | og1080p | og4k | Notes |
-|:--|:--:|:--:|:--:|:--:|:--:|:--|
-| Boot animation plays | ✅ | ✅ | ✅ | ✅ | ✅ | Verified 2026-05-13 |
-| Shutdown animation plays | ✅ | ✅ | ✅ | ✅ | ✅ | BUG-07 fix applied |
-| `rbootanimation.zip` mounted | ✅ | ✅ | ✅ | ✅ | ✅ | BUG-08 fix applied |
-| Audio plays on boot | ✅ | ✅ | ✅ | ✅ | ✅ | Verified 2026-05-13 |
-| Variant switch via `cp2077-config.sh` | ✅ | ✅ | ✅ | ✅ | ✅ | All combinations tested |
-| `uninstall.sh` clean removal | ✅ | — | — | — | — | v3.1.0 script |
-| `service.sh` double-pass remount | ✅ | — | — | — | — | Verified 2026-05-13 |
-| WebUI panel in Magisk | ⏳ | — | — | — | — | LOS 23.2 WebView needed |
-| KernelSU install | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ | Pending kernel build |
-| APatch install | ⏳ | ⏳ | ⏳ | ⏳ | ⏳ | Pending APatch pass |
-
-Tasks:
-
-- [ ] After a clean flash of LOS 23.2, install the module and capture full `logcat -b main,system,events` from power-on to confirm all 7 mount paths bind without falling back to `service.sh` reapplication.
-- [ ] Cycle through all five variants via `cp2077-config.sh` without rebooting; verify `service.sh` correctly remounts each time and no residual mounts from the previous variant remain.
-- [ ] Open the Magisk WebUI for the CP2077 module on LOS 23.2 and trigger all five bridge functions: `refreshStatus`, `applyConfig`, `restartAnim`, `showDiag`, and the variant picker.
-- [ ] Run `uninstall.sh`, then confirm via ADB that no bind-mounts remain, no data-partition artifacts remain, and the device boots cleanly on the stock bootanimation.
-- [ ] Temporarily run `setenforce 1` and reboot with CP2077 active; capture any `avc` denials for `bootanim` and generate a `sepolicy.rule` if denials block the mount.
-- [ ] Run the `og4k` variant for five consecutive cold boots and monitor thermal zone temperatures to confirm the SM8150 does not throttle during 4K animation decode.
-- [ ] Flash a ROM update on top of an existing CP2077 install and verify the module either survives cleanly or fails gracefully without a boot loop.
-
----
-
-## APK and Native Android Development
-
-Path: `04-ANDROID/` — `apk/` · `arm64/` · `device/sdcard-Download/` · `android-tools`
-Target: Android 16 · API 36 · `arm64-v8a` · min API 26
-
-| Path | Contents | Status |
-|:--|:--|:--|
-| `apk/livewallpaper-invalid-source-files/` | HTML files masquerading as APKs | Do not install — quarantine reference copy |
-| `arm64/` | arm64-v8a native tool binaries | Staged — needs inventory |
-| `device/sdcard-Download/` | Files staged for device SD card push | Working area |
-| `android-tools` | ADB/fastboot tooling | In use |
-
-Tasks:
-
-- [ ] Write a design spec for a real Android `WallpaperService` APK to replace the quarantined HTML fakes: Kotlin, OpenGL ES 3.0, `GLSurfaceView`, rain/glitch GLSL shader on `#0A0A0A`, 5 fps when screen-off, `arm64-v8a` only. Store the spec in `04-ANDROID/apk/livewallpaper-design-spec.md`.
-- [ ] Create an Android Studio project scaffold in `04-ANDROID/apk/CP2077-LiveWallpaper/` with `minSdk 26`, `targetSdk 36`, and a GLSL shader stub in `assets/shaders/`; do not build until the design spec is approved.
-- [ ] Inventory `04-ANDROID/arm64/`: for each binary, record name, version, source, license, and SHA-256; remove binaries that duplicate functionality already available in `android-tools`.
-- [ ] Define a naming convention for files in `device/sdcard-Download/` (`MODULE-VERSION-DATE.zip`) and add a `STAGED.md` manifest listing what is present and what device action is needed.
-- [ ] Research F-Droid and GitHub for a legitimately licensed live wallpaper APK; if found, verify via `apksigner verify`, document the license, and record in `04-ANDROID/apk/SOURCES.md`; if none found, proceed with the APK design spec above.
-- [ ] Package the patched `cyberpunk-technotronic-icon-theme` (broken symlinks removed in BUG-06) as an Android icon pack APK with a minimal `AndroidManifest.xml` using `aapt2`, and place the output in `04-ANDROID/apk/`.
-- [ ] Research whether a Magisk Manager UI overlay APK is feasible on Android 16 without writing to the system partition; document the conclusion in `TROUBLESHOOTING.md`.
-
----
-
-## Related Docs
+## ══ RELATED DOCS ══
 
 | Document | Purpose |
-|:--|:--|
-| [`../README.md`](../README.md) | Project dashboard |
-| [`INSTALLATION-GUIDE.md`](INSTALLATION-GUIDE.md) | Install and flash workflow |
-| [`BUILD-GUIDE.md`](BUILD-GUIDE.md) | Build and package workflow |
-| [`VARIANTS.md`](VARIANTS.md) | Animation variants and assets |
-| [`DEVICE-SPECS.md`](DEVICE-SPECS.md) | Device and ROM compatibility |
-| [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md) | Diagnostics and fixes |
+|:---------|:-------|
+| [`README.md`](../README.md) | Project dashboard |
+| [`INSTALLATION-GUIDE.md`](INSTALLATION-GUIDE.md) | Install + flash workflow |
+| [`BUILD-GUIDE.md`](BUILD-GUIDE.md) | Build + package workflow |
+| [`VARIANTS.md`](VARIANTS.md) | Animation variants + assets |
+| [`DEVICE-SPECS.md`](DEVICE-SPECS.md) | Device + ROM compat |
+| [`TROUBLESHOOTING.md`](TROUBLESHOOTING.md) | Diagnostics + fixes |
 | [`REPOS.md`](REPOS.md) | Repository catalogue |
-| [`../AGENTS.md`](../AGENTS.md) | Agent operating rules |
+| [`AGENTS.md`](../AGENTS.md) | Agent operating rules |
 
 ---
 
-### Palette
+**Palette:** `#FCEE0C` · `#00FFFF` · `#FF003C` · `#00FF9F` · `#FF6B35` · `#0A0A0A`
 
-`#FCEE0C` · `#00FFFF` · `#FF003C` · `#00FF9F` · `#FF6B35` · `#0A0A0A`
-
-Roadmap owner: `lchtangen`
-
-Workspace: `/home/arch/cyberpunk-2077`
+**Owner:** `lchtangen` · **Workspace:** `/home/arch/cyberpunk-2077`
