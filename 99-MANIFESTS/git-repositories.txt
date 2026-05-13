@@ -1,0 +1,32 @@
+# Git Repositories — cyberpunk-2077 workspace
+# Updated: 2026-05-13
+# Format: path  branch  remote  category
+
+# ── PRIMARY MODULES (local dev) ───────────────────────────────────────────────
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro  branch=master  remote=(no remote)  category=module-primary
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro-Ultimate  branch=master  remote=(no remote)  category=module-primary
+
+# ── UPSTREAM REFERENCE MODULES (cyberpunk-themed bootanim) ───────────────────
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/cyberpunk/GlitchedCyberBoot  branch=main  remote=https://github.com/Magisk-Modules-Alt-Repo/GlitchedCyberBoot  category=module-reference
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/cyberpunk/ONEPLUS9-OOS13-BootAnimation  branch=main  remote=https://github.com/sodasoba1/ONEPLUS9-OOS13-BootAnimation  category=module-reference
+/home/arch/cyberpunk-2077/03-BUILD/artifacts/cyberpunk-build/CyberPunk-2077-OOS13-Modded-Boot-and-Shutdown-Animation  branch=main  remote=https://github.com/sodasoba1/CyberPunk-2077-OOS13-Modded-Boot-and-Shutdown-Animation.git  category=module-reference
+/home/arch/cyberpunk-2077/03-BUILD/artifacts/cyberpunk-build/Magisk-Module-Cyberpunk-2077-Bootanimation-SplashScreen-POCO  branch=main  remote=https://github.com/ENEIZEM/Magisk-Module-Cyberpunk-2077-Bootanimation-SplashScreen-POCO.git  category=module-reference
+
+# ── ANDROID UI / ICON PACKS ───────────────────────────────────────────────────
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/cyberpunk/AndroidCyberpankIcons  branch=main  remote=https://github.com/privatgt/AndroidCyberpankIcons  category=ui-android
+
+# ── LINUX THEMES (KDE / GTK / Hyprland / Wayland) ────────────────────────────
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/themes/Cyberpunk-Neon  branch=master  remote=https://github.com/Roboron3042/Cyberpunk-Neon  category=theme-linux
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/themes/K-DE-Cyberpunk-Neon  branch=main  remote=https://github.com/UtkarshKunwar/K-DE-Cyberpunk-Neon  category=theme-linux
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/themes/cyber-hyprland-theme  branch=main  remote=https://github.com/taylor85345/cyber-hyprland-theme  category=theme-linux
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/themes/cybrland  branch=main  remote=https://github.com/scherrer-txt/cybrland  category=theme-linux
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/themes/cybrcolors  branch=main  remote=https://github.com/scherrer-txt/cybrcolors  category=theme-linux
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/themes/cyberpunk-technotronic-icon-theme  branch=main  remote=https://github.com/dreifacherspass/cyberpunk-technotronic-icon-theme  category=theme-linux
+
+# ── WALLPAPERS ────────────────────────────────────────────────────────────────
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/wallpapers/cybrpapers  branch=main  remote=https://github.com/scherrer-txt/cybrpapers  category=wallpapers
+
+# ── KERNELS (OnePlus 7 Pro / SM8150, shallow --depth 1 clones) ───────────────
+/home/arch/cyberpunk-2077/07-KERNEL-PACKAGE-MODULES/kernel/blu-spark-kernel-op7  branch=blu_spark-11  remote=https://github.com/engstk/op7  category=kernel
+/home/arch/cyberpunk-2077/07-KERNEL-PACKAGE-MODULES/kernel/neptune-kernel-sm8150  branch=main  remote=https://github.com/0wnerDied/Neptune_kernel_sm8150_oneplus  category=kernel
+/home/arch/cyberpunk-2077/07-KERNEL-PACKAGE-MODULES/kernel/kernelsu-lineageos-guacamole  branch=main  remote=https://github.com/surfaceocean/kernelsu_oneplus_7_pro_lineageos_guacamole  category=kernel

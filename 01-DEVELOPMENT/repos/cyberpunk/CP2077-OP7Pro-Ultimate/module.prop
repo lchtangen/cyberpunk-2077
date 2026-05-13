@@ -1,0 +1,9 @@
+id=CP2077_OP7Pro_Ultimate
+name=Cyberpunk 2077 Ultimate All-In-One — OnePlus 7 Pro
+version=v3.0.0
+versionCode=300001
+author=lchtangen
+description=Ultimate Cyberpunk 2077 theme: all 4 boot animation variants (CyberGlitch, Flatline, Re-Boot, Original 1080p) at 1440×3120, matching shutdown animations, CP2077 audio pack, optional live wallpaper, splash screen, and fully interactive config-file installer. Multi-path mount engine for AOSP/LineageOS/OOS/yaap. OnePlus 7 Pro (guacamole), Android 14–16+.
+minMagisk=20400
+androidApi=26
+updateJson=https://raw.githubusercontent.com/lchtangen/CP2077-OP7Pro/main/update.json

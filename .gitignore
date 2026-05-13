@@ -1,0 +1,49 @@
+# Large binary artifacts — not tracked in workspace repo
+# These are tracked by 99-MANIFESTS/artifact-sha256.txt instead
+
+# Android flashable ZIPs (large, binary)
+*.zip
+# Exception: small module.zip or script zips if explicitly added
+
+# Android images
+*.img
+*.apk
+
+# ARM64 / Linux archives
+*.tar.xz
+*.tar.gz
+*.tar.bz2
+
+# Audio (tracked by module repos internally)
+*.ogg
+
+# Wallpaper images (tracked locally, not in workspace repo)
+06-UI-THEMES-ANIMATIONS/wallpapers/Cyberpunk-Wallpapers/
+
+# Kernel source trees (cloned with --depth 1, referenced by 99-MANIFESTS/git-repositories.txt)
+07-KERNEL-PACKAGE-MODULES/kernel/blu-spark-kernel-op7/
+07-KERNEL-PACKAGE-MODULES/kernel/neptune-kernel-sm8150/
+07-KERNEL-PACKAGE-MODULES/kernel/oneplus-7-pro-lineage-kernel-sm8150/
+07-KERNEL-PACKAGE-MODULES/kernel/kernelsu-lineageos-guacamole/
+07-KERNEL-PACKAGE-MODULES/kernel/kali-nethunter-kernel-builder/
+
+# Boot images (large binary)
+07-KERNEL-PACKAGE-MODULES/kernel/boot.img
+07-KERNEL-PACKAGE-MODULES/kernel/magisk_patched-*.img
+
+# ARM64 filesystem archives
+04-ANDROID/arm64/
+
+# Device sdcard snapshot (device-specific, large)
+04-ANDROID/device/sdcard-Download/
+
+# Quarantine (intentionally broken files)
+10-QUARANTINE-invalid-downloads/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Editor
+.vscode/
+*.swp
