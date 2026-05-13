@@ -1,1 +1,0 @@
-/home/arch/setup-sway-fixed.sh

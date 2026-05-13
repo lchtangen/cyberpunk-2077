@@ -1,49 +1,59 @@
-# Large binary artifacts — not tracked in workspace repo
-# These are tracked by 99-MANIFESTS/artifact-sha256.txt instead
+# cyberpunk-2077 workspace — .gitignore
+#
+# This repo tracks: README.md, .gitignore, 00-CONTROL/, 09-DOCS/, 99-MANIFESTS/
+# Everything else is ignored — repos are catalogued in 99-MANIFESTS/git-repositories.txt
+# Artifacts are checksummed in 99-MANIFESTS/artifact-sha256.txt
 
-# Android flashable ZIPs (large, binary)
+# ── DEVELOPMENT REPOS ────────────────────────────────────────────────────────
+# All nested git repos and source trees live here.
+# Their remotes/branches are recorded in 99-MANIFESTS/git-repositories.txt.
+01-DEVELOPMENT/
+
+# ── PRODUCTION ARTIFACTS ─────────────────────────────────────────────────────
+# Release ZIPs are SHA-256'd in 99-MANIFESTS/production-artifact-sha256.txt.
+02-PRODUCTION/
+
+# ── BUILD WORKSPACE ───────────────────────────────────────────────────────────
+03-BUILD/
+
+# ── ANDROID DEVICE FILES ──────────────────────────────────────────────────────
+04-ANDROID/
+
+# ── LINUX HOST SCRIPTS ────────────────────────────────────────────────────────
+# Contains broken symlinks from home-dir restructure; scripts live in ~/scripts/
+05-LINUX/
+
+# ── UI THEMES / ANIMATIONS / WALLPAPERS ──────────────────────────────────────
+# Nested git repos (Cyberpunk-Neon, cybrland, cybrpapers, etc.)
+# and large binary assets (PNG, WebP, OGG, ZIP).
+06-UI-THEMES-ANIMATIONS/
+
+# ── KERNEL SOURCES & BOOT IMAGES ─────────────────────────────────────────────
+07-KERNEL-PACKAGE-MODULES/
+
+# ── SECURITY / NETHUNTER RESEARCH ────────────────────────────────────────────
+08-HACKING-RESEARCH/
+
+# ── QUARANTINE ────────────────────────────────────────────────────────────────
+10-QUARANTINE-invalid-downloads/
+
+# ── BINARY FILE TYPES (catch-all if anything leaks through) ──────────────────
 *.zip
-# Exception: small module.zip or script zips if explicitly added
-
-# Android images
 *.img
 *.apk
-
-# ARM64 / Linux archives
 *.tar.xz
 *.tar.gz
 *.tar.bz2
-
-# Audio (tracked by module repos internally)
 *.ogg
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.svg
 
-# Wallpaper images (tracked locally, not in workspace repo)
-06-UI-THEMES-ANIMATIONS/wallpapers/Cyberpunk-Wallpapers/
-
-# Kernel source trees (cloned with --depth 1, referenced by 99-MANIFESTS/git-repositories.txt)
-07-KERNEL-PACKAGE-MODULES/kernel/blu-spark-kernel-op7/
-07-KERNEL-PACKAGE-MODULES/kernel/neptune-kernel-sm8150/
-07-KERNEL-PACKAGE-MODULES/kernel/oneplus-7-pro-lineage-kernel-sm8150/
-07-KERNEL-PACKAGE-MODULES/kernel/kernelsu-lineageos-guacamole/
-07-KERNEL-PACKAGE-MODULES/kernel/kali-nethunter-kernel-builder/
-
-# Boot images (large binary)
-07-KERNEL-PACKAGE-MODULES/kernel/boot.img
-07-KERNEL-PACKAGE-MODULES/kernel/magisk_patched-*.img
-
-# ARM64 filesystem archives
-04-ANDROID/arm64/
-
-# Device sdcard snapshot (device-specific, large)
-04-ANDROID/device/sdcard-Download/
-
-# Quarantine (intentionally broken files)
-10-QUARANTINE-invalid-downloads/
-
-# Python cache
+# ── TOOLING ───────────────────────────────────────────────────────────────────
 __pycache__/
 *.pyc
-
-# Editor
 .vscode/
 *.swp
+*.swo
