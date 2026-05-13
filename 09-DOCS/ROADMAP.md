@@ -1222,6 +1222,11 @@ cpu_temp / sys/class/thermal/thermal_zone0/temp
 - [x] Atomic `/data/cp2077.conf` write helper
 - [x] Config schema validation
 - [x] `python3 -m zipfile -t` CI gate
+- [x] `docs/DEVICE-SPECS.md` — HP-01/08/09 mount path + APatch audit (2026-05-14)
+- [x] `sources.lock.json` — HP-10 supply chain lock file created (2026-05-14)
+- [x] `mmrl.json` — HP-06/GH-OPS-11 MMRL module metadata (2026-05-14)
+- [x] `sepolicy.rule` — HP-03 fixed invalid SELinux source domain (2026-05-14)
+- [x] `lib/config-v2.sh` — phantom-lib + dogtown variants added (2026-05-14)
 
 ### P1 Feature Parity ✓
 - [x] `cp2077-config.sh` arrow-key TUI
@@ -1234,8 +1239,13 @@ cpu_temp / sys/class/thermal/thermal_zone0/temp
 - [x] Parallel variant packaging
 - [x] `cp2077-frame-inspector.py`
 - [x] `cp2077-archive-audit.py`
+- [x] `ci.yml` — rboot added to build matrix, module.prop validator fixed (2026-05-14)
+- [x] `cp2077-slsa-provenance.sh` — corrected GitHub URL to lchtangen/cyberpunk-2077 (2026-05-14)
 
 ### P2 Build/QA/Tooling
+- [x] `scripts/check-github-remotes.sh` — GH-OPS-002 HTTP check for all remotes (2026-05-14)
+- [x] `scripts/cp2077-bench.sh` — PERF-01 5-run boot timing benchmark (2026-05-14)
+- [x] `SOURCES` — upstream source inventory file for lock validator (2026-05-14)
 - [ ] `shellcheck` pre-commit hook
 - [ ] `cp2077-ci-local.sh`
 - [ ] Parallel hash in `generate-manifests.sh`
