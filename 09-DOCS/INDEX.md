@@ -15,7 +15,8 @@
 | Document | Description |
 |---|---|
 | [WORKSPACE-GUIDE.md](WORKSPACE-GUIDE.md) | Directory layout, repo inventory, common task commands |
-| [REPOS.md](REPOS.md) | Full catalogue of all 19 cloned repos with descriptions |
+| [REPOS.md](REPOS.md) | Full catalogue of all cloned repos with descriptions |
+| [ROADMAP.md](ROADMAP.md) | Future roadmap, open bugs, planned features |
 
 ---
 
