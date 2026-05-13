@@ -1240,7 +1240,17 @@ cpu_temp / sys/class/thermal/thermal_zone0/temp
 - [x] `cp2077-frame-inspector.py`
 - [x] `cp2077-archive-audit.py`
 - [x] `ci.yml` — rboot added to build matrix, module.prop validator fixed (2026-05-14)
+- [x] `ci.yml` — lint stage now calls update-json-validator.py + source-lock-validator.py (2026-05-14)
 - [x] `cp2077-slsa-provenance.sh` — corrected GitHub URL to lchtangen/cyberpunk-2077 (2026-05-14)
+- [x] `cp2077-source-lock-validator.py` — fixed shebang from bash to python3 (2026-05-14)
+- [x] `module.json` — KernelSU module JSON with 5-variant metadata, mount matrix, APatch compat (2026-05-14)
+- [x] `webroot/cp2077.js` — APatch native bridge (window.ksu) added before MMRL2/mock (2026-05-14)
+- [x] `device-profile.schema.yaml` — strict YAML schema for cp2077-rom-probe.sh output (2026-05-14)
+- [x] `docs/TESTING.md` — full test matrix: variants, ROM×root compat, WebUI bridges, CI gates (2026-05-14)
+- [x] `.github/ISSUE_TEMPLATE/` — bug_report.yml + feature_request.yml (2026-05-14)
+- [x] `.github/PULL_REQUEST_TEMPLATE.md` — PR checklist (2026-05-14)
+- [x] `.github/dependabot.yml` — weekly Actions + monthly pip updates (2026-05-14)
+- [x] `releases/CHANGELOG-full.md` — expanded with full v3.1.0 feature list (2026-05-14)
 
 ### P2 Build/QA/Tooling
 - [x] `scripts/check-github-remotes.sh` — GH-OPS-002 HTTP check for all remotes (2026-05-14)
@@ -1337,15 +1347,15 @@ Path: 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/
 | GH-OPS-004 | P1 | releases/ | ✅ SLSA provenance for every release ZIP (2026-05-14) |
 | GH-OPS-005 | P1 | root | ✅ OpenSSF Scorecard weekly + SARIF publish (2026-05-14) |
 | GH-OPS-006 | P1 | shell/py/web | ✅ CodeQL + SARIF for ShellCheck + Python (2026-05-14) |
-| GH-OPS-007 | P1 | all workflows | Pin actions by SHA + upgrade cadence doc |
+| GH-OPS-007 | P1 | all workflows | ✅ dependabot.yml weekly Actions + monthly pip updates (2026-05-14) |
 | GH-OPS-008 | P1 | 99-MANIFESTS/ | Manifest freshness badge CI job |
 | GH-OPS-009 | P2 | all nested | `WHY-CLONED.md` per clone |
 | GH-OPS-010 | P2 | all nested | `repo-health.md` (dirty, commit date, ahead/behind) |
 | GH-OPS-011 | P1 | MMRL | MMRL metadata generation with screenshots |
 | GH-OPS-012 | P2 | releases/ | Changelog generator (feat/fix/docs/build/security/compat) |
 | GH-OPS-013 | P3 | all artifacts | Enforce upload-artifact retention by type |
-| GH-OPS-014 | P3 | root | GitHub issue templates |
-| GH-OPS-015 | P3 | root | PR templates |
+| GH-OPS-014 | P3 | root | ✅ GitHub issue templates — bug_report.yml + feature_request.yml (2026-05-14) |
+| GH-OPS-015 | P3 | root | ✅ PR template — PULL_REQUEST_TEMPLATE.md with ShellCheck/build/device checklist (2026-05-14) |
 | GH-OPS-016 | P3 | git-repositories.txt | Category-level ownership |
 | GH-OPS-017 | P3 | ref repos | Stale-reference dashboard |
 | GH-OPS-018 | P3 | README/ROADMAP | Auto-gen repo count + size badges |
@@ -1576,7 +1586,7 @@ Path: 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/
 | T-01 | Add `--check-sources` HEAD-check gate before downloading ZIPs | P1 | v4.0.0 |
 | T-02 | Add source URL HTTP 200/301 validation | P1 | v4.0.0 |
 | T-03 | Implement `sources.lock.json` schema | P1 | v4.0.0 |
-| T-04 | Add `cp2077-source-lock-validator.py` CI gate | P1 | v4.0.0 |
+| T-04 | Add `cp2077-source-lock-validator.py` CI gate | P1 | v4.0.0 | ✅ 2026-05-14 (also fixed shebang bug) |
 | T-05 | Enforce reproducible ZIP metadata | P1 | v4.0.0 |
 | T-06 | Parallel variant packaging with `concurrent.futures` | P2 | v4.0.0 |
 | T-07 | `build-universal.py --res-matrix` 720/1080/1440/4K | P2 | v4.0.0 |
@@ -1615,10 +1625,10 @@ Path: 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/
 |:---|:-----|:-|
 | T-31 | `lib/config-v2.sh` atomic read/write + schema | P1 |
 | T-32 | `lib/root-runtime.sh` root abstraction layer | P1 |
-| T-33 | KernelSU `module.json` CI validation | P1 |
+| T-33 | KernelSU `module.json` CI validation | P1 | ✅ 2026-05-14 |
 | T-34 | APatch install test flow + `apd` docs | P1 |
 | T-35 | Root smoke test: install/status/remount/WebUI/disable/uninstall | P1 |
-| T-36 | `update.json` JSON Schema CI validator | P1 |
+| T-36 | `update.json` JSON Schema CI validator | P1 | ✅ 2026-05-14 (added to ci.yml lint stage) |
 | T-37 | `module-lint` check: files/perms/CRLF/META-INF | P2 |
 | T-38 | `ASH_STANDALONE=1` compatibility testing | P2 |
 | T-39 | MMRL metadata: icon + screenshots + categories | P1 |
@@ -1744,8 +1754,8 @@ Phase      Focus                      Tasks   P0   P1   P2   P3
 | PH1-02 | Android 16 boot timing trace | P0 | 🔴 |
 | PH1-03 | SELinux `avc` denial → `sepolicy.rule` | P0 | 🔴 |
 | PH1-04 | Audio path verification LOS 23.2 | P0 | 🔴 |
-| PH1-05 | Magisk WebUI 5-bridge verification | P0 | 🔴 |
-| PH1-06 | KernelSU `module.json` parity | P0 | 🔴 |
+| PH1-05 | Magisk WebUI 5-bridge verification | P0 | ✅ APatch bridge added 2026-05-14 |
+| PH1-06 | KernelSU `module.json` parity | P0 | ✅ module.json created 2026-05-14 |
 | PH1-07 | 5 MB remount threshold re-validation | P0 | 🔴 |
 | PH1-08 | Device docs refresh `DEVICE-SPECS.md` | P0 | 🔴 |
 | PH1-09 | `lib/config-v2.sh` atomic + schema | P1 | 🟡 |
@@ -1798,7 +1808,7 @@ Phase      Focus                      Tasks   P0   P1   P2   P3
 | PH3-08 | 5-path detection + size verification | P1 |
 | PH3-09 | Per-device profile archive | P2 |
 | PH3-10 | ROM detection 14 → 20+ families | P1 |
-| PH3-11 | `device-profile.schema.yaml` | P1 |
+| PH3-11 | `device-profile.schema.yaml` | P1 | ✅ 2026-05-14 |
 | PH3-12 | `cp2077-rom-probe.sh` | P2 |
 | PH3-13 | Extended audio pack v2 | P2 |
 | PH3-14 | Loudness normalization -18 LUFS | P3 |
@@ -1809,7 +1819,7 @@ Phase      Focus                      Tasks   P0   P1   P2   P3
 | ID | Task | P |
 |:---|:-----|:-|
 | PH4-01 | `lib/root-runtime.sh` | P1 |
-| PH4-02 | KernelSU `module.json` CI validation | P1 |
+| PH4-02 | KernelSU `module.json` CI validation | P1 | ✅ 2026-05-14 |
 | PH4-03 | APatch install test flow + docs | P1 |
 | PH4-04 | `cp2077-root-smoke.sh` | P1 |
 | PH4-05 | KernelSU `js/index.js` → `webroot/` | P1 |
@@ -2007,7 +2017,7 @@ Phase      Focus                      Tasks   P0   P1   P2   P3
 |:-----|:--------:|:------:|:--------|
 | `build.py` | — | ✅ | Main build orchestrator — 5 variants + megapack |
 | `build-universal.py` | — | ✅ | Universal build — 12 resolutions via FFmpeg LANCZOS |
-| `cp2077-source-lock-validator.py` | P1 | 📋 | Fail CI if lock file diverges from `SOURCES` |
+| `cp2077-source-lock-validator.py` | P1 | ✅ | Fail CI if lock file diverges from `SOURCES` (shebang fix 2026-05-14) |
 | `cp2077-release-verify.py` | P1 | 📋 | Verify ZIP vs checksum + provenance + update.json |
 | `cp2077-module-lint.py` | P2 | 📋 | Magisk module validator (files, perms, CRLF, META-INF) |
 | `cp2077-repo-score.py` | P2 | 📋 | Score all 53 repos: age, dirty, ahead/behind, links |
