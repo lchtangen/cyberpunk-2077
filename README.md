@@ -51,8 +51,8 @@ The primary production module. Device-optimized for OnePlus 7 Pro (guacamole). I
 
 | Feature | Detail |
 |---------|--------|
-| Boot animations | CyberGlitch · Flatline · Re-Boot · Original 1080p |
-| Shutdown animations | CyberGlitch · Flatline · Re-Boot · og1080p |
+| Boot animations | CyberGlitch · Flatline · Re-Boot · Original 1080p · Original 4K |
+| Shutdown animations | CyberGlitch · Flatline · Re-Boot · og1080p · og4k |
 | Audio pack | 7 OGG files: lock/unlock, charging, camera, UI tick |
 | Installer | Interactive with config-file resume |
 | Config file | `/data/cp2077.conf` |
@@ -106,9 +106,7 @@ Original v1.0 module — the first iteration before the Full/Ultimate split. Sta
 | **Cyberpunk Flatline** | `flatline` | 60 | 1440×3120 | sodasoba1 (ported) | ✅ Full + shutdown |
 | **Re-Boot Animation** | `reboot` | 60 | 1440×3120 | sodasoba1 (ported) | ✅ Full + shutdown |
 | **Original 1080p** | `og1080p` | 30 | 1080×2340 | 8T SE port | ✅ Full + shutdown |
-| **Original 4K** | `og4k` | — | 3840×2160 | — | ⚠️ Placeholder — no asset |
-
-> ⚠️ `og4k` directory exists but has no animation zip yet. See [BUG-01 in Roadmap](09-DOCS/ROADMAP.md).
+| **Original 4K** | `og4k` | 30 | 2160×4800 | og1080p upscaled 2× | ✅ Full + shutdown |
 
 ---
 

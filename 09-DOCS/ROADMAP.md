@@ -18,12 +18,12 @@
 
 | ID | Severity | Description | Fix |
 |----|----------|-------------|-----|
-| BUG-01 | High | `og4k` bootanimation dir is empty in both Full and Universal — variant is advertised but not installable | Source or upscale 4K animation asset |
+| BUG-01 | High | ~~`og4k` bootanimation dir is empty~~ **FIXED** — upscaled from og1080p via Pillow LANCZOS 2× (2160×4800, 267 frames, 358 MB). Shutdown adapted from glitch frames at 2160×4800. | ~~Source or upscale~~ |
 | BUG-02 | Medium | ~~Full module has no shutdown animation for `og1080p`~~ **FIXED** — `shutdownanimation/og1080p/` created (reboot frames, desc rewritten to 1080×2340). `og4k` still pending. | ~~Create shutdown anim for og1080p~~ |
 | BUG-03 | Medium | ~~CP2077-Universal `release/` dir is empty — OTA update.json URL will 404~~ **FIXED** — `CP2077-Universal-v1.0.0.zip` built (278 MB) + 4 per-variant ZIPs | ~~Build v1.0.0 Universal zip~~ |
-| BUG-04 | Low | `update.json` on both modules points to GitHub release URLs that don't yet exist as published releases | Publish v3.0.0 and v1.0.0-universal tags to GitHub |
+| BUG-04 | Low | ~~`update.json` points to non-existent CP2077-OP7Pro repo~~ **FIXED** — `releases/update-full.json` + `releases/update-universal.json` now in workspace repo. GitHub releases v3.0.0-full and v1.0.0-universal published with ZIPs. | ~~Publish releases~~ |
 | BUG-05 | Low | ~~`CP2077-OP7Pro-build-source` (v1.0 legacy) undocumented in all manifests and docs~~ **FIXED** — added to git-repositories.txt and README | ~~Add to manifests~~ |
-| BUG-06 | Low | Upstream `cyberpunk-technotronic-icon-theme` has ~20 broken SVG symlinks | Upstream issue — report or patch locally |
+| BUG-06 | Low | ~~Upstream `cyberpunk-technotronic-icon-theme` has ~20 broken SVG symlinks~~ **FIXED** — dangling symlinks removed locally (icons fall back to system theme for missing entries). | ~~Report or patch~~ |
 
 ---
 
