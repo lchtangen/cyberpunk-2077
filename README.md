@@ -1,365 +1,390 @@
 <div align="center">
 
-# ░▒▓ CYBERPUNK 2077 ▓▒░
-### Magisk Theme Suite · OnePlus 7 Pro · Android 14–16+
+<br>
 
-[![Module](https://img.shields.io/badge/Module-CP2077__OP7Pro__Full_v3.0.0-00ff9f?style=for-the-badge&logo=android&logoColor=black)](00-CONTROL/PRODUCTION-STATUS.md)
-[![Device](https://img.shields.io/badge/Device-OnePlus_7_Pro_GM1911-ff003c?style=for-the-badge)](09-DOCS/DEVICE-SPECS.md)
-[![Android](https://img.shields.io/badge/Android-API_36_|_14--16+-fcee0c?style=for-the-badge&logo=android&logoColor=black)](09-DOCS/DEVICE-SPECS.md)
-[![Magisk](https://img.shields.io/badge/Magisk-30.7-00ff9f?style=for-the-badge)](09-DOCS/INSTALLATION-GUIDE.md)
-[![Root](https://img.shields.io/badge/Root-Magisk_|_KernelSU_|_APatch-ff6b35?style=for-the-badge)](09-DOCS/INSTALLATION-GUIDE.md)
+# CYBERPUNK 2077 SYSTEM UI SUITE
+
+### Magisk / KernelSU / APatch theme stack for OnePlus 7 Pro and Universal Android builds
+
+<br>
+
+[![Stable](https://img.shields.io/badge/STABLE-CP2077_OP7Pro_Full_v3.0.0-00ff9f?style=for-the-badge&labelColor=050505)](00-CONTROL/PRODUCTION-STATUS.md)
+[![Sprint](https://img.shields.io/badge/SPRINT-v3.1.0_Hardening-fcee0c?style=for-the-badge&labelColor=050505)](09-DOCS/ROADMAP.md)
+[![Universal](https://img.shields.io/badge/UNIVERSAL-v1.0.0_14_ROM_FAMILIES-00ffff?style=for-the-badge&labelColor=050505)](02-PRODUCTION/magisk-modules/CP2077-Universal-release)
+
+[![Device](https://img.shields.io/badge/DEVICE-OnePlus_7_Pro_GM1911-ff003c?style=flat-square&labelColor=0a0a0a)](09-DOCS/DEVICE-SPECS.md)
+[![Android](https://img.shields.io/badge/ANDROID-API_36_%2F_14--16+-fcee0c?style=flat-square&logo=android&logoColor=black&labelColor=0a0a0a)](09-DOCS/DEVICE-SPECS.md)
+[![Root](https://img.shields.io/badge/ROOT-Magisk_30.7_%2B_KSU_%2B_APatch-00ff9f?style=flat-square&labelColor=0a0a0a)](09-DOCS/INSTALLATION-GUIDE.md)
+[![Workspace](https://img.shields.io/badge/WORKSPACE-17G_%2F_53_repos-ff6b35?style=flat-square&labelColor=0a0a0a)](99-MANIFESTS/workspace-size.txt)
+
+<br>
+
+```
+╭──────────────────────────────────────────────────────────────────────────────╮
+│  BOOT ANIMATION  ▸  SHUTDOWN ANIMATION  ▸  SYSTEM AUDIO  ▸  WEBUI CONTROL   │
+│  1440×3120 native OP7 Pro pipeline · Universal auto-scale · multi-ROM mount  │
+╰──────────────────────────────────────────────────────────────────────────────╯
+```
+
+<br>
+
+| Signal | Value |
+|:--|:--|
+| Active device | OnePlus 7 Pro `GM1911` / `guacamole` |
+| Active ROM target | Android 16 / API 36 |
+| Stable module | `CP2077_OP7Pro_Full` v3.0.0 |
+| Active sprint | v3.1.0 hardening and UI expansion |
+| Current variant | `CyberGlitch-2077` at 60 fps |
+| Asset surface | 5 boot variants, 5 shutdown variants, 7 UI sounds |
+| Root layer | Magisk 20.4+, KernelSU, APatch |
+| Workspace snapshot | 17G, 310,578 files, 53 repo entries |
+
+<br>
 
 </div>
 
 ---
 
-```
-╔══════════════════════════════════════════════════════════════════╗
-║  ⠀⠀⠀⠀⠀⠀⠀⠀⠀NIGHT CITY NEVER SLEEPS⠀⠀⠀⠀⠀⠀⠀⠀⠀                 ║
-║  Boot animations · Shutdown animations · UI audio               ║
-║  4 variants · 1440×3120 · 60fps · Multi-ROM · Multi-root       ║
-╚══════════════════════════════════════════════════════════════════╝
-```
+## Command Deck
 
-> **9.9 GB** workspace · **150,190** files · **9** cyberpunk repos · **17** tracked repos  
-> Last updated: **2026-05-13**
-
----
-
-## 📡 Live Device Status
-
-| Field | Value |
-|-------|-------|
-| 📱 Device | OnePlus 7 Pro `GM1911` (guacamole) |
-| 🖥 Display | 1440 × 3120 px |
-| 🤖 Android | API 36 (Android 16) |
-| 🔑 Magisk | v30.7 |
-| ✅ Active Module | `CP2077_OP7Pro_Full` **v3.0.0** |
-| 🎬 Active Variant | `CyberGlitch-2077` (glitch logo · 60 fps) |
-| 🗂 Previous Module | `CP2077_OP7Pro_Ultimate` — disabled, not deleted |
-
-> Full status → [`00-CONTROL/PRODUCTION-STATUS.md`](00-CONTROL/PRODUCTION-STATUS.md)
+| Intent | Entry Point |
+|:--|:--|
+| Install on OP7 Pro | [`09-DOCS/INSTALLATION-GUIDE.md`](09-DOCS/INSTALLATION-GUIDE.md) |
+| Inspect active device | [`00-CONTROL/PRODUCTION-STATUS.md`](00-CONTROL/PRODUCTION-STATUS.md) |
+| Compare animation variants | [`09-DOCS/VARIANTS.md`](09-DOCS/VARIANTS.md) |
+| Build from source | [`09-DOCS/BUILD-GUIDE.md`](09-DOCS/BUILD-GUIDE.md) |
+| Navigate the workspace | [`09-DOCS/WORKSPACE-GUIDE.md`](09-DOCS/WORKSPACE-GUIDE.md) |
+| Track v3.1.0 and beyond | [`09-DOCS/ROADMAP.md`](09-DOCS/ROADMAP.md) |
+| Debug boot/audio issues | [`09-DOCS/TROUBLESHOOTING.md`](09-DOCS/TROUBLESHOOTING.md) |
+| Audit cloned references | [`09-DOCS/REPOS.md`](09-DOCS/REPOS.md) |
 
 ---
 
-## 📦 Module Index
+## System Overview
 
-### 🟢 CP2077_OP7Pro_Full · v3.0.0 — *Active*
-> **Path:** `01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/`
+This workspace builds and maintains a Cyberpunk 2077 Android visual layer:
 
-The primary production module. Device-optimized for OnePlus 7 Pro (guacamole). Interactive installer with 4 boot animation variants at native 1440×3120, matching shutdown animations, and CP2077 UI audio pack. Multi-path mount engine covers AOSP, LineageOS, OOS 14+, and yaap.
+- systemless boot/shutdown animation replacement through Magisk-style modules
+- OnePlus 7 Pro native packaging at `1440x3120`
+- Universal all-device packaging with ROM and resolution detection
+- CP2077-inspired system audio overlays
+- WebUI and ADB control surfaces for variant switching and diagnostics
+- Linux/Wayland theme references for a matching desktop environment
 
-| Feature | Detail |
-|---------|--------|
-| Boot animations | CyberGlitch · Flatline · Re-Boot · Original 1080p · Original 4K |
-| Shutdown animations | CyberGlitch · Flatline · Re-Boot · og1080p · og4k |
-| Audio pack | 7 OGG files: lock/unlock, charging, camera, UI tick |
-| Installer | Interactive with config-file resume |
-| Config file | `/data/cp2077.conf` |
-| Min Magisk | 20400 (20.4+) |
-| Min API | 26 (Android 8.0+) |
+The root repository is intentionally a control and documentation repository. The
+large source trees live under `01-DEVELOPMENT/` through `08-HACKING-RESEARCH/`
+and many of them are nested repos with their own history.
 
 ---
 
-### 🟡 CP2077_OP7Pro_Ultimate · v3.0.0 — *Built, Disabled*
-> **Path:** `01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro-Ultimate/`
+## Module Matrix
 
-Superset of Full — includes all variants pre-packed in one ZIP (277 MB megapack), optional live wallpaper slot, splash screen, and fully interactive config tool. Currently disabled in favour of the lighter Full edition. Keep for testing or when the megapack workflow is preferred.
+<table>
+<tr>
+<td width="33%" valign="top">
+
+<h3><code>CP2077_OP7Pro_Full</code></h3>
+
+<p>
+<strong>Status:</strong> Stable / active on device<br>
+<strong>Version:</strong> v3.0.0 stable, v3.1.0 sprint metadata<br>
+<strong>Target:</strong> OnePlus 7 Pro <code>guacamole</code><br>
+<strong>Source:</strong> <code>01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/</code><br>
+<strong>Release:</strong> <code>02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/</code>
+</p>
+
+<p>
+Primary production module. Ships the native OP7 Pro animation pipeline,
+shutdown animations, audio pack, config-driven variant selection, and
+multi-path mount repair.
+</p>
+
+</td>
+<td width="33%" valign="top">
+
+<h3><code>CP2077_Universal</code></h3>
+
+<p>
+<strong>Status:</strong> Built / multi-device<br>
+<strong>Version:</strong> v1.0.0<br>
+<strong>Target:</strong> Android devices across 14 ROM families<br>
+<strong>Source:</strong> <code>01-DEVELOPMENT/repos/cyberpunk/CP2077-Universal/</code><br>
+<strong>Release:</strong> <code>02-PRODUCTION/magisk-modules/CP2077-Universal-release/</code>
+</p>
+
+<p>
+All-device package. Auto-detects ROM family, root solution, and display
+resolution; includes the canonical all-variant ZIP plus per-variant builds.
+</p>
+
+</td>
+<td width="33%" valign="top">
+
+<h3><code>CP2077_OP7Pro_Ultimate</code></h3>
+
+<p>
+<strong>Status:</strong> Built / disabled<br>
+<strong>Version:</strong> v3.0.0<br>
+<strong>Target:</strong> OnePlus 7 Pro megapack testing<br>
+<strong>Source:</strong> <code>01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro-Ultimate/</code><br>
+<strong>Release:</strong> <code>02-PRODUCTION/magisk-modules/CP2077-OP7Pro-Ultimate-release/</code>
+</p>
+
+<p>
+Superset package kept for megapack workflows. Not the active daily-driver
+module; Full is the production path.
+</p>
+
+</td>
+</tr>
+</table>
 
 ---
 
-### 🟢 CP2077_Universal · v1.0.0 — *Built*
-> **Path:** `01-DEVELOPMENT/repos/cyberpunk/CP2077-Universal/`  
-> **Release:** `release/CP2077-Universal-v1.0.0.zip` (278 MB) + 4 per-variant ZIPs
+## Visual Runtime
 
-All-device universal build. Auto-detects resolution, ROM family, and root solution at install time. Supports 14 ROM families and any resolution via auto-scaling.
+| Layer | Implementation |
+|:--|:--|
+| Boot animation | `bootanimation/<variant>/bootanimation.zip`, stored inner ZIP format |
+| Shutdown animation | `shutdownanimation/<variant>/shutdownanimation.zip` |
+| Audio overlay | `audio/ui/*.ogg`, 7 Android UI event sounds |
+| Flash-time selector | `customize.sh`, reads `/data/cp2077.conf` |
+| Early mount | `post-fs-data.sh`, bind-mounts ROM media paths |
+| Late repair | `service.sh`, remounts if a stock stub under 5 MB wins |
+| Live config | `cp2077-config.sh` and Magisk/MMRL WebUI bridge |
+| Update channel | `releases/update-full.json`, `releases/update-universal.json` |
 
-| Supported ROMs | |
-|---|---|
-| AOSP / Pixel / CalyxOS / GrapheneOS | ✅ |
-| LineageOS / crDroid / DerpFest | ✅ |
-| OOS / ColorOS | ✅ |
-| MIUI / HyperOS | ✅ |
-| Samsung One UI | ✅ |
-| Evolution X / yaap / ArrowOS / PixelOS / RisingOS | ✅ |
-
-| Supported Root Solutions | |
-|---|---|
-| Magisk 20.4+ | ✅ |
-| KernelSU | ✅ |
-| APatch | ✅ |
+The 5 MB threshold in `service.sh` is the key production guardrail: CP2077
+animation ZIPs are large, while stock stubs are tiny. If a ROM remounts `/product`
+after `post-fs-data`, the late service pass can detect and repair it.
 
 ---
 
-### 🗃 CP2077_OP7Pro · v1.0 — *Legacy Build-Source*
-> **Path:** `01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro-build-source/`
+## Animation Variants
 
-Original v1.0 module — the first iteration before the Full/Ultimate split. Static product partition mount, Android 12+ only. Kept as a reference baseline; not intended for installation.
+| Variant | Key | Boot | Shutdown | Role |
+|:--|:--|:--|:--|:--|
+| CyberGlitch-2077 | `glitch` | 1440x3120 / 60 fps | included | Default active profile |
+| Cyberpunk Flatline | `flatline` | 1440x3120 / 60 fps | included | Red diagnostic profile |
+| Re-Boot Animation | `reboot` | 1440x3120 / 60 fps | included | Looping reboot identity |
+| Original 1080p | `og1080p` | 1080x2340 / 30 fps | included | Classic OnePlus port |
+| Original 4K | `og4k` | 2160x4800 / 30 fps | included | Development high-res asset |
 
----
-
-## 🎬 Boot Animation Variants
-
-| Variant | Key | FPS | Resolution | Source | Status |
-|---------|-----|-----|------------|--------|--------|
-| **CyberGlitch-2077** | `glitch` | 60 | 1440×3120 | sodasoba1 (ported) | ✅ Full |
-| **Cyberpunk Flatline** | `flatline` | 60 | 1440×3120 | sodasoba1 (ported) | ✅ Full + shutdown |
-| **Re-Boot Animation** | `reboot` | 60 | 1440×3120 | sodasoba1 (ported) | ✅ Full + shutdown |
-| **Original 1080p** | `og1080p` | 30 | 1080×2340 | 8T SE port | ✅ Full + shutdown |
-| **Original 4K** | `og4k` | 30 | 2160×4800 | og1080p upscaled 2× | ✅ Full + shutdown |
+Full variant notes and source paths live in
+[`09-DOCS/VARIANTS.md`](09-DOCS/VARIANTS.md).
 
 ---
 
-## ⚡ Quick Commands
+## Quick Operations
 
-### Install / Flash
+<details open>
+<summary><strong>Install or flash</strong></summary>
 
 ```bash
-# Via Magisk Manager — sideload:
-adb push 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/CP2077-OP7Pro-v3.0.0.zip /sdcard/Download/
-# Then: Magisk → Modules → Install from storage
+adb push 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/CP2077-OP7Pro-v3.0.0.zip \
+  /sdcard/Download/
 
-# Via ADB (TWRP):
-adb sideload 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/CP2077-OP7Pro-v3.0.0.zip
+# Then install from Magisk / KernelSU / APatch manager and reboot.
 ```
 
-### Switch Variant (no reflash)
+Universal build:
 
 ```bash
-# Set variant in config file — takes effect on next reflash
-adb shell su -c 'echo "variant=flatline" > /data/cp2077.conf'
-
-# Available variants: glitch | flatline | reboot | og1080p
-# Then reflash the module zip via Magisk Manager
+adb push 02-PRODUCTION/magisk-modules/CP2077-Universal-release/CP2077-Universal-v1.0.0.zip \
+  /sdcard/Download/
 ```
 
-### Force Restart Boot Animation
+</details>
+
+<details>
+<summary><strong>Switch animation profile without reflashing</strong></summary>
 
 ```bash
+adb shell su -c 'printf "variant=flatline\naudio=yes\n" > /data/cp2077.conf'
 adb shell su -c 'setprop ctl.restart bootanim'
 ```
 
-### Build from Source
+Valid OP7 Pro keys:
+
+```text
+glitch | flatline | reboot | og1080p | og4k
+```
+
+</details>
+
+<details>
+<summary><strong>Run the ADB control panel</strong></summary>
 
 ```bash
-# Full Edition (OnePlus 7 Pro)
-cd 01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro
-python3 build.py
+cd 05-LINUX/arch-host/device-arch-scripts
+./cp2077-adb-control.sh status
+./cp2077-adb-control.sh switch glitch
+./cp2077-adb-control.sh verify
+./cp2077-adb-control.sh logs
+```
 
-# Universal (all devices)
+</details>
+
+<details>
+<summary><strong>Build from source</strong></summary>
+
+```bash
+cd 01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro
+python3 build.py --list-variants
+python3 build.py --dry-run
+python3 build.py
+```
+
+```bash
 cd 01-DEVELOPMENT/repos/cyberpunk/CP2077-Universal
 python3 build-universal.py
-
-# Ultimate All-In-One
-cd 01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro-Ultimate
-python3 build-ultimate.py
 ```
 
-### Update All Repos
+</details>
+
+<details>
+<summary><strong>Regenerate manifests after release work</strong></summary>
 
 ```bash
-for r in $(find . -name '.git' -not -path '*/.git/.git' | sed 's|/.git||'); do
-  printf "\n→ %s\n" "$r"
-  git -C "$r" pull --ff-only 2>&1 | grep -v '^Already'
-done
+bash 99-MANIFESTS/generate-manifests.sh
 ```
 
-### Verify Boot Animation Integrity
+The manifest files are snapshots, not live truth. Regenerate them after adding
+or changing release artifacts.
 
-```bash
-for variant in glitch flatline reboot og1080p; do
-  zip="01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/bootanimation/$variant/bootanimation.zip"
-  python3 -c "
-import zipfile, sys
-z = zipfile.ZipFile('$zip')
-names = z.namelist()
-desc = [n for n in names if n == 'desc.txt']
-frames = [n for n in names if n.endswith('.png')]
-print(f'  $variant: desc={bool(desc)} frames={len(frames)}')
-"
-done
-```
+</details>
 
-### Check On-Device Active Animation
+---
 
-```bash
-adb shell su -c 'ls -lh /product/media/bootanimation.zip'
-adb shell su -c 'ls -lh /data/local/bootanimation.zip'
-adb shell su -c 'ls -lh /data/misc/bootanim/bootanimation.zip'
+## Design System
+
+| Token | Hex | Usage |
+|:--|:--|:--|
+| Neon Yellow | `#FCEE0C` | primary CP2077 identity, warnings, active selectors |
+| Netrunner Cyan | `#00FFFF` | links, secondary accent, WebUI telemetry |
+| Flatline Red | `#FF003C` | danger states, flatline variant, destructive actions |
+| Signal Green | `#00FF9F` | success, verified state, active module |
+| Warning Orange | `#FF6B35` | pending work, sprint state, warnings |
+| Carbon Black | `#0A0A0A` | base background for WebUI and terminal themes |
+| Grid Border | `#2A2A2A` | dividers, card outlines, low-emphasis UI chrome |
+
+The palette is reused across module WebUI, ADB ANSI output, Waybar, eww,
+hyprlock, Rofi, Plymouth, and README badges.
+
+---
+
+## Workspace Map
+
+```text
+cyberpunk-2077/
+├── 00-CONTROL/                       production status and workspace policy
+├── 01-DEVELOPMENT/repos/             module, root, ROM, kernel, and theme repos
+│   ├── cyberpunk/                    CP2077 module source trees
+│   ├── magisk-ecosystem/             Magisk, KernelSU, APatch, MMRL, Zygisk refs
+│   ├── oneplus-7-pro/                guacamole device trees and kernels
+│   └── android-roms/                 recovery and ROM references
+├── 02-PRODUCTION/magisk-modules/     release symlinks and device copies
+├── 03-BUILD/                         raw upstream assets and build workspace
+├── 04-ANDROID/                       ADB tools, APK staging, device snapshots
+├── 05-LINUX/                         Arch host scripts and desktop setup
+├── 06-UI-THEMES-ANIMATIONS/          animations, wallpapers, themes, audio
+├── 07-KERNEL-PACKAGE-MODULES/        kernel images, sources, modules, packages
+├── 08-HACKING-RESEARCH/              NetHunter and security research
+├── 09-DOCS/                          documentation vault
+├── 10-QUARANTINE-invalid-downloads/  invalid APK/ZIP downloads; never install
+├── 99-MANIFESTS/                     generated inventories and checksums
+└── releases/                         Magisk update JSON and changelogs
 ```
 
 ---
 
-## 🗂 Workspace Layout
+## Compatibility Matrix
 
-| Dir | Purpose |
-|-----|---------|
-| `00-CONTROL/` | Workspace policy, production status, operating notes |
-| `01-DEVELOPMENT/` | Source repositories — modules, themes, kernels |
-| `02-PRODUCTION/` | Release ZIPs and Magisk module outputs (symlink-based) |
-| `03-BUILD/` | Build workspace, upstream reference modules, raw assets |
-| `04-ANDROID/` | Device snapshot (sdcard), APKs, ARM64 archives |
-| `05-LINUX/` | Arch host scripts and Linux-side assets |
-| `06-UI-THEMES-ANIMATIONS/` | Boot/shutdown animations, themes, wallpapers |
-| `07-KERNEL-PACKAGE-MODULES/` | Kernel sources, patched boot images |
-| `08-HACKING-RESEARCH/` | NetHunter and security research repos |
-| `09-DOCS/` | Full documentation index |
-| `10-QUARANTINE-invalid-downloads/` | Files confirmed bad — DO NOT install |
-| `99-MANIFESTS/` | Generated inventories and checksums |
+| Surface | Supported / tracked |
+|:--|:--|
+| Root managers | Magisk 20.4+, KernelSU, APatch |
+| Tested active root | Magisk v30.7 |
+| Android range | Android 8.0+ declared for OP7 Pro module, active test on Android 16 |
+| OP7 Pro display | 1440x3120 / 90 Hz |
+| Universal ROM families | AOSP, Pixel, CalyxOS, GrapheneOS, LineageOS, crDroid, DerpFest, OOS, ColorOS, MIUI, HyperOS, Samsung One UI, Evolution X, yaap, ArrowOS, PixelOS, RisingOS |
+| Primary mount paths | `/product/media`, `/system/product/media`, `/system/media`, `/my_product/media`, `/data/local`, `/data/misc/bootanim` |
 
 ---
 
-## 🌐 Repository Index
+## Release and Version Rules
 
-### 🔧 Primary Modules (local dev)
+`module.prop` version codes use this formula:
 
-| Module | Version | Description |
-|--------|---------|-------------|
-| [`CP2077-OP7Pro`](01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/) | v3.0.0 | Full Edition — OP7 Pro optimized, 4 variants |
-| [`CP2077-OP7Pro-Ultimate`](01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro-Ultimate/) | v3.0.0 | Ultimate All-In-One — megapack |
-| [`CP2077-Universal`](01-DEVELOPMENT/repos/cyberpunk/CP2077-Universal/) | v1.0.0-dev | Universal — auto-detects ROM, resolution, root |
-| [`CP2077-OP7Pro-build-source`](01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro-build-source/) | v1.0 | Legacy — original first-gen module (reference only) |
-
-### 📺 Upstream Reference — Boot Animations
-
-| Repo | Author | Description |
-|------|--------|-------------|
-| [`GlitchedCyberBoot`](01-DEVELOPMENT/repos/cyberpunk/GlitchedCyberBoot/) | Magisk-Modules-Alt-Repo | CyberGlitch animation source |
-| [`ONEPLUS9-OOS13-BootAnimation`](01-DEVELOPMENT/repos/cyberpunk/ONEPLUS9-OOS13-BootAnimation/) | sodasoba1 | Primary animation source (glitch, flatline, reboot) |
-| [`CyberPunk-2077-OOS13-Modded-Boot-and-Shutdown-Animation`](03-BUILD/artifacts/cyberpunk-build/CyberPunk-2077-OOS13-Modded-Boot-and-Shutdown-Animation/) | sodasoba1 | Modded OOS13 boot + shutdown reference |
-| [`Magisk-Module-Cyberpunk-2077-Bootanimation-SplashScreen-POCO`](03-BUILD/artifacts/cyberpunk-build/Magisk-Module-Cyberpunk-2077-Bootanimation-SplashScreen-POCO/) | ENEIZEM | POCO splash screen reference |
-
-### 🎨 Android UI / Icons
-
-| Repo | Author | Description |
-|------|--------|-------------|
-| [`AndroidCyberpankIcons`](01-DEVELOPMENT/repos/cyberpunk/AndroidCyberpankIcons/) | privatgt | CP2077-themed Android icon pack |
-
-### 🖥 Linux Themes
-
-| Repo | Author | Covers |
-|------|--------|--------|
-| [`Cyberpunk-Neon`](06-UI-THEMES-ANIMATIONS/themes/Cyberpunk-Neon/) | Roboron3042 | KDE, GTK, Sway, Waybar, Rofi, Vim, terminal |
-| [`K-DE-Cyberpunk-Neon`](06-UI-THEMES-ANIMATIONS/themes/K-DE-Cyberpunk-Neon/) | UtkarshKunwar | KDE Plasma, Konsole, Plymouth, Neovim, Chrome |
-| [`cyber-hyprland-theme`](06-UI-THEMES-ANIMATIONS/themes/cyber-hyprland-theme/) | taylor85345 | Hyprland, eww, Rofi, foot terminal |
-| [`cybrland`](06-UI-THEMES-ANIMATIONS/themes/cybrland/) | scherrer-txt | Full Arch dotfiles — Hyprland, Waybar, kitty, nvim, fish |
-| [`cybrcolors`](06-UI-THEMES-ANIMATIONS/themes/cybrcolors/) | scherrer-txt | Cyberpunk color palette / design tokens |
-| [`cyberpunk-technotronic-icon-theme`](06-UI-THEMES-ANIMATIONS/themes/cyberpunk-technotronic-icon-theme/) | dreifacherspass | SVG icon theme, blue-purple gradient |
-
-### 🖼 Wallpapers
-
-| Repo | Author | License |
-|------|--------|---------|
-| [`cybrpapers`](06-UI-THEMES-ANIMATIONS/wallpapers/cybrpapers/) | scherrer-txt | CC0 |
-| `Cyberpunk-Wallpapers/` | local | — |
-
-### ⚙️ Kernels — OnePlus 7 Pro / SM8150
-
-| Repo | Branch | Notes |
-|------|--------|-------|
-| [`blu-spark-kernel-op7`](07-KERNEL-PACKAGE-MODULES/kernel/blu-spark-kernel-op7/) | `blu_spark-11` | CAF 4.14, OP7/T/Pro, shallow clone |
-| [`neptune-kernel-sm8150`](07-KERNEL-PACKAGE-MODULES/kernel/neptune-kernel-sm8150/) | `U-Ice` | CAF/CLO QSSI14.0, shallow clone |
-| [`kernelsu-lineageos-guacamole`](07-KERNEL-PACKAGE-MODULES/kernel/kernelsu-lineageos-guacamole/) | `main` | KernelSU pre-built for OP7 Pro + LineageOS |
-| `oneplus-7-pro-lineage-kernel-sm8150` *(symlink)* | — | LineageOS SM8150 kernel source |
-
----
-
-## 🔧 Troubleshooting
-
-### Boot animation not changing after flash
-
-```bash
-# 1. Confirm the module is enabled
-adb shell su -c 'ls /data/adb/modules/CP2077_OP7Pro_Full/'
-
-# 2. Check which path the system is actually reading
-adb shell su -c 'stat /product/media/bootanimation.zip'
-
-# 3. Force restart the boot animation service
-adb shell su -c 'setprop ctl.restart bootanim'
-
-# 4. If still wrong, check service.sh ran (look for size threshold repair)
-adb shell su -c 'logcat -d | grep cp2077'
+```text
+MAJOR * 100000 + MINOR * 1000 + PATCH
 ```
 
-### Wrong animation after reboot (reverted to stock)
+Examples:
 
-The `service.sh` size-threshold remount check runs 5 seconds after boot. If the animation is correct during boot but reverts, the bind mount is being overwritten by the ROM. Try:
+| Version | Code |
+|:--|--:|
+| v1.0.0 | 100000 |
+| v3.0.0 | 300000 |
+| v3.1.0 | 301000 |
 
-```bash
-# Check current size (should be >5 MB for CP2077)
-adb shell su -c 'wc -c /product/media/bootanimation.zip'
+When bumping a release, update the build scripts, `module.prop`, release ZIP
+filenames, root `releases/update-*.json`, ZIP-local `update.json`, changelogs,
+and manifests together. See [`AGENTS.md`](AGENTS.md) for the short operational
+checklist.
+
+---
+
+## Quarantine
+
+Do not install, flash, repackage, or use anything from:
+
+```text
+10-QUARANTINE-invalid-downloads/
 ```
 
-If size < 5 MB, the ROM replaced the file. Consider filing an issue or switching to the `/data/local/bootanimation.zip` fallback path which is checked first on most ROMs.
-
-### Module not showing in Magisk
-
-Verify the ZIP structure contains `META-INF/com/google/android/update-binary` and `module.prop` at the root level.
-
-### Audio not applying
-
-```bash
-adb shell su -c 'ls /product/media/audio/ui/*.ogg'
-# Should show 7 CP2077 OGG files
-# If empty, reinstall with audio=yes in config or answer Y at installer prompt
-```
-
-> Full troubleshooting guide → [`09-DOCS/TROUBLESHOOTING.md`](09-DOCS/TROUBLESHOOTING.md)
+That directory contains malformed downloads such as HTML documents masquerading
+as APKs or ZIPs. It exists so bad artifacts are retained for audit without
+being confused with production inputs.
 
 ---
 
-## 🚫 Quarantined — DO NOT Install
+## Reference Layers
 
-| File | Reason |
-|------|--------|
-| `cp2077-livewallpaper-original.apk` | HTML document masquerading as APK |
-| `cp2077-livewallpaper-vivid.apk` | HTML document masquerading as APK |
-| `cp2077-bootanimation-stock-oos.zip` | Zero bytes |
-| `cp2077-bootanimation-mega.zip` | HTML document masquerading as ZIP |
+| Layer | Examples |
+|:--|:--|
+| Root ecosystem | Magisk, KernelSU, APatch, ZygiskNext, ReZygisk, LSPosed, MMRL |
+| Device trees | LineageOS 23.2, DerpFest, Evolution X, crDroid references |
+| Kernels | blu-spark, Neptune, KernelSU guacamole, LineageOS SM8150 |
+| Linux themes | Cyberpunk-Neon, K-DE-Cyberpunk-Neon, cybrland, HyprPanel, rofi |
+| Visual assets | CP2077 boot/shutdown ZIPs, wallpapers, splash assets, icon themes |
 
-All quarantined files are in [`10-QUARANTINE-invalid-downloads/`](10-QUARANTINE-invalid-downloads/) for audit visibility only. They are symlinked to the originals in `03-BUILD/artifacts/cyberpunk-build/` with descriptive names indicating their defect.
-
----
-
-## 📚 Documentation
-
-| Doc | Description |
-|-----|-------------|
-| [`09-DOCS/INDEX.md`](09-DOCS/INDEX.md) | Full docs index |
-| [`09-DOCS/INSTALLATION-GUIDE.md`](09-DOCS/INSTALLATION-GUIDE.md) | Flash guide, ADB sideload, requirements |
-| [`09-DOCS/VARIANTS.md`](09-DOCS/VARIANTS.md) | Animation variant details and switching |
-| [`09-DOCS/BUILD-GUIDE.md`](09-DOCS/BUILD-GUIDE.md) | Build from source, adding variants |
-| [`09-DOCS/DEVICE-SPECS.md`](09-DOCS/DEVICE-SPECS.md) | Hardware specs, ROM compat matrix |
-| [`09-DOCS/TROUBLESHOOTING.md`](09-DOCS/TROUBLESHOOTING.md) | Common issues and fixes |
-| [`09-DOCS/REPOS.md`](09-DOCS/REPOS.md) | Detailed repo catalogue with remotes |
-| [`09-DOCS/WORKSPACE-GUIDE.md`](09-DOCS/WORKSPACE-GUIDE.md) | Full directory tree and layout guide |
-| **[`09-DOCS/ROADMAP.md`](09-DOCS/ROADMAP.md)** | **Future roadmap, open bugs, planned features** |
-| [`99-MANIFESTS/git-repositories.txt`](99-MANIFESTS/git-repositories.txt) | All repos with branches and remotes |
-| [`00-CONTROL/PRODUCTION-STATUS.md`](00-CONTROL/PRODUCTION-STATUS.md) | Current device state and audit log |
+Full repository catalogue:
+[`09-DOCS/REPOS.md`](09-DOCS/REPOS.md).
 
 ---
 
-## 🗺 Roadmap Highlights
+## Manifest Index
 
-See [`09-DOCS/ROADMAP.md`](09-DOCS/ROADMAP.md) for the full roadmap. Key upcoming items:
-
-| Priority | Item |
-|----------|------|
-| 🔴 High | Source `og4k` bootanimation asset (currently empty placeholder) |
-| 🔴 High | Publish v3.0.0 GitHub release — fix OTA update.json URLs |
-| 🟡 Medium | Build and publish CP2077-Universal v1.0.0 release zip |
-| 🟡 Medium | og1080p shutdown animation |
-| 🟢 Low | GitHub Actions CI pipeline for automated builds |
-| 🟢 Low | Plymouth boot theme for Arch Linux host |
+| Manifest | Contents |
+|:--|:--|
+| [`99-MANIFESTS/production-artifact-sha256.txt`](99-MANIFESTS/production-artifact-sha256.txt) | release ZIP checksums |
+| [`99-MANIFESTS/artifact-inventory.tsv`](99-MANIFESTS/artifact-inventory.tsv) | file inventory |
+| [`99-MANIFESTS/directory-map.txt`](99-MANIFESTS/directory-map.txt) | directory tree |
+| [`99-MANIFESTS/git-repositories.txt`](99-MANIFESTS/git-repositories.txt) | repo paths, remotes, categories |
+| [`99-MANIFESTS/workspace-size.txt`](99-MANIFESTS/workspace-size.txt) | workspace size snapshot |
+| [`99-MANIFESTS/symlinks.txt`](99-MANIFESTS/symlinks.txt) | symlink map |
 
 ---
 
 <div align="center">
 
-**Wake the f**k up, Samurai.**  
-*We have a city to burn.*
+### Fan-made theme suite. Not affiliated with CD PROJEKT RED.
 
-`░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░`
+CP2077 names and visual assets belong to their respective owners. This workspace
+is maintained as a personal Android theming and systems research project.
+
+[![Profile](https://img.shields.io/badge/GitHub-lchtangen-00ff9f?style=flat-square&logo=github&labelColor=050505)](https://github.com/lchtangen)
+[![Docs](https://img.shields.io/badge/Docs-09--DOCS-fcee0c?style=flat-square&labelColor=050505)](09-DOCS/INDEX.md)
+[![Status](https://img.shields.io/badge/Status-Production_Audit-ff6b35?style=flat-square&labelColor=050505)](00-CONTROL/PRODUCTION-STATUS.md)
 
 </div>

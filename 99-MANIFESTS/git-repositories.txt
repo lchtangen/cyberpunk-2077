@@ -1,5 +1,5 @@
 # Git Repositories — cyberpunk-2077 workspace
-# Updated: 2026-05-13 (added build-source, Universal built v1.0.0)
+# Updated: 2026-05-13 (v3.1.0 expansion — 28 new repos: Magisk ecosystem, Linux theming, OP7 ROMs)
 # Format: path  branch  remote  category
 
 # ── PRIMARY MODULES (local dev) ───────────────────────────────────────────────
@@ -17,12 +17,36 @@
 # ── ANDROID UI / ICON PACKS ───────────────────────────────────────────────────
 /home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/cyberpunk/AndroidCyberpankIcons  branch=main  remote=https://github.com/privatgt/AndroidCyberpankIcons  category=ui-android
 
+# ── MAGISK / ROOT ECOSYSTEM ───────────────────────────────────────────────────
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/magisk-ecosystem/Magisk              branch=master  remote=https://github.com/topjohnwu/Magisk              category=magisk-root
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/magisk-ecosystem/KernelSU            branch=main  remote=https://github.com/tiann/KernelSU            category=magisk-root
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/magisk-ecosystem/APatch              branch=main  remote=https://github.com/bmax121/APatch              category=magisk-root
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/magisk-ecosystem/ZygiskNext          branch=copyright  remote=https://github.com/Dr-TSNG/ZygiskNext          category=magisk-root
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/magisk-ecosystem/ReZygisk            branch=main  remote=https://github.com/PerformanC/ReZygisk            category=magisk-root
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/magisk-ecosystem/LSPosed             branch=master  remote=https://github.com/LSPosed/LSPosed             category=magisk-root
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/magisk-ecosystem/Vector              branch=master  remote=https://github.com/JingMatrix/Vector              category=magisk-root
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/magisk-ecosystem/zygisk-module-sample  branch=master  remote=https://github.com/topjohnwu/zygisk-module-sample  category=magisk-root
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/magisk-ecosystem/MMRL                branch=master  remote=https://github.com/MMRLApp/MMRL                category=magisk-root
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/magisk-ecosystem/awesome-android-root  branch=main  remote=https://github.com/awesome-android-root/awesome-android-root  category=magisk-root
+
 # ── LINUX THEMES (KDE / GTK / Hyprland / Wayland) ────────────────────────────
-/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/themes/Cyberpunk-Neon  branch=master  remote=https://github.com/Roboron3042/Cyberpunk-Neon  category=theme-linux
-/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/themes/K-DE-Cyberpunk-Neon  branch=main  remote=https://github.com/UtkarshKunwar/K-DE-Cyberpunk-Neon  category=theme-linux
-/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/themes/cyber-hyprland-theme  branch=main  remote=https://github.com/taylor85345/cyber-hyprland-theme  category=theme-linux
-/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/themes/cybrland  branch=main  remote=https://github.com/scherrer-txt/cybrland  category=theme-linux
-/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/themes/cybrcolors  branch=main  remote=https://github.com/scherrer-txt/cybrcolors  category=theme-linux
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/repos/hyprdots                branch=main  remote=https://github.com/prasanthrangan/hyprdots                category=theme-linux
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/repos/HyprPanel                branch=master  remote=https://github.com/Jas-SinghFSU/HyprPanel                category=theme-linux
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/repos/rofi                    branch=master  remote=https://github.com/adi1090x/rofi                    category=theme-linux
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/repos/plymouth-themes           branch=master  remote=https://github.com/adi1090x/plymouth-themes           category=theme-linux
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/repos/mechabar                 branch=main  remote=https://github.com/sejjy/mechabar                 category=theme-linux
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/repos/proxzima-plymouth         branch=master  remote=https://github.com/PROxZIMA/proxzima-plymouth         category=theme-linux
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/repos/diinki-retrofuture       branch=main  remote=https://github.com/diinki/diinki-retrofuture       category=theme-linux
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/repos/dotfiles                 branch=master  remote=https://github.com/gh0stzk/dotfiles                 category=theme-linux
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/repos/dots                     branch=main  remote=https://github.com/1amSimp1e/dots                     category=theme-linux
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/repos/widgets                   branch=main  remote=https://github.com/adi1090x/widgets                   category=theme-linux
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/repos/Tokyonight-rofi-theme      branch=main  remote=https://github.com/w8ste/Tokyonight-rofi-theme      category=theme-linux
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/repos/catppuccin                branch=main  remote=https://github.com/catppuccin/catppuccin                category=theme-linux
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/themes/Cyberpunk-Neon          branch=master  remote=https://github.com/Roboron3042/Cyberpunk-Neon          category=theme-linux
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/themes/K-DE-Cyberpunk-Neon     branch=main  remote=https://github.com/UtkarshKunwar/K-DE-Cyberpunk-Neon     category=theme-linux
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/themes/cyber-hyprland-theme     branch=main  remote=https://github.com/taylor85345/cyber-hyprland-theme     category=theme-linux
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/themes/cybrland                branch=main  remote=https://github.com/scherrer-txt/cybrland                category=theme-linux
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/themes/cybrcolors               branch=main  remote=https://github.com/scherrer-txt/cybrcolors               category=theme-linux
 /home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/themes/cyberpunk-technotronic-icon-theme  branch=main  remote=https://github.com/dreifacherspass/cyberpunk-technotronic-icon-theme  category=theme-linux
 
 # ── WALLPAPERS ────────────────────────────────────────────────────────────────
@@ -32,3 +56,19 @@
 /home/arch/cyberpunk-2077/07-KERNEL-PACKAGE-MODULES/kernel/blu-spark-kernel-op7  branch=blu_spark-11  remote=https://github.com/engstk/op7  category=kernel
 /home/arch/cyberpunk-2077/07-KERNEL-PACKAGE-MODULES/kernel/neptune-kernel-sm8150  branch=main  remote=https://github.com/0wnerDied/Neptune_kernel_sm8150_oneplus  category=kernel
 /home/arch/cyberpunk-2077/07-KERNEL-PACKAGE-MODULES/kernel/kernelsu-lineageos-guacamole  branch=main  remote=https://github.com/surfaceocean/kernelsu_oneplus_7_pro_lineageos_guacamole  category=kernel
+/home/arch/cyberpunk-2077/07-KERNEL-PACKAGE-MODULES/repos/op8  branch=blu_spark-16-custom  remote=https://github.com/engstk/op8  category=kernel
+/home/arch/cyberpunk-2077/07-KERNEL-PACKAGE-MODULES/repos/op5  branch=blu_spark-10  remote=https://github.com/engstk/op5  category=kernel
+
+# ── DEVICE TREES (OnePlus 7 Pro / guacamole) ────────────────────────────────
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/oneplus-7-pro/lineage-device-guacamole        branch=lineage-23.2  remote=https://github.com/LineageOS/android_device_oneplus_guacamole.git          category=device-tree
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/oneplus-7-pro/lineage-device-sm8150-common    branch=lineage-23.2  remote=https://github.com/LineageOS/android_device_oneplus_sm8150-common.git       category=device-tree
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/oneplus-7-pro/lineage-kernel-sm8150           branch=lineage-23.2  remote=https://github.com/LineageOS/android_kernel_oneplus_sm8150.git              category=device-tree
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/oneplus-7-pro/evolution-x-device-guacamole   branch=bka           remote=https://github.com/Evolution-X-Devices/device_oneplus_guacamole.git          category=device-tree
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/oneplus-7-pro/device_oneplus_guacamole       branch=15           remote=https://github.com/DerpFest-Devices/device_oneplus_guacamole       category=device-tree
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/oneplus-7-pro/device_oneplus_sm8150-common   branch=15           remote=https://github.com/DerpFest-Devices/device_oneplus_sm8150-common   category=device-tree
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/oneplus-7-pro/kernel_oneplus_sm8150          branch=15           remote=https://github.com/DerpFest-Devices/kernel_oneplus_sm8150          category=device-tree
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/oneplus-7-pro/android_kernel_oneplus_sm8150  branch=16.0         remote=https://github.com/crdroidandroid/android_kernel_oneplus_sm8150  category=device-tree
+
+# ── RECOVERY (TWRP / PBRP) ───────────────────────────────────────────────────
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/android-roms/android_device_oneplus_guacamole_unified_TWRP  branch=?  remote=(no remote)  category=recovery
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/android-roms/android_device_oneplus_guacamole-pbrp  branch=android-9.0  remote=https://github.com/PitchBlackRecoveryProject/android_device_oneplus_guacamole-pbrp  category=recovery
