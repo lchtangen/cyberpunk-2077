@@ -21,7 +21,7 @@
 ╚══════════════════════════════════════════════════════════════════╝
 ```
 
-> **9.2 GB** workspace · **126,825** files · **9** cyberpunk repos · **16** total repos  
+> **9.9 GB** workspace · **150,190** files · **9** cyberpunk repos · **17** tracked repos  
 > Last updated: **2026-05-13**
 
 ---
@@ -52,7 +52,7 @@ The primary production module. Device-optimized for OnePlus 7 Pro (guacamole). I
 | Feature | Detail |
 |---------|--------|
 | Boot animations | CyberGlitch · Flatline · Re-Boot · Original 1080p |
-| Shutdown animations | CyberGlitch · Flatline · Re-Boot *(og1080p pending — see roadmap)* |
+| Shutdown animations | CyberGlitch · Flatline · Re-Boot · og1080p |
 | Audio pack | 7 OGG files: lock/unlock, charging, camera, UI tick |
 | Installer | Interactive with config-file resume |
 | Config file | `/data/cp2077.conf` |
@@ -68,10 +68,11 @@ Superset of Full — includes all variants pre-packed in one ZIP (277 MB megapac
 
 ---
 
-### 🔵 CP2077_Universal · v1.0.0 — *In Development*
-> **Path:** `01-DEVELOPMENT/repos/cyberpunk/CP2077-Universal/`
+### 🟢 CP2077_Universal · v1.0.0 — *Built*
+> **Path:** `01-DEVELOPMENT/repos/cyberpunk/CP2077-Universal/`  
+> **Release:** `release/CP2077-Universal-v1.0.0.zip` (278 MB) + 4 per-variant ZIPs
 
-All-device universal build. Auto-detects resolution, ROM family, and root solution at install time. Supports 14 ROM families and any resolution via auto-scaling. No release ZIP yet — see [Roadmap](09-DOCS/ROADMAP.md).
+All-device universal build. Auto-detects resolution, ROM family, and root solution at install time. Supports 14 ROM families and any resolution via auto-scaling.
 
 | Supported ROMs | |
 |---|---|
@@ -102,10 +103,10 @@ Original v1.0 module — the first iteration before the Full/Ultimate split. Sta
 | Variant | Key | FPS | Resolution | Source | Status |
 |---------|-----|-----|------------|--------|--------|
 | **CyberGlitch-2077** | `glitch` | 60 | 1440×3120 | sodasoba1 (ported) | ✅ Full |
-| **Cyberpunk Flatline** | `flatline` | 60 | 1440×3120 | sodasoba1 (ported) | ✅ Full |
-| **Re-Boot Animation** | `reboot` | 60 | 1440×3120 | sodasoba1 (ported) | ✅ Full |
-| **Original 1080p** | `og1080p` | 30 | 1080×2340 | 8T SE port | ✅ Full |
-| **Original 4K** | `og4k` | — | 3840×2160 | — | ⚠️ Placeholder |
+| **Cyberpunk Flatline** | `flatline` | 60 | 1440×3120 | sodasoba1 (ported) | ✅ Full + shutdown |
+| **Re-Boot Animation** | `reboot` | 60 | 1440×3120 | sodasoba1 (ported) | ✅ Full + shutdown |
+| **Original 1080p** | `og1080p` | 30 | 1080×2340 | 8T SE port | ✅ Full + shutdown |
+| **Original 4K** | `og4k` | — | 3840×2160 | — | ⚠️ Placeholder — no asset |
 
 > ⚠️ `og4k` directory exists but has no animation zip yet. See [BUG-01 in Roadmap](09-DOCS/ROADMAP.md).
 

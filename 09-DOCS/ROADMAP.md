@@ -1,6 +1,6 @@
 # 🗺 ROADMAP — Cyberpunk 2077 Magisk Theme Suite
 
-> Last updated: 2026-05-13 · Maintained by: lchtangen
+> Last updated: 2026-05-13 (build session) · Maintained by: lchtangen
 
 ---
 
@@ -10,7 +10,7 @@
 |--------|---------|--------|
 | CP2077_OP7Pro_Full | v3.0.0 | ✅ Stable — active on device |
 | CP2077_OP7Pro_Ultimate | v3.0.0 | 🟡 Built — disabled (superseded by Full) |
-| CP2077_Universal | v1.0.0 | 🔵 Dev — no release zip yet |
+| CP2077_Universal | v1.0.0 | 🟢 Built — release ZIP at `release/CP2077-Universal-v1.0.0.zip` (278 MB) |
 
 ---
 
@@ -19,10 +19,10 @@
 | ID | Severity | Description | Fix |
 |----|----------|-------------|-----|
 | BUG-01 | High | `og4k` bootanimation dir is empty in both Full and Universal — variant is advertised but not installable | Source or upscale 4K animation asset |
-| BUG-02 | Medium | Full module has no shutdown animation for `og1080p` and `og4k` variants — only `flatline`, `glitch`, `reboot` have matched shutdown anims | Create shutdown anim for og1080p (crop/remaster from 8T SE source) |
-| BUG-03 | Medium | CP2077-Universal `release/` dir is empty — OTA update.json URL will 404 | Build and publish v1.0.0 Universal zip |
+| BUG-02 | Medium | ~~Full module has no shutdown animation for `og1080p`~~ **FIXED** — `shutdownanimation/og1080p/` created (reboot frames, desc rewritten to 1080×2340). `og4k` still pending. | ~~Create shutdown anim for og1080p~~ |
+| BUG-03 | Medium | ~~CP2077-Universal `release/` dir is empty — OTA update.json URL will 404~~ **FIXED** — `CP2077-Universal-v1.0.0.zip` built (278 MB) + 4 per-variant ZIPs | ~~Build v1.0.0 Universal zip~~ |
 | BUG-04 | Low | `update.json` on both modules points to GitHub release URLs that don't yet exist as published releases | Publish v3.0.0 and v1.0.0-universal tags to GitHub |
-| BUG-05 | Low | `CP2077-OP7Pro-build-source` (v1.0 legacy) undocumented in all manifests and docs | Add to git-repositories.txt, REPOS.md, README |
+| BUG-05 | Low | ~~`CP2077-OP7Pro-build-source` (v1.0 legacy) undocumented in all manifests and docs~~ **FIXED** — added to git-repositories.txt and README | ~~Add to manifests~~ |
 | BUG-06 | Low | Upstream `cyberpunk-technotronic-icon-theme` has ~20 broken SVG symlinks | Upstream issue — report or patch locally |
 
 ---
@@ -31,13 +31,13 @@
 
 ### 🎬 Animation
 - [ ] **Source og4k bootanimation** — upscale existing glitch/flatline to 4K using FFmpeg or obtain from CP2077 game assets (3840×2160 target)
-- [ ] **og1080p shutdown animation** — create matching shutdown anim for the 8T SE port variant
+- [x] **og1080p shutdown animation** — created (reboot frames adapted to 1080×2340)
 - [ ] **og4k shutdown animation** — matching shutdown for the 4K variant once sourced
 - [ ] **Reverse-boot (rboot) coverage** — verify `rbootanimation.zip` is correctly set for all 4 variants
 
 ### 📦 Build & Release
 - [ ] **Publish v3.0.0 GitHub release** — tag, upload ZIPs, fix `update.json` OTA pointer
-- [ ] **Build CP2077-Universal v1.0.0 zip** — run `build-universal.py`, publish release, fix `update-universal.json`
+- [x] **Build CP2077-Universal v1.0.0 zip** — built 2026-05-13 (278 MB universal + 4 per-variant ZIPs)
 - [ ] **Build megapack v3.0.0** — single ZIP containing all variants (replaces v2.0.0-beta-megapack)
 
 ### 🔧 Installer Improvements
