@@ -339,7 +339,7 @@ ROOT MANAGERS   ██████████░░░░░░░░░░░�
 |:---|:--------|:-:|:-----:|
 | FEAT-01 | **Module auto-update with delta patches** — binary diff for OTA instead of full ZIP re-download | P1 | v4.0.0 |
 | FEAT-02 | **One-tap debug report export** — `cp2077-debug.sh` bundles logcat + mount table + config + version | P1 | v3.1.0 |
-| FEAT-03 | **Variant A/B rotation scheduler** — rotate per boot cycle for NAND wear-leveling | P1 | v4.0.0 |
+| FEAT-03 | **Variant A/B rotation scheduler** — rotate per boot cycle for NAND wear-leveling | P2 | v4.0.0 |
 | FEAT-04 | **Cloud config sync** — `/data/cp2077.conf` sync via GitHub Gist or self-hosted endpoint | P2 | v5.0.0 |
 | FEAT-05 | **Crash report auto-capture** — preserve `service.sh` failures to `/data/local/tmp/cp2077-crash/` | P1 | v3.1.0 |
 | FEAT-06 | **Real-time boot animation preview** — WebUI frame scrubber before flashing | P2 | v4.0.0 |
@@ -606,7 +606,7 @@ update.json                                 ✅  top-level only
 |:---|:--------|:-:|:-----:|
 | FEAT-01 | **Module auto-update with delta patches** — binary diff for OTA instead of full ZIP re-download | P1 | v4.0.0 |
 | FEAT-02 | **One-tap debug report export** — `cp2077-debug.sh` bundles logcat + mount table + config + version | P1 | v3.1.0 |
-| FEAT-03 | **Variant A/B rotation scheduler** — rotate per boot cycle for NAND wear-leveling | P1 | v4.0.0 |
+| FEAT-03 | **Variant A/B rotation scheduler** — rotate per boot cycle for NAND wear-leveling | P2 | v4.0.0 |
 | FEAT-04 | **Cloud config sync** — `/data/cp2077.conf` sync via GitHub Gist or self-hosted endpoint | P2 | v5.0.0 |
 | FEAT-05 | **Crash report auto-capture** — preserve `service.sh` failures to `/data/local/tmp/cp2077-crash/` | P1 | v3.1.0 |
 | FEAT-06 | **Real-time boot animation preview** — WebUI frame scrubber before flashing | P2 | v4.0.0 |
@@ -615,8 +615,8 @@ update.json                                 ✅  top-level only
 | FEAT-09 | **Dark/light mode for WebUI** — respects system dark theme + config toggle | P3 | v4.0.0 |
 | FEAT-10 | **Voice announce on variant switch** — `espeak-ng` or TTS callout after change | P3 | v5.0.0 |
 | FEAT-11 | **Boot animation statistics collector** — capture frame count, fps drift, decode time per boot → `/data/local/tmp/cp2077-stats/` | P2 | v4.0.0 |
-| FEAT-12 | **Thermal-aware animation throttle** — detect CPU temp via `/sys/class/thermal/`, reduce variant FPS or switch to lower-res variant if > 85°C | P1 | v5.0.0 |
-| FEAT-13 | **Module health score in WebUI** — composite score (mount success rate, audio plays, no boot loop) shown as 🔴🟡🟢 badge | P1 | v4.0.0 |
+| FEAT-12 | **Thermal-aware animation throttle** — detect CPU temp via `/sys/class/thermal/`, reduce variant FPS or switch to lower-res variant if > 85°C | P2 | v5.0.0 |
+| FEAT-13 | **Module health score in WebUI** — composite score (mount success rate, audio plays, no boot loop) shown as 🔴🟡🟢 badge | P2 | v4.0.0 |
 | FEAT-14 | **Install-time variant comparison** — show side-by-side frame previews in `customize.sh` TUI before install | P2 | v4.0.0 |
 | FEAT-15 | **Automatic bug report bundle** — if mount fails 3 consecutive boots, auto-collect logcat + dmesg + mounts into shareable ZIP | P1 | v3.1.0 |
 | FEAT-16 | **Charging animation lock screen** — 330-frame `AnimationDrawable` overlay when charging, matched to active variant color | P2 | v5.0.0 |
@@ -642,8 +642,8 @@ update.json                                 ✅  top-level only
 | IMPL-09 | **Repo health scorecard** — `cp2077-repo-score.py` all 53 repos | P2 | v4.0.0 |
 | IMPL-10 | **Workspace audit automation** — `cp2077-workspace-audit.sh` weekly cron | P1 | v3.1.0 |
 | IMPL-11 | **`lib/cp2077-boot-stats.sh`** — parse `logcat -b events` for boot timing, write JSON to `/data/local/tmp/cp2077-stats/` per variant | P2 | v4.0.0 |
-| IMPL-12 | **`lib/thermal-guard.sh`** — poll CPU temp, expose `cp2077_thermal_throttle()` for service.sh integration | P1 | v5.0.0 |
-| IMPL-13 | **`lib/health-score.sh`** — composite health: mount rate + audio check + config validity → `0–100` score | P1 | v4.0.0 |
+| IMPL-12 | **`lib/thermal-guard.sh`** — poll CPU temp, expose `cp2077_thermal_throttle()` for service.sh integration | P2 | v5.0.0 |
+| IMPL-13 | **`lib/health-score.sh`** — composite health: mount rate + audio check + config validity → `0–100` score | P2 | v4.0.0 |
 | IMPL-14 | **`cp2077-variant-compare.py`** — render side-by-side frame thumbnails for TUI display in `customize.sh` | P2 | v4.0.0 |
 | IMPL-15 | **`cp2077-bug-bundle.sh`** — collect logcat + dmesg + mount table + config + version → `cp2077-crash-YYYY-MM-DD.zip` | P1 | v3.1.0 |
 | IMPL-16 | **`lib/charging-anim.sh`** — detect battery state via `Intent.ACTION_BATTERY_CHANGED`, overlay frame animation | P2 | v5.0.0 |
@@ -1228,7 +1228,7 @@ cpu_temp / sys/class/thermal/thermal_zone0/temp
 - [ ] `build-universal.py --res-matrix`
 - [ ] `cp2077-module-lint.py`
 
-### P3 Device Expansion
+### P2 Device Expansion
 - [ ] Universal v2
 - [ ] KernelSU-native track
 - [ ] APatch-native pass
@@ -1313,7 +1313,7 @@ Path: 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/
 | GH-OPS-008 | P1 | 99-MANIFESTS/ | Manifest freshness badge CI job |
 | GH-OPS-009 | P2 | all nested | `WHY-CLONED.md` per clone |
 | GH-OPS-010 | P2 | all nested | `repo-health.md` (dirty, commit date, ahead/behind) |
-| GH-OPS-011 | P2 | MMRL | MMRL metadata generation with screenshots |
+| GH-OPS-011 | P1 | MMRL | MMRL metadata generation with screenshots |
 | GH-OPS-012 | P2 | releases/ | Changelog generator (feat/fix/docs/build/security/compat) |
 | GH-OPS-013 | P3 | all artifacts | Enforce upload-artifact retention by type |
 | GH-OPS-014 | P3 | root | GitHub issue templates |
@@ -1322,7 +1322,7 @@ Path: 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/
 | GH-OPS-017 | P3 | ref repos | Stale-reference dashboard |
 | GH-OPS-018 | P3 | README/ROADMAP | Auto-gen repo count + size badges |
 | GH-OPS-019 | P3 | root | GitHub discussions plan |
-| GH-OPS-020 | P4 | root | `.github/FUNDING.yml` |
+| GH-OPS-020 | P3 | root | `.github/FUNDING.yml` |
 
 ---
 
@@ -1556,7 +1556,7 @@ Path: 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/
 | T-09 | Build matrix JSON (variant/audio/SHA/size/elapsed) | P2 | v4.0.0 |
 | T-10 | Cache integrity manifest for `.downloads/` | P2 | v4.0.0 |
 | T-11 | `zipfile -t` CI gate for every release artifact | P1 | v4.0.0 |
-| T-12 | `python3 build.py --dry-run` | P3 | v3.1.0 |
+| T-12 | `python3 build.py --dry-run` | P2 | v3.1.0 |
 | T-13 | LANCZOS scaling in `build-universal.py` | P1 | v4.0.0 |
 | T-14 | Validate desc.txt `g W H` or `W H fps` in CI | P2 | v4.0.0 |
 | T-15 | Normalized timestamp `1980-01-01` for stable SHA-256 | P1 | v4.0.0 |
@@ -1570,7 +1570,7 @@ Path: 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/
 | T-18 | `ruff check` Python lint job | P2 |
 | T-19 | CodeQL + SARIF for ShellCheck + Python | P1 |
 | T-20 | `shellcheck` pre-commit via `.husky/` | P2 |
-| T-21 | `shfmt` pass in pre-commit hook | P3 |
+| T-21 | `shfmt` pass in pre-commit hook | P2 |
 | T-22 | Pin Actions by SHA + upgrade cadence doc | P1 |
 | T-23 | Manifest freshness badge CI job | P1 |
 | T-24 | OpenSSF Scorecard weekly + SARIF | P1 |
@@ -1606,12 +1606,12 @@ Path: 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/
 | ID | Task | P |
 |:---|:-----|:-|
 | T-46 | `netrunner`: cyan, 1440×3120, 60 fps | P1 |
-| T-47 | `corpo`: gold/silver, 1440×3120, 60 fps | P1 |
-| T-48 | `streetkid`: orange/red, 1440×3120, 60 fps | P1 |
+| T-47 | `corpo`: gold/silver, 1440×3120, 60 fps | P2 |
+| T-48 | `streetkid`: orange/red, 1440×3120, 60 fps | P2 |
 | T-49 | Boot intro length tuning -1s+ | P2 |
 | T-50 | Audio ducking/fade-out via FFmpeg envelope | P2 |
 | T-51 | RAM-staged mount via tmpfs (>8 GB RAM) | P2 |
-| T-52 | Per-variant audio tone table | P3 |
+| T-52 | Per-variant audio tone table | P2 |
 | T-53 | Variant A/B rotation scheduler | P2 |
 | T-54 | `cp2077-frame-inspector.py` terminal preview | P3 |
 | T-55 | `cp2077-archive-audit.py` workspace ZIP scanner | P3 |
@@ -1629,14 +1629,14 @@ Path: 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/
 | T-62 | `cp2077-rom-probe.sh` device interrogation | P2 |
 | T-63 | `devices/*.yaml` ROM profile registry | P1 |
 | T-64 | `cp2077-device-profile-gen.sh` → YAML | P2 |
-| T-65 | Multi-slot A/B support | P2 |
+| T-65 | Multi-slot A/B support | P3 |
 
 ### T-Desktop · 66–75
 
 | ID | Task | P |
 |:---|:-----|:-|
 | T-66 | Merge `cybrland` + `cyber-hyprland-theme` | P2 |
-| T-67 | Terminal palette: Kitty + Alacritty + WezTerm | P2 |
+| T-67 | Terminal palette: Kitty + Alacritty + WezTerm | P1 |
 | T-68 | Recolor Papirus assets `#FCEE0C` | P3 |
 | T-69 | `cp2077-hud-toggle.sh` Waybar/eww | P2 |
 | T-70 | Waybar HUD: CPU/RAM/net/battery | P2 |
@@ -1657,7 +1657,7 @@ Path: 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/
 | T-80 | Release quality gate workflow | P1 |
 | T-81 | GitHub issue templates | P3 |
 | T-82 | PR templates | P3 |
-| T-83 | Download stats → `releases/download-stats.json` | P3 |
+| T-83 | Download stats → `releases/download-stats.json` | P2 |
 | T-84 | OTA delta update via binary diff patches | P2 |
 | T-85 | Module soft disable/enable scripts | P3 |
 
@@ -1669,11 +1669,11 @@ Path: 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/
 | T-87 | Broken-symlink detection in workspace audit | P2 |
 | T-88 | CI quarantine file-type assertion | P2 |
 | T-89 | `cp2077-workspace-audit.sh` weekly cron | P1 |
-| T-90 | `repo-registry.json` from `git-repositories.txt` | P1 |
+| T-90 | `repo-registry.json` from `git-repositories.txt` | P2 |
 | T-91 | `WHY-CLONED.md` per clone | P2 |
 | T-92 | `repo-health.md` per cloned repo | P3 |
 | T-93 | `cp2077-repo-score.py` scoring all 53 repos | P2 |
-| T-94 | Workspace size → `workspace-size-history.txt` | P3 |
+| T-94 | Workspace size → `workspace-size-history.txt` | P2 |
 | T-95 | `cp2077-research-map.py` linking tasks → repos | P3 |
 
 ### T-Misc · 96–100
@@ -1695,7 +1695,7 @@ Path: 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/
 ```
 Phase      Focus                      Tasks   P0   P1   P2   P3
 ────────  ──────────────────────────  ─────   ──   ──   ──   ──
- 1 ██████ v3.1.0 Hardening          16      8    8    —    —
+ 1 ██████ v3.1.0 Hardening          18     10    6    2    —
  2 ░░░░░░ v4.0.0 CI Foundations     20      —   10    6    4
  3 ░░░░░░ v4.0.0 Universal v2       15      —    6    5    4
  4 ░░░░░░ v4.0.0 Root Managers      12      —    8    3    1
@@ -1705,7 +1705,7 @@ Phase      Focus                      Tasks   P0   P1   P2   P3
  8 ░░░░░░ v5.0.0 OTA + Distribution   8      —    —    6    2
  9 ░░░░░░ v6.0.0 Port Wizard          5      —    —    4    1
 10 ░░░░░░ v6.0.0 Ecosystem           4      —    —    1    3
-                                             8   36   42   22
+                                            10   34   44   20
 ```
 
 ### Phase 1 — v3.1.0 Hardening 🟢 Active
@@ -1728,6 +1728,8 @@ Phase      Focus                      Tasks   P0   P1   P2   P3
 | PH1-14 | `cp2077-version-bumper.py` atomic bump | P2 | 🟡 |
 | PH1-15 | Terminal color palette Kit/Ala/Wez | P1 | 🟡 |
 | PH1-16 | Broken-symlink detection in audit | P1 | 🟡 |
+| PH1-17 | APatch `apd` path discovery (HP-09) | P0 | 🔴 |
+| PH1-18 | Supply chain URL+SHA-256 verification (HP-10) | P0 | 🔴 |
 
 ### Phase 2 — v4.0.0 CI Foundations
 
@@ -1842,8 +1844,8 @@ Phase      Focus                      Tasks   P0   P1   P2   P3
 | PH8-02 | Module repository via MMRL | P2 |
 | PH8-03 | On-device update notification | P3 |
 | PH8-04 | XDA Developers forum thread | P2 |
-| PH8-05 | Magisk Modules Alt Repo PR | P2 |
-| PH8-06 | MMRL `mmrl.json` submission | P2 |
+| PH8-05 | Magisk Modules Alt Repo PR | P1 |
+| PH8-06 | MMRL `mmrl.json` submission | P1 |
 | PH8-07 | Download stats → `download-stats.json` | P3 |
 | PH8-08 | Signed release + detached checksum | P2 |
 
@@ -1870,17 +1872,17 @@ Phase      Focus                      Tasks   P0   P1   P2   P3
 
 | Phase | P0 | P1 | P2 | P3 | Total |
 |:-----:|:--:|:--:|:--:|:--:|:-----:|
-| 1 v3.1.0 | 8 | 8 | 0 | 0 | **16** |
+| 1 v3.1.0 | 10 | 6 | 2 | 0 | **18** |
 | 2 CI | 0 | 10 | 6 | 4 | **20** |
 | 3 Universal v2 | 0 | 6 | 5 | 4 | **15** |
 | 4 Root Managers | 0 | 8 | 3 | 1 | **12** |
-| 5 Desktop | 0 | 0 | 7 | 3 | **10** |
+| 5 Desktop | 0 | 1 | 6 | 3 | **10** |
 | 6 Wallpaper | 0 | 0 | 5 | 3 | **8** |
 | 7 Multi-Device | 0 | 4 | 5 | 1 | **10** |
-| 8 OTA | 0 | 0 | 6 | 2 | **8** |
+| 8 OTA | 0 | 2 | 4 | 2 | **8** |
 | 9 Port Wizard | 0 | 0 | 4 | 1 | **5** |
 | 10 Ecosystem | 0 | 0 | 1 | 3 | **4** |
-| **Total** | **8** | **36** | **42** | **22** | **108** |
+| **Total** | **10** | **37** | **41** | **22** | **110** |
 
 ### Top 10 Critical Path
 
