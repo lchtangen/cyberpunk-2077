@@ -5,7 +5,7 @@
 ║  ░▒▓  ROADMAP — CYBERPUNK 2077 MAGISK THEME SUITE  ▓▒░                 ║
 ║  ────────────────────────────────────────────────────────────────────── ║
 ║  Bug Tracker · Planned Features · Completed Items                       ║
-║  Last updated: 2026-05-13 · Maintained by: lchtangen                   ║
+║  Last updated: 2026-05-13 (v3.2.0 — 125 new backlog items) · lchtangen ║
 ╚══════════════════════════════════════════════════════════════════════════╝
 ```
 
@@ -192,6 +192,287 @@
 | All 09-DOCS/ files upgraded to cyberpunk theme and expanded | v3.0.0 | 2026-05-13 |
 
 </div>
+
+---
+
+## 🔮 Backlog — 25 Additional Items
+
+```
+╔══════════════════════════════════════════════════════════════════════════╗
+║  ░░░ EXTENDED BACKLOG — GROUNDED IN CODEBASE AUDIT ░░░░░░░░░░░░░░░░░░  ║
+╚══════════════════════════════════════════════════════════════════════════╝
+```
+
+### 🖥 F — WebUI Panel Extensions
+
+- [ ] **WebUI variant preview animation** — embed a looping CSS keyframe animation (scanline sweep + glitch flash) in each variant card so users see the animation style before selecting; no external assets needed, pure CSS
+- [ ] **WebUI localStorage persistence** — cache last-selected variant and audio state in `localStorage` so the panel reflects choices immediately on open, before `refreshStatus()` completes its `sh()` round-trip
+- [ ] **WebUI "copy diagnostics" button** — add a one-tap button in the Diagnostics section that calls `navigator.clipboard.writeText()` on the full log panel contents; users can paste directly into XDA/GitHub issues without typing
+- [ ] **WebUI OTA update badge** — on `DOMContentLoaded`, fetch the `update.json` URL stored in `module.prop`, compare `version` field against the installed version read from `getprop`, and show a yellow top banner if a newer version exists
+- [ ] **WebUI mount path inspector** — add a collapsible "Mount Map" section that runs `sh('mount | grep bootanim')` and displays which source file is bound to which target path, color-coded green (CP2077 ZIP) vs red (stock stub)
+
+---
+
+### ⚙️ G — `build.py` Hardening
+
+- [ ] **ZIP timestamp stripping for reproducible builds** — all `zipfile.ZipFile.write()` calls preserve host filesystem mtime, making SHA-256 non-reproducible across machines; pass a `ZipInfo` with `date_time=(1980,1,1,0,0,0)` for every entry to guarantee bit-identical output
+- [ ] **`--variants` filter flag** — add `python3 build.py --variants glitch,og1080p` to build only specified variants; the current `VARIANTS` list requires code edits to skip variants, wasting build time when iterating on a single animation
+- [ ] **Parallel `pack_zip()` calls** — `pack_zip()` runs sequentially per variant in the `[4/4] Packaging` phase; wrap the per-variant calls in the existing `ThreadPoolExecutor` (already imported) to pack all four ZIPs concurrently
+- [ ] **`audio-specs.json` hot-reload** — `AUDIO_SPECS` dict is hardcoded in `build.py`; add an optional `audio-specs.json` override file in `BASE` that is loaded at runtime if present, so tone parameters can be tuned without editing the script
+- [ ] **`--check-sources` upstream URL validator** — add a flag that `HEAD`-requests each URL in the `SOURCES` dict and prints status code + `Content-Length`; catches stale upstream release tags before a full build run tries to download them
+
+---
+
+### 📟 H — On-Device Service Layer
+
+- [ ] **`service.sh` double-pass remount** — the current `_remount_if_small` fires once after `sleep 5`; add a second pass at `sleep 30` to catch ROMs (seen on some MIUI/HyperOS builds) that re-mount `/product` after `bootanim` starts, evicting the first bind-mount
+- [ ] **`post-fs-data.sh` trace mode** — if `$MODDIR/trace.flag` exists, redirect every mount/copy action to `/data/local/tmp/cp2077-trace.log` without executing; lets maintainers debug path failures on new ROM families without risking a boot loop
+- [ ] **`cp2077-config.sh` backup/restore** — add `backup` and `restore` sub-commands that save/load `/data/cp2077.conf` to/from `/sdcard/cp2077-config-backup.conf`; protects config across module reinstalls and ROM flashes
+- [ ] **Module soft disable/enable scripts** — `disable.sh` touches `$MODDIR/disable` (Magisk skip flag) and `enable.sh` removes it; no Magisk Manager needed; expose as `cp2077-adb-control.sh enable` / `disable` sub-commands for CI test teardown
+- [ ] **`uninstall.sh` full path cleanup** — `post-fs-data.sh` writes to `/data/local/bootanimation.zip`, `/data/local/shutdownanimation.zip`, and `/data/misc/bootanim/`; current `uninstall.sh` only removes the module overlay — extend it to `rm -f` all three data-partition artifacts and call `umount` on any lingering bind mounts
+
+---
+
+### 🐧 I — Linux Desktop Completions
+
+- [ ] **`install-plymouth.sh` active-theme verification** — after installing, run `plymouth-set-default-theme -l` and assert `cp2077` appears in the list; print the current default theme name so users know if the initrd needs rebuilding with `mkinitcpio -p linux`
+- [ ] **`cybrland` ↔ `cyber-hyprland-theme` merge** — `06-UI-THEMES-ANIMATIONS/themes/cybrland/` and `cyber-hyprland-theme/` are both Hyprland configs; diff them and produce a single canonical `cp2077-hyprland.conf` that takes the best elements from each; retire the duplicate
+- [ ] **Papirus icon recolorization** — `K-DE-Cyberpunk-Neon/papirus-kolorizer.sh` exists but has never been run as part of the build; execute it with the CP2077 yellow `#FCEE0C` as the accent color and ship the resulting `papirus-cp2077` icon theme directory under `06-UI-THEMES-ANIMATIONS/themes/`
+- [ ] **`cp2077-hud-toggle.sh`** — write a script that toggles between `eww open cp2077-hud` (floating overlay) and `pkill waybar && waybar &` (full panel bar); bind it to `Super+H` in `cyber-hyprland-theme/theme.conf`; avoids restarting the compositor on every switch
+- [ ] **Terminal color scheme pack** — derive a 16-color ANSI palette from `cybrcolors` (yellow→color3/11, cyan→color6/14, red→color1/9, green→color2/10, `#0A0A0A`→background); ship ready-to-source configs for Kitty (`kitty.conf`), Alacritty (`alacritty.toml`), and WezTerm (`wezterm.lua`) under `05-LINUX/arch-host/terminal-themes/`
+
+---
+
+### 📚 J — Docs, CI & Distribution
+
+- [ ] **`VARIANTS.md` frame-count table** — document frame count, part count, FPS, resolution, and uncompressed ZIP size for every variant; this data exists only in `build.py` constants and is invisible to end users trying to choose between variants
+- [ ] **`module.prop` `support=` URL** — Magisk v26+ renders a "Support" button in the module card when `support=<url>` is set; add the GitHub issues URL to `module.prop` in both `CP2077-OP7Pro` and `CP2077-Universal` repos so users have a one-tap path to file bugs
+- [ ] **CHANGELOG auto-generation script** — `scripts/gen-changelog.sh <from-tag> <to-tag>` extracts `git log` between two tags, groups commits by prefix (`fix:`, `feat:`, `chore:`), and appends a formatted block to `CHANGELOG-full.md`; run as the first step of the GitHub Actions release job
+- [ ] **`scripts/check-repos.sh` sync status** — iterate over every directory in `01-DEVELOPMENT/repos/` that contains a `.git`, run `git -C <dir> fetch --dry-run 2>&1`, and print a table of which repos are behind their remote; critical for keeping `sodasoba1/ONEPLUS9-OOS13-BootAnimation` current before a build
+- [ ] **`shellcheck` CI lint gate** — add a `lint` job to both `CP2077-OP7Pro/.github/workflows/build.yml` and `CP2077-Universal/.github/workflows/build.yml` that runs `shellcheck -S warning` against all `.sh` files; block merge on any SC2 or SC3 finding to prevent regressions like the stale-variable patterns in older `customize.sh` revisions
+
+---
+
+## ⚡ 25 FEATURES
+
+```
+╔══════════════════════════════════════════════════════════════════════════╗
+║  ░░░ FEATURE BACKLOG — END-USER CAPABILITIES ░░░░░░░░░░░░░░░░░░░░░░░░  ║
+╚══════════════════════════════════════════════════════════════════════════╝
+```
+
+### 🎬 Animation & Boot
+
+- [ ] **FEAT-01 · Variant hot-swap (no reboot)** — `am broadcast -a android.intent.action.BOOT_COMPLETED` + `setprop ctl.restart bootanim` triggered from `cp2077-config.sh`; lets users switch variant and see it live without rebooting the device
+- [ ] **FEAT-02 · FPS governor from display refresh rate** — detect `ro.surface_flinger.max_frame_buffer_acquired_buffers` / `ro.hardware.egl` to determine display refresh rate; auto-select 30fps vs 60fps vs 120fps `desc.txt` entry at install time rather than hardcoding 60fps for all variants
+- [ ] **FEAT-03 · Battery-aware animation downgrade** — read `cat /sys/class/power_supply/BAT0/capacity` in `post-fs-data.sh`; if battery < 20%, mount the 30fps variant regardless of user selection to save power during low-battery boot
+- [ ] **FEAT-04 · Display-cutout-aware centering** — parse `ro.config.notch_type` / `android.software.notch` at install; if notch present, patch the frame canvas offset in `desc.txt` so the key visual elements are not occluded by the camera cutout
+- [ ] **FEAT-05 · Animated shutdown sequence** — full cinematic shutdown: `JACK OUT` title card → signal-loss glitch → flatline → black; packaged as `shutdownanimation.zip` for all 4 variants (currently og4k missing, glitch/flatline only partial)
+- [ ] **FEAT-06 · Multi-language boot messages** — Plymouth and on-device messages cycle through English, Japanese, Simplified Chinese, and Spanish; language selected from `ro.product.locale` at install time, stored in `/data/cp2077.conf` as `LOCALE=`
+- [ ] **FEAT-07 · Variants A/B rotation mode** — `cp2077.conf` key `AB_ROTATE=1` alternates between two user-specified variants on every other reboot; `service.sh` reads a boot counter from `/data/local/tmp/cp2077-bootcount` and flips the active variant
+- [ ] **FEAT-08 · RAM-staged animation** — detect tmpfs free space on `/data/local/tmp`; if > 2× ZIP size, copy the active animation ZIP there at `post-fs-data` time so SurfaceFlinger reads from RAM rather than eMMC — measurably reduces animation stutter on slow storage devices
+- [ ] **FEAT-09 · Custom accent color injection** — add `ACCENT_HEX=` key to `cp2077.conf`; `build.py --inject-color` pipeline replaces `#FCEE0C` yellow in all frame PNGs using Pillow palette remap; lets users brand the animation to a personal color without re-sourcing assets
+- [ ] **FEAT-10 · Installation log export** — append every `ui_print` line in `customize.sh` to `/sdcard/cp2077-install-$(date +%Y%m%d-%H%M%S).log`; gives end users a shareable install record for XDA bug reports; log rotated, keeping the 3 most recent
+
+### 📱 Device & System Integration
+
+- [ ] **FEAT-11 · OTA delta update** — `update.json` gains a `deltaUrl` field pointing to a patch ZIP containing only changed frames; `service.sh` fetches and applies the delta in background to `/data/adb/modules/CP2077_OP7Pro_Full/`, no reinstall required
+- [ ] **FEAT-12 · Module update notification** — on first boot after an OTA version bump is detected (compare `/data/cp2077-version` to `module.prop`), fire `am broadcast` notification via NotificationManager intent so user is informed without opening Magisk
+- [ ] **FEAT-13 · Haptic pattern sync** — write a vibration pattern array to `/sys/class/leds/vibrator/` timed to key animation frames (title-card impact, glitch flash, boot-complete); falls back gracefully on devices without sysfs vibrator node
+- [ ] **FEAT-14 · Fingerprint sensor unlock animation** — on OEMs that expose `/sys/class/fingerprint/` status node, overlay a scanline ring animation on the sensor region during biometric scan; requires Magisk overlay of `frameworks-res.apk` `ic_fingerprint` drawable
+- [ ] **FEAT-15 · CP2077 Monet color injection** — generate a Monet-compatible color palette XML from the CP2077 hex constants and place it in `res/values/` of a system resource overlay; on Android 12+ with Monet support, overrides dynamic accent with CP2077 yellow/cyan permanently
+- [ ] **FEAT-16 · Screenshot-during-boot capture** — `service.sh` calls `screencap /sdcard/cp2077-boot-frame.png` at `sleep 2` (mid-animation) for QA purposes; saved file gives maintainers a real-device render to verify framing without screen recording
+- [ ] **FEAT-17 · Night mode audio variant** — check `date +%H` in `post-fs-data.sh`; between 22:00–07:00, mount a quieter audio set (`volume_factor=0.4` in `AUDIO_SPECS`) instead of the full-volume pack; respects user sleep without requiring manual toggle
+- [ ] **FEAT-18 · Audio fade-out on animation complete** — detect `getprop sys.boot_completed=1` in `service.sh`; play a 2-second fade envelope on the audio channel before `am broadcast BOOT_COMPLETED` fires; prevents the hard audio cut that currently occurs on fast devices
+- [ ] **FEAT-19 · Secure boot compatibility check** — `customize.sh` reads `ro.boot.verifiedbootstate` and `ro.boot.flash.locked`; if `locked` AND `verified`, warn user that the module may not survive a system integrity check reboot and recommend MagiskHide or Zygisk equivalent
+- [ ] **FEAT-20 · Dynamic wallpaper extraction** — after successful install, extract frame 1 from the selected bootanimation ZIP (first PNG in `part0/`) via `unzip -p`, run through a Pillow letterbox-crop to device resolution, and set as lockscreen wallpaper via `am broadcast` WallpaperManager intent
+
+### 🖥 Linux / Desktop
+
+- [ ] **FEAT-21 · Netrunner color mode** — all-green monochrome variant: replace yellow `#FCEE0C` with green `#00FF9F` and cyan `#00FFFF` with `#00CC44` in all Linux HUD configs; shipped as an alternate `eww.scss`, `style.css`, and `hyprlock.conf` set under `cp2077-linux-hud/variants/netrunner/`
+- [ ] **FEAT-22 · GRUB animated splash** — use GRUB's `background_image` + GFXTERM with a sequence of pre-rendered PNGs (extracted from the reboot animation) displayed via a GRUB script loop; `install-grub-theme.sh` patches `/etc/default/grub` and rebuilds with `grub-mkconfig`
+- [ ] **FEAT-23 · Rofi launcher skin** — CP2077 Rofi theme: `#0A0A0A` background, 1px `#2A2A2A` border, `#FCEE0C` selected row, `#00FFFF` input text, JetBrains Mono; shipped as `06-UI-THEMES-ANIMATIONS/themes/cp2077-linux-hud/rofi/cp2077.rasi` with a keybind snippet for Hyprland
+- [ ] **FEAT-24 · Terminal color scheme pack** — derive 16-color ANSI palette from `cybrcolors` (yellow→color3/11, cyan→color6/14, red→color1/9, green→color2/10, `#0A0A0A`→background); ship ready-to-source configs for Kitty (`kitty.conf`), Alacritty (`alacritty.toml`), and WezTerm (`wezterm.lua`) under `05-LINUX/arch-host/terminal-themes/`
+- [ ] **FEAT-25 · OTA update notifier (host)** — `cp2077-ota-poller.sh` runs as a systemd user timer every 6 hours; fetches `update.json`, compares version to local `installed-version.txt`, fires `notify-send "CP2077 Module Update Available: vX.X.X"` with `notify-send --icon=emblem-package`; optionally launches the ADB flash workflow automatically
+
+---
+
+## 🔧 25 TOOLS
+
+```
+╔══════════════════════════════════════════════════════════════════════════╗
+║  ░░░ TOOL BACKLOG — BUILD · DEV · HOST · QA SCRIPTS ░░░░░░░░░░░░░░░░░  ║
+╚══════════════════════════════════════════════════════════════════════════╝
+```
+
+### 🛠 Build & Packaging Tools
+
+- [ ] **TOOL-01 · `cp2077-frame-inspector.py`** — open any animation ZIP, list all parts + frame counts, and render a chosen frame to terminal via the Kitty/Sixel graphics protocol (`term-image` library); replace the need to unzip locally just to preview a frame
+- [ ] **TOOL-02 · `cp2077-zip-diff.py`** — diff two animation ZIPs by per-frame SHA-256; output a table of `ADDED / REMOVED / CHANGED / IDENTICAL` frames between two releases; critical for verifying that a patch ZIP changed only the intended frames
+- [ ] **TOOL-03 · `cp2077-zip-stats.py`** — parse `desc.txt` from any animation ZIP and print resolution, FPS, part count, total frame count, compressed size, and uncompressed size in a CP2077-styled table; aliased as `cp2077 stats <zipfile>`
+- [ ] **TOOL-04 · `cp2077-desc-gen.py`** — CLI tool: `cp2077-desc-gen --width 1080 --height 2340 --fps 60 --parts part0:267:0:0 part1:1:0:0` generates a valid `desc.txt`; replaces hand-editing which has caused malformed desc bugs in past releases
+- [ ] **TOOL-05 · `cp2077-build-matrix.py`** — build all 3 modules × 4 variants × audio-on/off = 24 artifacts in one invocation; uses `concurrent.futures.ProcessPoolExecutor` with configurable worker count; writes a `build-matrix-manifest.json` listing SHA-256 and size of every artifact
+- [ ] **TOOL-06 · `cp2077-archive-audit.py`** — scan all ZIP archives in the workspace for: corrupt entries (`testzip()`), zero-byte frames, missing `desc.txt`, frame filenames not matching `^[0-9]{5}\.png$`, and duplicate frame hashes; output a color-coded report
+- [ ] **TOOL-07 · `cp2077-palette-gen.py`** — generate a 1920×120px color palette PNG from the CP2077 hex constants in `build.py`; embed in README and VARIANTS.md as a visual reference strip; auto-regenerated as part of the release workflow
+- [ ] **TOOL-08 · `cp2077-wallpaper-extract.py`** — extract the first frame of the selected bootanimation variant, resize to host display resolution via Pillow LANCZOS, and save as `~/.config/wallpapers/cp2077-boot-frame.png`; hook into `cp2077-adb-control.sh pull-frame`
+- [ ] **TOOL-09 · `cp2077-version-bumper.py`** — atomically update version string in `module.prop` (`version=`, `versionCode=`), `CHANGELOG.md` (insert header), and `update.json` (`version`, `versionCode`, `zipUrl`) in one pass; validates that `versionCode` is an integer and greater than the current value
+
+### 🔍 QA & Validation Tools
+
+- [ ] **TOOL-10 · `cp2077-module-lint.py`** — static analysis for Magisk modules: verify all required `module.prop` fields, check `customize.sh` exits with `0` on the happy path (shell `set -e` dry parse), verify file permissions (`755` for scripts, `644` for data), and assert `META-INF/` hierarchy is intact
+- [ ] **TOOL-11 · `cp2077-bench.sh`** — ADB boot-timing benchmark: power-cycle the device, parse `adb logcat -T 1` for `Displayed com.android.launcher` timestamp, compute delta from `ro.boottime.init`; run 3 times and report mean ± stddev boot time with vs without CP2077 module enabled
+- [ ] **TOOL-12 · `cp2077-rom-probe.sh`** — ADB device interrogation tool: read 30+ `ro.*` props and map them to ROM family, API level, device codename, and recommended CP2077 install path; output as both terminal table and `device-profile.yaml` for archiving in `02-PRODUCTION/device-profiles/`
+- [ ] **TOOL-13 · `cp2077-health-dashboard.sh`** — terminal TUI (no ncurses, pure ANSI) showing: module enabled/disabled state, active variant name, mounted animation file size, mount path, last-boot timestamp, audio state, and a `pass/WARN/FAIL` per-check summary; callable from `cp2077-adb-control.sh health`
+- [ ] **TOOL-14 · `cp2077-ci-local.sh`** — run the full `build.yml` GitHub Actions workflow locally via `act` (nektos/act); wrapper that sets the correct secrets env vars, mounts the workspace, and streams structured output in CP2077 ANSI colors; catches CI failures before push
+- [ ] **TOOL-15 · `scripts/shellcheck-all.sh`** — run `shellcheck -S warning` against every `.sh` in the workspace; output grouped by severity; non-zero exit if any SC2 or SC3 finding; intended as a pre-commit hook and CI lint gate
+- [ ] **TOOL-16 · `cp2077-audio-preview.sh`** — iterate over all `*.ogg` in the module audio directory; play each through `aplay` (with `--device default`) and print file name, duration via `soxi -D`, and peak level via `sox stat`; validates levels before packaging
+
+### 🚀 Deployment & Distribution Tools
+
+- [ ] **TOOL-17 · `cp2077-module-sign.sh`** — sign a module ZIP with a detached GPG signature (`module.zip.asc`); verify script bundled as `cp2077-verify.sh` for end users; signature URL added to `update.json` as `signatureUrl` field
+- [ ] **TOOL-18 · `cp2077-release-drafter.sh`** — extract CHANGELOG.md entries between two version tags, format them as a GitHub release body (emoji headers, bullet lists), and `gh release create` with the formatted body and all artifact ZIPs attached; replace the manual release process
+- [ ] **TOOL-19 · `cp2077-port-wizard.sh`** — interactive shell wizard for porting to a new device: prompts for resolution (WxH), ROM family, boot animation path, and optional shutdown path; generates a device-specific `customize.sh` block and `module.prop` stub; outputs to `devices/<codename>.sh`
+- [ ] **TOOL-20 · `cp2077-ota-poller.sh`** — systemd user timer that fetches `update.json` every 6 hours, compares version to `~/.local/share/cp2077/installed-version`, and fires `notify-send` on update available; `--install` flag creates the systemd `.service` and `.timer` units automatically
+- [ ] **TOOL-21 · `cp2077-device-profile-gen.sh`** — connect ADB device, pull 20 key props, detect ROM family, measure bootanimation size, and write a `device-profile.yaml` to `02-PRODUCTION/device-profiles/<codename>-<date>.yaml`; used to build the multi-device compatibility matrix
+- [ ] **TOOL-22 · `cp2077-merge-tool.sh`** — three-way diff between `CP2077-OP7Pro`, `CP2077-OP7Pro-Ultimate`, and `CP2077-Universal` scripts; highlights lines that exist in one but not others; specifically watches `post-fs-data.sh` and `service.sh` for divergence caused by copy-paste propagation failures
+- [ ] **TOOL-23 · `cp2077-hook-manager.sh`** — install or remove individual Magisk hooks (`post-fs-data.sh`, `service.sh`) without reinstalling the full module ZIP; writes directly to `$MODDIR` via ADB root; useful for testing individual script changes in under 5 seconds
+- [ ] **TOOL-24 · `cp2077-plymouth-preview.sh`** — launch a Xephyr nested X server at 1080×2340, run `plymouthd --mode=boot` against the `cp2077-linux-boot` theme, and display it on host; lets developers preview boot animations without rebooting
+- [ ] **TOOL-25 · `scripts/check-repos.sh`** — iterate every `01-DEVELOPMENT/repos/**/.git` directory; run `git fetch --dry-run 2>&1`; print a table of repos with available upstream updates (commits behind); exit non-zero if any critical reference repo (sodasoba1, Magisk-Modules-Alt-Repo) is > 30 commits behind
+
+---
+
+## 📦 25 MODULES
+
+```
+╔══════════════════════════════════════════════════════════════════════════╗
+║  ░░░ MODULE BACKLOG — MAGISK · ANDROID · SYSTEM MODULES ░░░░░░░░░░░░░  ║
+╚══════════════════════════════════════════════════════════════════════════╝
+```
+
+### 🎨 UI & Theming Modules
+
+- [ ] **MOD-01 · `CP2077-Sounds-Extended`** — standalone Magisk module shipping the full Android audio surface: `Notification.ogg`, `VideoRecord.ogg`, `VideoStop.ogg`, `Screenshot.ogg`, `LowBattery.ogg`, `Ringtone_CP2077.ogg`; decoupled from the animation module so users can install audio independently; normalised to −18 LUFS
+- [ ] **MOD-02 · `CP2077-Fonts`** — Magisk overlay module injecting Rajdhani as `sans-serif` and JetBrains Mono as `monospace` into `/system/fonts/` and patching `fonts.xml` via a Python post-install script; covers system UI, settings, and notification text
+- [ ] **MOD-03 · `CP2077-Icons`** — Magisk module packaging the patched `cyberpunk-technotronic-icon-theme` (broken symlinks removed) as an Android icon pack APK with a proper `AndroidManifest.xml`; installable from Settings → Display → Icon shape without root
+- [ ] **MOD-04 · `CP2077-Bootlogo`** — Magisk module replacing the OEM boot logo (kernel splash) by `dd`-writing a CP2077 logo BMP to the `logo` partition with full backup/restore; restricted to OnePlus 7 Pro first, expanded to other devices with known logo partition layouts
+- [ ] **MOD-05 · `CP2077-LiveWallpaper-GLShader`** — real Android `WallpaperService` APK built with Kotlin + OpenGL ES 3.0 GLSL; renders a rain/glitch shader on an `#0A0A0A` background; replaces the quarantined HTML-masquerading APKs in the Ultimate module; battery governor drops to 5fps when screen-off
+- [ ] **MOD-06 · `CP2077-StatusBar`** — LSPosed (Xposed) module that recolors Android status bar: clock text `#FCEE0C`, icon tint `#00FFFF`, battery indicator fill gradient `#FCEE0C→#FF003C`; targets AOSP SystemUI, OOS, and HyperOS SystemUI variants
+- [ ] **MOD-07 · `CP2077-Navbar`** — Magisk resource overlay replacing the gesture navigation home pill with a 2px yellow line (`#FCEE0C`) and the back arrow with a thin `◄` glyph; adapts stroke width from `ro.config.navbar_style` device prop
+- [ ] **MOD-08 · `CP2077-LockscreenClock`** — Magisk resource overlay changing the AOSP/OOS lockscreen clock: font family → Rajdhani, color → `#00FFFF`, date color → `#AAAAAA`; implemented as `res/values/styles.xml` overlay targeting `com.android.systemui`
+- [ ] **MOD-09 · `CP2077-QuickSettings`** — Magisk overlay restyling Quick Settings: tile background → `rgba(10,10,10,0.92)`, active tint → `#FCEE0C`, label font → JetBrains Mono 10sp; targets `SystemUI` QS layout XML; tested on OOS 15 / AOSP 14
+
+### ⚙️ System & Infrastructure Modules
+
+- [ ] **MOD-10 · `CP2077-SplashScreen`** — Magisk overlay targeting Android 12+ `windowSplashScreenBackground` and `windowSplashScreenAnimatedIcon` attrs; replaces app launch splash with CP2077 black background + animated yellow horizontal bar; visible on all apps with default splash
+- [ ] **MOD-11 · `CP2077-Charging-Animation`** — Magisk module replacing the OOS/MIUI charging animation ZIP at `/system/media/charginganimation.zip` with a CP2077 power-cell fill sequence; checks `ro.build.version.sdk ≥ 28` and `ro.boot.anim.charging` before installing
+- [ ] **MOD-12 · `CP2077-Shutdown-Sounds`** — Magisk `service.sh` module that monitors `getprop sys.powerctl` in a loop; on `shutdown` or `reboot` value detected, triggers `MediaPlayer` via `am start` intent to play `powerdown.ogg` before the device halts; graceful with a 3s watchdog timeout
+- [ ] **MOD-13 · `CP2077-Kernel-Params`** — Magisk `post-fs-data.sh` module writing CP2077-tuned kernel parameters: `vm.swappiness=10`, `kernel.sched_latency_ns=2000000`, `kernel.sched_min_granularity_ns=500000`; measurably reduces bootanimation frame drops on SM8150 per `simpleperf` profiling
+- [ ] **MOD-14 · `CP2077-Hosts-Adblocker`** — Magisk systemless hosts file module styled as Night City Corporate Firewall; curated blocklist merging StevenBlack/hosts + AdAway defaults; header comment reads `# ARASAKA NETRUNNER FIREWALL v3.0.0`; auto-updates via `service.sh` weekly fetch
+- [ ] **MOD-15 · `CP2077-SafetyNet-Fix`** — Magisk module incorporating the latest Play Integrity Fix (chiteroman variant); ensures `MEETS_DEVICE_INTEGRITY` passes after rooting; required prerequisite for users who also play CP2077 Mobile (when/if released) or use banking apps
+- [ ] **MOD-16 · `CP2077-MagiskWebUI-Hub`** — unified WebUI dashboard aggregating status panels from all installed CP2077 modules in a single tabbed interface (`<module-id>` tabs); reads `MODDIR` of each installed sibling module to pull its status; works as the top-level `webroot/index.html` for a future `CP2077-Suite` meta-module
+- [ ] **MOD-17 · `CP2077-Locale-Overlay`** — Magisk string overlay changing core Android system strings: `Settings` → `SYSTEM CONFIG`, `About phone` → `HARDWARE SPECS`, `Battery` → `POWER CELL`, `Storage` → `CYBERWARE`; implemented as `res/values/strings.xml` overlay targeting `com.android.settings`
+- [ ] **MOD-18 · `CP2077-NetworkMonitor`** — Magisk `service.sh` module running a bandwidth monitor using `cat /proc/net/dev` delta every 5s; logs spikes > 10 MB/s to `/data/local/tmp/netrunner.log` with timestamp and interface name; optionally fires a notification via `am broadcast` on sustained high usage
+- [ ] **MOD-19 · `CP2077-Fingerprint-Anim`** — Magisk resource overlay replacing the fingerprint sensor animation drawable (`ic_fingerprint_animation`) with a glitch/scanline animated vector drawable in `#00FFFF`; targets OOS 15 and HyperOS 2.0 SystemUI drawables verified against their APK resource IDs
+- [ ] **MOD-20 · `CP2077-Universal-v2`** — next-gen Universal module: unified Python build system, 20+ ROM family detection, per-device config profiles in `devices/*.yaml`, resolution matrix (720p/1080p/1440p/4K) auto-built at CI time; parallel release track alongside `CP2077-OP7Pro` v4.x
+
+### 🔀 Alternative Root & Distribution Modules
+
+- [ ] **MOD-21 · `CP2077-KSU-Module`** — KernelSU-native format: `module.json` descriptor, `webroot/` for KSU WebUI API, no Magisk dependency; feature-parity with `CP2077-OP7Pro` including multi-path mount engine and `cp2077-config.sh`; parallel CI track in `.github/workflows/build-ksu.yml`
+- [ ] **MOD-22 · `CP2077-APatch-Module`** — APatch-compatible package: tested against APatch ≥ 10340; `apd module install` support; `apd_module_compat=true` flag in `module.prop`; `service.sh` uses `apd` path detection already present in the Universal module
+- [ ] **MOD-23 · `CP2077-AnyKernel3`** — AnyKernel3 flashable ZIP packaging the Neptune kernel with the CP2077 module pre-staged in `/data/adb/modules/` for a single-flash kernel+theme install from TWRP; avoids the two-step kernel-flash → Magisk-install sequence
+- [ ] **MOD-24 · `CP2077-TWRP-Installer`** — TWRP-compatible flashable ZIP that bypasses Magisk entirely; direct-writes `bootanimation.zip` to `/system/media/` using TWRP's busybox `mount -o rw,remount`; targets users on unofficial builds where Magisk is incompatible
+- [ ] **MOD-25 · `CP2077-Pixel-Port`** — dedicated port targeting Pixel 8 / 8 Pro / 9 (husky/shiba/tokay): `/data/local/bootanimation.zip` path priority per Pixel boot sequence; Tensor SoC timing adjustments; CI builds against Pixel factory image profile; released on separate `pixel` branch
+
+---
+
+## 🖼 25 ELEMENTS
+
+```
+╔══════════════════════════════════════════════════════════════════════════╗
+║  ░░░ ELEMENT BACKLOG — UI · VISUAL · CONFIG COMPONENTS ░░░░░░░░░░░░░░  ║
+╚══════════════════════════════════════════════════════════════════════════╝
+```
+
+### 🌐 WebUI Elements
+
+- [ ] **ELEM-01 · Variant card hover glow** — CSS `box-shadow: 0 0 20px rgba(252,238,12,0.4)` on `.variant-card:hover` with `transition: box-shadow 150ms ease`; currently cards have no hover feedback making them feel static and non-interactive
+- [ ] **ELEM-02 · Status LED pulse chip** — `<span class="status-led">` beside each live readout with a `@keyframes pulse` cycling `#00FF9F → #FCEE0C → #00FF9F` at 2s; stops animating and turns red when the `sh()` exec bridge returns an error
+- [ ] **ELEM-03 · CRT scanline overlay** — `::before` pseudo-element on `.cp2077-panel` with `repeating-linear-gradient(transparent 0, transparent 1px, rgba(0,0,0,0.07) 1px, rgba(0,0,0,0.07) 2px)` scrolling top→bottom at 3s cycle; adds CRT texture without impacting readability
+- [ ] **ELEM-04 · Audio waveform visualizer** — 8-bar CSS bar chart (`div.bar` inside `.audio-viz`); when audio is enabled, bars animate from `height: 2px` to randomized `4–18px` via `@keyframes bar-dance` with staggered `animation-delay`; paused when audio disabled
+- [ ] **ELEM-05 · Notification toast component** — `<div class="cp2077-toast">` slide-in from bottom-right, 3s auto-dismiss with `@keyframes toast-slide`; used for "Config saved ✓", "Reboot required", "ZIP not found — check /sdcard/Download"; replaces `alert()` calls currently in the WebUI
+- [ ] **ELEM-06 · Mount path inspector panel** — collapsible `<details>` section labeled `◈ MOUNT MAP`; on expand, runs `mount | grep -E 'bootanim|product/media'` via `mmrl_exec` and displays each mount line color-coded: green if source contains `CP2077`, red if source is `/system/media` stock stub
+- [ ] **ELEM-07 · OTA update banner** — on `DOMContentLoaded`, fetch `update.json` URL from `module.prop updateJson` line, compare `version` to installed; if newer, render a `<div class="ota-banner">` fixed at top with pulsing yellow border and "UPDATE AVAILABLE: vX.X.X — tap to flash" link
+- [ ] **ELEM-08 · Variant comparison modal** — "COMPARE" button on each card opens a `<dialog>` side-by-side panel showing the key specs of two variants (FPS, resolution, frame count, file size) in a two-column table with a yellow divider; no external dependencies, pure HTML/CSS
+
+### 🔒 Lock Screen Elements
+
+- [ ] **ELEM-09 · hyprlock glitch bar** — second `shape {}` block at `y = 30%, width = 40%`; position randomly shifts `x` by `cmd[update:500] shuf -n1 -e 0 5 10 15 20`px on each 500ms tick, simulating a scanline glitch artifact; purely decorative, dims after 5s of input
+- [ ] **ELEM-10 · hyprlock faction label** — `label {}` reading `FACTION=` from `/data/cp2077.conf` (via a wrapper script) and displaying `◈ CORPO EMPLOYEE ◈` / `◈ STREET KID ◈` / `◈ NOMAD ◈`; color-coded cyan/yellow/orange respectively; set once during `cp2077-config.sh` interactive setup
+- [ ] **ELEM-11 · hyprlock uptime badge** — dim small label `cmd[update:60000] uptime -p | sed 's/up /UP: /'` positioned below the date; shows how long the system has been running; colour `rgba(68,68,68,0.60)` so it does not distract from the clock
+- [ ] **ELEM-12 · hyprlock CAPSLOCK glyph** — replace the default `capslock_key_symbol = CAPS` text with a custom `⚠ CAPS ENGAGED` string in `rgba(255,107,53,1.0)` orange; ring color already set to orange; the glyph makes the state unambiguous on a dark background
+- [ ] **ELEM-13 · swaylock date overlay** — add `--timestr "%H:%M"` and `--datestr "%A  %d %B  %Y"` to `swaylock.conf` for `swaylock-effects ≥ 1.7` which supports the time overlay natively; removes need for a separate lock-screen clock widget when swaylock is used as the sole locker
+- [ ] **ELEM-14 · swaylock fail counter badge** — `--show-failed-attempts` already enabled; style the attempt count text with `--text-wrong-color ff003cff` and prepend `ACCESS DENIED ×` via `--text-wrong-text "ACCESS DENIED ×"` so the counter reads naturally in CP2077 language
+
+### 📊 eww & Waybar Elements
+
+- [ ] **ELEM-15 · eww temperature gauge** — `defpoll temp_cpu :interval "5s" \`cat /sys/class/thermal/thermal_zone*/temp | sort -n | tail -1 | awk '{printf "%.0f", $1/1000}'\`` added to the `PROCESSOR / ICE` section; color-coded `ok < 70°C`, `warn < 85°C`, `crit ≥ 85°C`
+- [ ] **ELEM-16 · eww GPU load row** — `defpoll gpu_load :interval "3s" \`cat /sys/class/drm/card*/device/gpu_busy_percent 2>/dev/null | head -1 || echo "--"\`` shown under `PROCESSOR` section when the sysfs node is present; falls back to `--` gracefully on non-AMD/Intel GPUs
+- [ ] **ELEM-17 · eww workspace dot indicators** — mini dot row `deflistener active_workspace` pulling from `hyprctl -j activeworkspace`; yellow dot = active, dim dot = occupied, hidden = empty; replaces need for a separate workspace indicator bar and keeps the HUD self-contained
+- [ ] **ELEM-18 · Waybar clock urgent flash** — CSS `#clock.urgent { animation: clock-flash 0.5s 6; }` `@keyframes clock-flash { 50% { color: rgba(255,255,255,1); } }`; `format-alt` mode triggers the `urgent` class on the hour mark for 3s via a custom `exec-on-event` format string
+- [ ] **ELEM-19 · Waybar active mission module** — custom `exec` module reads `~/cp2077-mission.txt` if present and displays `◈ ACTIVE MISSION: {contents} ◈` in dim italic in the center-right; if file absent, module returns empty string and is hidden; updated via `signal: 8` for instant refresh via `pkill -SIGRTMIN+8 waybar`
+- [ ] **ELEM-20 · Waybar network direction arrows** — augment the existing `cp2077-net.sh` output with Unicode arrows: `↑ X.X KB/s  ↓ X.X KB/s`; color upload arrow in `#FF6B35` orange (outbound = danger) and download in `#00FFFF` cyan; direction makes bandwidth direction immediately readable
+
+### 🐧 Plymouth & Script Elements
+
+- [ ] **ELEM-21 · Plymouth glitch frame element** — random horizontal pixel-shift of the title sprite every 60th frame; implemented using Plymouth script's integer modulo on the frame counter: `if (count % 60 == 0) { title.SetX(title.GetX() + (count * 7919) % 11 - 5); }`; creates subtle glitch without breaking readability
+- [ ] **ELEM-22 · Plymouth faction watermark** — dim `ARASAKA SYSTEMS` or `MILITECH DEFENSE NET` text rendered at bottom-left corner; selected by `(GetBootCount() % 2)` to alternate between them across reboots; color `rgba(42,42,42,0.4)` so it is barely visible
+- [ ] **ELEM-23 · Plymouth secondary progress bar** — thin `rgba(42,42,42,0.6)` bar at 60% screen height tracking kernel module load count via the `Plymouth.SetMessageFunction` hook fed by an mkinitcpio hook that counts `modprobe` calls; gives kernel-load progress separately from disk-decrypt progress
+- [ ] **ELEM-24 · `generate-manifests.sh` colorized TSV header** — print the `INDEX\tSIZE_BYTES\tPATH` header row in yellow `\033[38;2;252;238;12m` to match the existing ANSI palette; add a dim separator line `───────────────` below the header; purely cosmetic, consistent with the script's existing visual style
+- [ ] **ELEM-25 · `cp2077-config.sh` arrow-key menu** — render the variant selection as a `for` loop printing `▶` before the highlighted item and `  ` before others; move cursor with `\033[<N>A` ANSI escape on key input parsed via `read -rsn1`; no ncurses/dialog dependency, pure bash; interactive navigation replaces the current numbered-prompt approach
+
+---
+
+## ⚙️ 25 FUNCTIONS
+
+```
+╔══════════════════════════════════════════════════════════════════════════╗
+║  ░░░ FUNCTION BACKLOG — SHELL · PYTHON · JAVASCRIPT IMPLEMENTATIONS ░░  ║
+╚══════════════════════════════════════════════════════════════════════════╝
+```
+
+### 🐚 Shell Functions (shared across `.sh` scripts)
+
+- [ ] **FUNC-01 · `detect_root_manager()`** — shell: returns `magisk|kernelsu|apatch|none`; checks `/data/adb/ksud` (KSU), `command -v apd` (APatch), then `su -c id` (Magisk) in order; eliminates the duplicated detection blocks currently copy-pasted across `customize.sh`, `post-fs-data.sh`, `service.sh`, and `cp2077-config.sh`
+- [ ] **FUNC-02 · `mount_with_fallback()`** — shell: accepts `src` path and a space-separated list of `dst` paths; attempts `mount --bind "$src" "$dst"` for each in order, logs result to `$MODDIR/mount.log`, returns 0 on first success; replaces the 40-line repeated mount blocks in `post-fs-data.sh`
+- [ ] **FUNC-03 · `wait_for_prop()`** — shell: `wait_for_prop <key> <expected_value> [timeout_seconds=10]`; polls `getprop <key>` every 500ms; returns 0 when value matches, 1 on timeout; used in `service.sh` before the remount check to wait for `sys.boot_completed=1` rather than using a fixed `sleep 5`
+- [ ] **FUNC-04 · `get_variant_from_conf()`** — shell: reads `VARIANT=` from `/data/cp2077.conf`, validates against `glitch|flatline|reboot|og1080p|og4k`, defaults to `glitch` if absent, empty, or invalid; single source of truth replacing inline `grep VARIANT` patterns across 3 separate scripts
+- [ ] **FUNC-05 · `audio_enabled()`** — shell: parses `AUDIO=` from `/data/cp2077.conf`; returns 0 (true) for `1`, `true`, `yes`, `on` (case-insensitive); returns 1 for anything else including absent key; eliminates per-caller string comparison logic
+- [ ] **FUNC-06 · `write_conf()`** — shell: atomically writes `/data/cp2077.conf` by writing to `${TMPDIR:-/data/local/tmp}/cp2077.conf.tmp` then `mv`ing it; prevents half-written config if interrupted at shutdown; sets `chmod 600` to protect against world-read; accepts key=value pairs as arguments
+- [ ] **FUNC-07 · `find_module_zip()`** — shell: searches `/sdcard/Download/`, `/sdcard/`, `/storage/emulated/0/Download/` in order for `CP2077-OP7Pro-v*.zip` or `CP2077-Universal-v*.zip`; returns full path or empty string; used by `cp2077-config.sh` reinstall and the WebUI reflash button
+- [ ] **FUNC-08 · `get_anim_size()`** — shell: `stat -c%s` the mounted bootanimation path (first existing of the known 6 paths); returns size in bytes or `0` if not found; used by `service.sh` threshold check and `cp2077-config.sh` health display; avoids per-caller path guessing
+- [ ] **FUNC-09 · `is_anim_playing()`** — shell: `[ "$(getprop init.svc.bootanim)" = "running" ]`; returns 0 if running, 1 otherwise; called in `service.sh` before `setprop ctl.restart bootanim` to prevent restarting an animation that has already stopped cleanly
+- [ ] **FUNC-10 · `detect_rom_family()`** — shell: probe `ro.product.brand`, `ro.build.flavor`, `ro.build.type`, `ro.miui.ui.version.name`, `ro.lineage.releasetype` in priority order; return one of `oos|lineage|miui|pixel|samsung|yaap|evolution|crDroid|unknown`; consolidates ROM detection from `customize.sh` and `post-fs-data.sh` into a single sourced file `lib/rom-detect.sh`
+- [ ] **FUNC-11 · `ansi()`** — shell: `ansi R G B text` → `printf '\033[38;2;%d;%d;%dm%s\033[0m' "$1" "$2" "$3" "$4"`; tiny 24-bit color helper sourced at the top of all interactive scripts; eliminates the `YLW='\033[38;2;252;238;12m'` variable blocks currently duplicated in every script
+- [ ] **FUNC-12 · `cp2077_logo()`** — shell: print the `░▒▓ CYBERPUNK 2077 ▓▒░` ASCII banner with correct 24-bit ANSI yellow; sourced by all interactive scripts so the visual header is consistent and maintained in a single `lib/logo.sh` file rather than being copy-pasted
+- [ ] **FUNC-13 · `notify_sd_write()`** — shell: after writing any file to `/sdcard`, trigger `am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE --eu android.intent.extra.STREAM "file://<path>"` so the file appears in MTP without remounting; prevents the common "file written but invisible in PC file browser" confusion
+- [ ] **FUNC-14 · `cp2077_adb()`** — shell: wrapper in `cp2077-adb-control.sh` around `adb shell su -c '...'`; checks `adb devices` for a connected device, handles `unauthorized` state with a human-readable message, and prepends `export PATH=/data/adb/magisk:$PATH` to every command for consistent Magisk binary access
+
+### 🐍 Python Functions (`build.py` and tools)
+
+- [ ] **FUNC-15 · `pack_variant()`** — Python: `pack_variant(name, src_dir, out_dir, compress=ZIP_DEFLATED)`; handles `desc.txt` rewrite, frame sorting by `int(stem)`, `ZipInfo` timestamp normalization to `(1980,1,1,0,0,0)` for reproducible builds; refactors the 60-line inline block currently repeated per-variant in `build.py`
+- [ ] **FUNC-16 · `validate_desc_txt()`** — Python: parse `desc.txt` string; assert `width > 0`, `height > 0`, `fps in {15,24,30,60,120}`, at least one `p` line with `frame_count > 0`; raise `ValueError("<field>: <reason>")` on failure; called from `build.py` after rewrite and in the GitHub Actions `validate` job
+- [ ] **FUNC-17 · `zip_integrity_check()`** — Python: `zipfile.ZipFile(path).testzip()` returns `None` (ok) or the first bad filename; wraps in `try/except BadZipFile`; integrated into `build.py` post-pack step and the CI `validate` job; replaces the current `python3 -m zipfile -t` one-liner that lacks per-entry reporting
+- [ ] **FUNC-18 · `desc_rewrite()`** — Python: read a `desc.txt` string, replace `width height fps` header, rewrite `p <count> <pause> <part>` lines preserving part directory names; handles the `c`-type continuation lines present in newer Android desc formats; used in the og4k upscale pipeline
+- [ ] **FUNC-19 · `frame_count_from_zip()`** — Python: open a bootanimation ZIP; count PNGs inside `part*/` dirs; return `dict[part_name, count]` and total; called by `cp2077-zip-stats.py` and the CI validation step to assert expected frame counts match the desc.txt header
+- [ ] **FUNC-20 · `parse_module_prop()`** — Python: read a Magisk `module.prop` `key=value` file into a `dict[str,str]`; used by `cp2077-version-bumper.py`, the CI release drafter, and `cp2077-module-lint.py` to extract `version`, `versionCode`, `id`, `updateJson` without per-tool regex duplication
+- [ ] **FUNC-21 · `compute_sha256()`** — Python: `hashlib.sha256(path.read_bytes()).hexdigest()`; centralize SHA computation used in `build.py` artifact record, `generate-manifests.sh` step 5, and the GitHub Actions `sha256` step; stream-reads in 64 KB chunks for large ZIPs to avoid loading 358 MB into memory
+
+### 🟨 JavaScript Functions (`webroot/index.html`)
+
+- [ ] **FUNC-22 · `mmrl_exec()`** — JavaScript: central exec bridge accepting `cmd` string, returning `Promise<string>`; tries `window.mmrl.exec` → `window.__ksuExec` → console-warning mock in order; eliminates the inline `try/catch` currently scattered across 6 separate call sites in the WebUI; all `sh()` callers become `mmrl_exec(cmd).then(...)`
+- [ ] **FUNC-23 · `refresh_status()`** — JavaScript: reads device model, Android version, active variant, animation size, and module version in a single `mmrl_exec` call using `&&`-chained shell commands; updates all DOM status elements atomically to prevent partial-load flicker when the version call is slower than the model call
+- [ ] **FUNC-24 · `apply_variant()`** — JavaScript: validates the selected variant string against `/^(glitch|flatline|reboot|og1080p|og4k)$/` before calling `sh()`; prevents shell injection if the variant value is sourced from a URL hash parameter or modified DOM; logs invalid input to the diagnostic panel via `log_panel_append()`
+- [ ] **FUNC-25 · `log_panel_append()`** — JavaScript: `log_panel_append(level, message)` appends `[HH:MM:SS] [LEVEL] message\n` to `#diag-log` and calls `scrollTop = scrollHeight`; replaces the 5 separate `diagLog.textContent +=` calls across WebUI event handlers with a single function that handles timestamping and auto-scroll
 
 ---
 
