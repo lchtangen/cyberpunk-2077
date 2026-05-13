@@ -2086,6 +2086,78 @@ Phase      Focus                      Tasks   P0   P1   P2   P3
 
 ---
 
+## ══ UI LAUNCHER & THEMING — OP7 PRO ══
+
+> Research date: 2026-05-14 · Assets audited in `06-UI-THEMES-ANIMATIONS/` and `04-ANDROID/`
+
+```
+EXISTING INFRASTRUCTURE
+───────────────────────────────────────────────────────────────────
+kwgt-presets/                gen-kwgt-presets.py + 3 .kwgt files  ✅
+system-ui-module/            StatusBar/NavBar/Icons/Gestures RRO   ✅
+substratum-theme/            Material3 color XML skeleton          🔧
+cyberpunk-technotronic-icon-theme/  300+ SVG icons                 ✅
+```
+
+### Priority Task Table
+
+| ID | Task | Infra | P | Track |
+|:---|:-----|:-----:|:-:|:-----:|
+| UI-01 | **KWGT weather + battery + CPU/RAM stats presets** — extend `gen-kwgt-presets.py` with `WeatherCard`, `BatteryRing`, `NetStats`, `CPUClock` templates using `#FCEE0C`/`#00FF9F` tokens | ✅ gen-kwgt-presets.py | P1 | v4.0.0 |
+| UI-02 | **SystemUI QS panel + notification shade overlay** — extend `system-ui-module/` with QS tile accent `#FCEE0C`, shade background `#0A0A0A`, lock screen clock color via `colors.xml` RRO | ✅ system-ui-module/ | P1 | v4.0.0 |
+| UI-03 | **Icon pack APK module** — build installable APK from 300+ SVGs via `aapt2 compile` + `aapt2 link`, declare ADW/Nova icon pack intent-filter, sign with `apksigner`, optionally wrap as Magisk module | ✅ 300+ SVGs | P1 | v5.0.0 |
+| UI-04 | **Substratum APK build pipeline** — complete `substratum-theme/` skeleton: `type1a` color family + `type1b` accent selectors, Gradle or `aapt2` script, signed APK tested on LOS 23.2 | 🔧 skeleton | P1 | v4.0.0 |
+| UI-05 | **Lawnchair launcher overlay** — Magisk module shipping `lawnchair.json`: CP2077 5×5 grid, `#FCEE0C` folder color, Rajdhani font binding, dock divider hidden | 📋 new | P2 | v4.0.0 |
+| UI-06 | **Magisk font module** — bind-mount Rajdhani + Share Tech Mono + Orbitron to `/system/fonts/`; patch `fonts_customization.xml` → SystemUI clock + label typeface on next reboot | 📋 new | P2 | v4.0.0 |
+| UI-07 | **Charging animation overlay** — port `AndroidCyberpankIcons` 330-frame `AnimationDrawable` 40 ms/frame; variant-matched: `#00FF9F` glitch / `#FF003C` flatline / `#00FFFF` netrunner | ref: FEAT-16 | P2 | v5.0.0 |
+| UI-08 | **QS deep RRO** — full Runtime Resource Overlay: QS tile shape `rounded_rect_16dp`, checked-tile fill `#FCEE0C`, inactive `#2A2A2A`, scrim `#0A0A0A`, ripple `#FCEE0C40` | 🔧 extends UI-02 | P2 | v5.0.0 |
+| UI-09 | **WebUI accent color picker** — swatch row in `webroot/index.html` per variant; write chosen hex to `/data/cp2077.conf` as `accent=...`; propagate to QS overlay on next reboot | ref: FEAT-09 | P3 | v4.0.0 |
+| UI-10 | **Live wallpaper priority elevation** — move PH6-01/02/03 to v4.0.0 backlog; scaffold `CP2077-LiveWallpaper/` Kotlin + GL ES 3.0 with rain/glitch GLSL shader, battery-aware 5 fps screen-off | ref: PH6-01 | P3 | v4.0.0 |
+
+### Implementation Notes
+
+**UI-01** — `gen-kwgt-presets.py` already generates `.kwgt` JSON bundles. Add four templates reading system data via KWGT `bi()` formula functions. Export to `06-UI-THEMES-ANIMATIONS/themes/kwgt-presets/`.
+
+**UI-02** — Existing `system-ui-module/overlay/` APKs cover StatusBar + NavBar. Extend `res/values/colors.xml` with: `qs_tile_indicator_color`, `notification_shade_background`, `colorAccent`, `colorPrimary`. Rebuild with `aapt2 compile` + `aapt2 link --proto-format`.
+
+**UI-03** — SVGs in `cyberpunk-technotronic-icon-theme/` need: (1) `aapt2 compile` → `.flat` files, (2) `aapt2 link` with `AndroidManifest.xml` declaring `com.novalauncher.THEME` + `org.adw.launcher.THEMES` intent-filters, (3) `apksigner`. Final APK installable on any ADW/Nova-protocol launcher.
+
+**UI-04** — Skeleton has `res/values/colors.xml` with Material3 token stubs. Add `type1a` (color family) and `type1b` (accent) overlay variant dirs. Build signed APK. Test with Substratum Lite or direct `adb install` overlay on LOS 23.2 overlayfs.
+
+**UI-06** — `post-fs-data.sh` already does bind-mounts. Add font pass: copy `Rajdhani-Regular.ttf`, `ShareTechMono-Regular.ttf`, `Orbitron-Regular.ttf` to `$MODPATH/system/fonts/`, bind-mount patched `fonts_customization.xml` to `/system/etc/`. SystemUI picks up fonts on next boot.
+
+### Asset Locations
+
+| Asset | Path | Status |
+|:------|:-----|:------:|
+| KWGT presets | `06-UI-THEMES-ANIMATIONS/themes/kwgt-presets/` | ✅ 3 presets |
+| Icon pack SVGs | `06-UI-THEMES-ANIMATIONS/themes/cyberpunk-technotronic-icon-theme/` | ✅ 300+ SVGs |
+| SystemUI overlay | `04-ANDROID/ui-module/system-ui-module/` | ✅ StatusBar/NavBar |
+| Substratum theme | `04-ANDROID/ui-module/substratum-theme/` | 🔧 skeleton |
+| Font assets | `06-UI-THEMES-ANIMATIONS/themes/` | 📋 source research needed |
+| Charging frames | ref `AndroidCyberpankIcons` 330-frame | 📋 port needed |
+
+### Phase 11 — Android UI Theming
+
+| ID | Task | P | Depends |
+|:---|:-----|:-:|:--------|
+| PH11-01 | KWGT weather + battery + stats presets | P1 | gen-kwgt-presets.py |
+| PH11-02 | SystemUI QS panel + notification shade overlay | P1 | system-ui-module/ |
+| PH11-03 | Icon pack APK build pipeline (`aapt2`) | P1 | cyberpunk-technotronic SVGs |
+| PH11-04 | Substratum theme APK (`type1a/1b` variants) | P1 | substratum-theme skeleton |
+| PH11-05 | Lawnchair launcher config overlay module | P2 | font module (PH11-06) |
+| PH11-06 | Magisk font module (Rajdhani / Share Tech Mono / Orbitron) | P2 | post-fs-data.sh |
+| PH11-07 | Charging animation `AnimationDrawable` overlay | P2 | variant color map |
+| PH11-08 | QS deep RRO (shape + checked-tile + scrim) | P2 | PH11-02 |
+| PH11-09 | WebUI accent color picker | P3 | webroot/index.html |
+| PH11-10 | Live wallpaper GL ES scaffold (priority elevate from v5.0.0) | P3 | PH6-01 |
+
+| Phase | P0 | P1 | P2 | P3 | Total |
+|:-----:|:--:|:--:|:--:|:--:|:-----:|
+| 11 UI Theming | 0 | 4 | 4 | 2 | **10** |
+
+---
+
 ## ══ COMPLETED LEDGER ══
 
 | Item | Ver | Date |
