@@ -31,9 +31,28 @@ All root-level directories consolidated into numbered structure:
 
 All modules upgraded to v3.0.0.
 
+## Module Inventory
+
+| Module ID             | Version | Path                                     | Status  |
+|-----------------------|---------|------------------------------------------|---------|
+| CP2077_OP7Pro_Full    | v3.0.0  | `01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro`          | active  |
+| CP2077_OP7Pro_Ultimate| v3.0.0  | `01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro-Ultimate` | disabled|
+| CP2077_Universal      | v1.0.0  | `01-DEVELOPMENT/repos/cyberpunk/CP2077-Universal`       | dev     |
+| GlitchedCyberBoot     | 1.1     | `01-DEVELOPMENT/repos/cyberpunk/GlitchedCyberBoot`      | ref     |
+
+CP2077-Universal: all-device build, auto-detects ROM and resolution. Supports Magisk 20.4+, KernelSU, APatch. Min API 21.
+
 ## Known Bad Artifacts (quarantined)
 
 - `cp2077-livewallpaper-original.apk`: HTML document, not APK — in `10-QUARANTINE`
 - `cp2077-livewallpaper-vivid.apk`: HTML document, not APK — in `10-QUARANTINE`
 - `cp2077-bootanimation-stock-oos.zip`: zero bytes — in `10-QUARANTINE`
 - `cp2077-bootanimation-mega.zip`: HTML document, not real zip — in `10-QUARANTINE`
+
+## Audit — 2026-05-13
+
+- Workspace symlinks: all fixed (hightech-repos → repos path migration complete)
+- Quarantine symlinks: relinked to `03-BUILD/artifacts/cyberpunk-build/`
+- 02-PRODUCTION: symlink-based layout, all 6 symlinks resolve correctly
+- Repo health: CP2077-OP7Pro has no remote (local dev only); kernel repos show large dirty counts (expected — shallow clone of full source tree)
+- CP2077-Universal documented and added to manifests
