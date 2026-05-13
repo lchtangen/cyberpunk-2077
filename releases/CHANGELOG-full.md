@@ -3,7 +3,7 @@
 ## v3.0.0 (2026-05-13)
 ### Workspace Merge & Upgrade
 - **Unified workspace**: all sources consolidated under numbered directory structure
-- **customize.sh**: merged Full+Ultimate logic — config-file support, OOS my_product path, modular functions
+- **customize.sh**: merged Full+Ultimate logic — config-file support, OOS my_product path, modular functions; og1080p variant now correctly installs shutdown animation
 - **post-fs-data.sh**: upgraded to multi-path mount engine (covers AOSP, LineageOS, OOS, yaap)
 - **service.sh**: replaced fixed-path checks with size-threshold remount helper
 - **uninstall.sh**: now cleans /data/local and /data/misc/bootanim paths too
@@ -11,6 +11,7 @@
 - **module.prop**: broadened androidApi=26 (was 36), version bumped to v3.0.0
 - **build.py**: upgraded with parallel variant builds and proper metadata embedding
 - **update.json**: bumped to v3.0.0
+- **og1080p shutdown animation**: all 4 variants now have matching shutdown animations
 
 ## v2.0.0-beta (2026-05-13)
 ### Initial Public Beta Release

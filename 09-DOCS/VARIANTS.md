@@ -32,8 +32,8 @@ All variants are pre-scaled to **1440×3120** (OnePlus 7 Pro native resolution).
 - **Style:** Original OnePlus 8T Cyberpunk Special Edition animation
 - **FPS:** 30
 - **Resolution:** 1080p (upscaled)
-- **Shutdown match:** No (none included)
-- **Notes:** Authentic source material; lower fps/res than native variants
+- **Shutdown match:** Yes (`og1080p/shutdownanimation.zip`)
+- **Notes:** Authentic source material; lower fps/res than native variants; shutdown uses reboot-variant frames adapted to 1080×2340
 
 ### 5. OG 4K *(development asset)*
 - **Style:** 4K source variant
@@ -51,6 +51,7 @@ All variants are pre-scaled to **1440×3120** (OnePlus 7 Pro native resolution).
 | glitch | `glitch/shutdownanimation.zip` | Same file → `rbootanimation.zip` |
 | flatline | `flatline/shutdownanimation.zip` | Same file → `rbootanimation.zip` |
 | reboot | `reboot/shutdownanimation.zip` | Same file → `rbootanimation.zip` |
+| og1080p | `og1080p/shutdownanimation.zip` | Same file → `rbootanimation.zip` |
 
 ---
 

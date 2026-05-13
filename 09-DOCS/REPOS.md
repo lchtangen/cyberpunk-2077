@@ -17,7 +17,7 @@ Full manifest with paths and remotes: [`../99-MANIFESTS/git-repositories.txt`](.
 - **Path:** `01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro-Ultimate/`
 - **Remote:** local (no upstream)
 - **Version:** v3.0.0
-- **Description:** All-in-one variant of the Full Edition including live wallpaper APKs and extended config tooling.
+- **Description:** All-in-one variant of the Full Edition with extended config tooling and live wallpaper slot. Note: the two bundled live wallpaper APKs (`cp2077-livewallpaper-original.apk`, `cp2077-livewallpaper-vivid.apk`) are HTML documents masquerading as APKs — they are quarantined and must not be installed. Module is currently disabled in favour of the lighter Full Edition.
 
 ---
 

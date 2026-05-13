@@ -118,11 +118,11 @@ Original v1.0 module — the first iteration before the Full/Ultimate split. Sta
 
 ```bash
 # Via Magisk Manager — sideload:
-adb push 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/CP2077-OP7Pro-v2.0.0-beta.zip /sdcard/Download/
+adb push 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/CP2077-OP7Pro-v3.0.0.zip /sdcard/Download/
 # Then: Magisk → Modules → Install from storage
 
 # Via ADB (TWRP):
-adb sideload 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/CP2077-OP7Pro-v2.0.0-beta.zip
+adb sideload 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/CP2077-OP7Pro-v3.0.0.zip
 ```
 
 ### Switch Variant (no reflash)

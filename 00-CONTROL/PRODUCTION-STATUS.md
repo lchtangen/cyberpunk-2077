@@ -19,7 +19,7 @@
 - `/data/local/bootanimation.zip` (multi-path fallback)
 - `/data/misc/bootanim/bootanimation.zip` (LineageOS path)
 
-Boot and shutdown files were verified after reboot against CP2077 Full v2.0.0-beta checksums.
+Boot and shutdown files were verified after reboot against CP2077 Full v3.0.0 checksums.
 
 ## Workspace Merge (2026-05-13)
 
