@@ -1,1 +1,19 @@
-e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855  -
+# Production artifact checksums — 2026-05-13T18:26:08Z
+
+1dea3bb38fb79218a8e4eb6a8bfe72518f5aa7b1121a8d59251bc806abb04017  01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/release/CP2077-OP7Pro-v2.0.0-beta-megapack.zip
+cda0e044eaaea7bc9345fb974104371b80ddf0041ea9e491cc8f73563edf22c1  01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/release/CP2077-OP7Pro-v2.0.0-beta.zip
+9ed7d4b7482a8fadaf748fb1cc64b389b24c6f0129e72e231f38fd16af5df23a  01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/release/CP2077-OP7Pro-v3.0.0-megapack.zip
+6933c5221bdfcf057982c15505ec9d6a2551ce2a5c7dbf1f220f0bc727e755cb  01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/release/CP2077-OP7Pro-v3.0.0-variant-Cyberpunk-Flatline-2077.zip
+c06586764a39c23eb30c10263f4e644abe2bc37387886b3d75ed6cf8641edefc  01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/release/CP2077-OP7Pro-v3.0.0-variant-Original-1080p.zip
+45d7d99236a6831d26843b23a477ff5ca4d612e267313ec8f18ce5c072b9af68  01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/release/CP2077-OP7Pro-v3.0.0-variant-Re-Boot-Animation.zip
+b1a2c52acef7a80d7d04fad4bbe157447e6ea2b96ffaa2bccd2980d566bba9ac  01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/release/CP2077-OP7Pro-v3.0.0.zip
+14bbc5b7a3e42177cd44315ba02685debf4eb1736f41801d8b578e58a5754cbf  01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/release/CP2077-OP7Pro-variant-Cyberpunk-Flatline-2077.zip
+21c759c49059d71e25075d954e8ea17a3168a627f47a1621c10daea251e1d0de  01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/release/CP2077-OP7Pro-variant-Original-1080p.zip
+80489ea0026cc7a60ee5ed14b83949e8fd8e39f5a1b865759fca1f44bb13f94d  01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/release/CP2077-OP7Pro-variant-Re-Boot-Animation.zip
+a6d090846269ef087c6903469c3707b1d97fb21279730dcda7648589e5624e3d  01-DEVELOPMENT/repos/cyberpunk/CP2077-Universal/release/CP2077-Universal-v1.0.0.zip
+f42c4035143fcf2e435e9b77fcd7f85ba176a45dd3bdf50048cb7ea94494322c  01-DEVELOPMENT/repos/cyberpunk/CP2077-Universal/release/per-variant/CP2077-Universal-CyberGlitch-2077-v1.0.0.zip
+ef91dc692da5cd54e4086e945a059eaec751f4d6fd7694d04426724294f28e35  01-DEVELOPMENT/repos/cyberpunk/CP2077-Universal/release/per-variant/CP2077-Universal-Cyberpunk-Flatline-2077-v1.0.0.zip
+f9c01f374299412add01d541703e29c859703bb056c7f431f8ba3508acfcf271  01-DEVELOPMENT/repos/cyberpunk/CP2077-Universal/release/per-variant/CP2077-Universal-Original-1080p-v1.0.0.zip
+da5ae1750755684cc2a91c4153aeaee1abeb6ec1eb5749e76f05c1583a36ac8a  01-DEVELOPMENT/repos/cyberpunk/CP2077-Universal/release/per-variant/CP2077-Universal-Re-Boot-Animation-v1.0.0.zip
+cda0e044eaaea7bc9345fb974104371b80ddf0041ea9e491cc8f73563edf22c1  02-PRODUCTION/magisk-modules/device-copy-CP2077-OP7Pro-v2.0.0-beta.zip
+b994f54d6ba227c55972a36b5800ded74e60ca7e520ea0859525d3e3a9aa19a9  02-PRODUCTION/magisk-modules/device-copy-CP2077-OP7Pro-v2.0.0-ultimate-all-in-one.zip

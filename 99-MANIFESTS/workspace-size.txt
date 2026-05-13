@@ -1,1 +1,5 @@
-2026-05-13 19:22 — 9.9G total — 150,190 files — 17 repos (incl. build-source)
+# Workspace size — 2026-05-13T18:14:31Z
+12G	.
+
+# File count (excluding .git)
+149656

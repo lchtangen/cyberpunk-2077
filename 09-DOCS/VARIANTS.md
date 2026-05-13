@@ -1,126 +1,269 @@
-# Animation Variants
+<div align="center">
 
-All variants are pre-scaled to **1440×3120** (OnePlus 7 Pro native resolution).
+```
+╔══════════════════════════════════════════════════════════════════════════╗
+║  ░▒▓  ANIMATION VARIANTS — CYBERPUNK 2077 MAGISK MODULE  ▓▒░           ║
+║  ────────────────────────────────────────────────────────────────────── ║
+║  Boot · Shutdown · Reboot · Audio Pack · Asset Map                     ║
+╚══════════════════════════════════════════════════════════════════════════╝
+```
 
----
+</div>
 
-## Boot Animation Variants
-
-### 1. CyberGlitch-2077 ⚡ *(Active / Recommended)*
-- **Style:** Glitch-effect logo with neon cyan/yellow color palette
-- **FPS:** 60
-- **Resolution:** 1440×3120
-- **Source:** sodasoba1 — OOS 13 modded
-- **Shutdown match:** Yes (`glitch/shutdownanimation.zip`)
-- **Notes:** Best visual match to the OP8T Cyberpunk Edition hardware theme
-
-### 2. Cyberpunk-Flatline-2077
-- **Style:** Flatline ECG motif with CP2077 color grade
-- **FPS:** 60
-- **Resolution:** 1440×3120
-- **Shutdown match:** Yes (`flatline/shutdownanimation.zip`)
-- **Notes:** Subtle, cinematic feel
-
-### 3. Re-Boot Animation
-- **Style:** OnePlus logo with glitch transition overlay
-- **FPS:** 60
-- **Resolution:** 1440×3120
-- **Shutdown match:** Yes (`reboot/shutdownanimation.zip`)
-- **Notes:** Closest to stock OP boot feel with CP2077 flair
-
-### 4. Original 1080p (8T SE Port)
-- **Style:** Original OnePlus 8T Cyberpunk Special Edition animation
-- **FPS:** 30
-- **Resolution:** 1080p (upscaled)
-- **Shutdown match:** Yes (`og1080p/shutdownanimation.zip`)
-- **Notes:** Authentic source material; lower fps/res than native variants; shutdown uses reboot-variant frames adapted to 1080×2340
-
-### 5. OG 4K *(development asset)*
-- **Style:** 4K source variant
-- **FPS:** 60
-- **Resolution:** 4K (downscaled at install time)
-- **Location:** `06-UI-THEMES-ANIMATIONS/animations/CP2077-OP7Pro-bootanimations/og4k/`
-- **Notes:** Not included in module ZIP by default; requires manual build step
+All variants are pre-scaled to **1440 × 3120** — native OnePlus 7 Pro resolution.  
+Universal edition auto-scales to any device resolution at install time.
 
 ---
 
-## Shutdown Animation Variants
+## 🎬 Boot Animation Variants
 
-| Variant | File | Reboot Animation |
-|---|---|---|
-| glitch | `glitch/shutdownanimation.zip` | Same file → `rbootanimation.zip` |
-| flatline | `flatline/shutdownanimation.zip` | Same file → `rbootanimation.zip` |
-| reboot | `reboot/shutdownanimation.zip` | Same file → `rbootanimation.zip` |
-| og1080p | `og1080p/shutdownanimation.zip` | Same file → `rbootanimation.zip` |
+```
+╔══════════════════════════════════════════════════════════════════════════╗
+║  ░░░ VARIANT MATRIX ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  ║
+╚══════════════════════════════════════════════════════════════════════════╝
+```
+
+### ⚡ 1. CyberGlitch-2077 — `glitch` *(Active · Recommended)*
+
+<div align="center">
+
+| 🔷 Property | 📋 Value |
+|:-----------|:--------|
+| 🔑 **Key** | `glitch` |
+| 🎨 **Style** | Glitch-effect CP2077 logo with neon cyan/yellow palette |
+| 🎞 **FPS** | **60** |
+| 📐 **Resolution** | 1440 × 3120 |
+| 📦 **Source** | sodasoba1 — OOS 13 modded (ported to OP7 Pro) |
+| 💀 **Shutdown match** | ✅ `glitch/shutdownanimation.zip` |
+| ⭐ **Recommend** | Best visual match to OP8T Cyberpunk Edition hardware theme |
+
+</div>
 
 ---
 
-## Audio Pack — CP2077 UI Sounds
+### 💀 2. Cyberpunk-Flatline-2077 — `flatline`
+
+<div align="center">
+
+| 🔷 Property | 📋 Value |
+|:-----------|:--------|
+| 🔑 **Key** | `flatline` |
+| 🎨 **Style** | Flatline ECG motif with CP2077 neon color grade |
+| 🎞 **FPS** | **60** |
+| 📐 **Resolution** | 1440 × 3120 |
+| 📦 **Source** | sodasoba1 — OOS 13 modded |
+| 💀 **Shutdown match** | ✅ `flatline/shutdownanimation.zip` |
+| ⭐ **Character** | Subtle, cinematic — best for minimalist builds |
+
+</div>
+
+---
+
+### 🔄 3. Re-Boot Animation — `reboot`
+
+<div align="center">
+
+| 🔷 Property | 📋 Value |
+|:-----------|:--------|
+| 🔑 **Key** | `reboot` |
+| 🎨 **Style** | OnePlus logo with glitch transition overlay |
+| 🎞 **FPS** | **60** |
+| 📐 **Resolution** | 1440 × 3120 |
+| 📦 **Source** | sodasoba1 — OOS 13 modded |
+| 💀 **Shutdown match** | ✅ `reboot/shutdownanimation.zip` |
+| ⭐ **Character** | Closest to stock OP boot feel with CP2077 flair |
+
+</div>
+
+---
+
+### 📺 4. Original 1080p — `og1080p`
+
+<div align="center">
+
+| 🔷 Property | 📋 Value |
+|:-----------|:--------|
+| 🔑 **Key** | `og1080p` |
+| 🎨 **Style** | Authentic OnePlus 8T Cyberpunk Special Edition animation |
+| 🎞 **FPS** | 30 |
+| 📐 **Resolution** | 1080 × 2340 (upscaled display) |
+| 📦 **Source** | OP8T Cyberpunk Edition SE port |
+| 💀 **Shutdown match** | ✅ `og1080p/shutdownanimation.zip` (reboot frames adapted) |
+| ⭐ **Character** | Authentic source material · lower fps/res is intentional |
+
+</div>
+
+---
+
+### 🔬 5. Original 4K — `og4k` *(Development Asset)*
+
+<div align="center">
+
+| 🔷 Property | 📋 Value |
+|:-----------|:--------|
+| 🔑 **Key** | `og4k` |
+| 🎨 **Style** | 4K upscaled variant |
+| 🎞 **FPS** | 30 |
+| 📐 **Resolution** | 2160 × 4800 (LANCZOS 2× upscale from og1080p) |
+| 📦 **Source** | og1080p upscaled via Pillow LANCZOS · 267 frames · 358 MB |
+| 💀 **Shutdown match** | Glitch frames adapted to 2160×4800 |
+| 📍 **Location** | `06-UI-THEMES-ANIMATIONS/animations/CP2077-OP7Pro-bootanimations/og4k/` |
+| ⚠️ **Status** | Dev asset — not bundled in module ZIP by default |
+
+</div>
+
+---
+
+## 💀 Shutdown Animation Matrix
+
+<div align="center">
+
+| 🎬 Variant | 💀 Shutdown File | 🔄 Reboot File |
+|:-----------|:----------------|:--------------|
+| `glitch` | `glitch/shutdownanimation.zip` | Same → `rbootanimation.zip` |
+| `flatline` | `flatline/shutdownanimation.zip` | Same → `rbootanimation.zip` |
+| `reboot` | `reboot/shutdownanimation.zip` | Same → `rbootanimation.zip` |
+| `og1080p` | `og1080p/shutdownanimation.zip` | Reboot frames → 1080×2340 |
+| `og4k` | Glitch frames → 2160×4800 | — |
+
+</div>
+
+---
+
+## 🔊 Audio Pack — CP2077 UI Sounds
+
+```
+╔══════════════════════════════════════════════════════════════════════════╗
+║  ░░░ AUDIO CORTEX — UI SOUND REPLACEMENTS ░░░░░░░░░░░░░░░░░░░░░░░░░░░  ║
+╚══════════════════════════════════════════════════════════════════════════╝
+```
 
 Installed to `/product/media/audio/ui/` and `/media/audio/ui/`:
 
-| File | Replaces |
-|---|---|
-| `Lock.ogg` | Screen lock sound |
-| `Unlock.ogg` | Screen unlock sound |
-| `ChargingStarted.ogg` | Wired charging connect |
-| `WirelessChargingStarted.ogg` | Wireless charging connect |
-| `camera_click.ogg` | Camera shutter |
-| `camera_focus.ogg` | Camera autofocus |
-| `Effect_Tick.ogg` | UI tick / selection |
+<div align="center">
+
+| 🔊 File | 🔄 Replaces | 📝 Notes |
+|:--------|:-----------|:--------|
+| `Lock.ogg` | Screen lock sound | — |
+| `Unlock.ogg` | Screen unlock sound | — |
+| `ChargingStarted.ogg` | Wired charging connect | — |
+| `WirelessChargingStarted.ogg` | Wireless charging connect | Some OOS builds play both — see Troubleshooting |
+| `camera_click.ogg` | Camera shutter | — |
+| `camera_focus.ogg` | Camera autofocus | — |
+| `Effect_Tick.ogg` | UI tick / selection | — |
+
+</div>
 
 ---
 
-## Switching Variants After Install
+## 🔄 Switching Variants After Install
 
-Re-flash the module ZIP and select a new variant at the installer prompt.
-The previous selection is loaded from `/data/cp2077.conf` as a default.
+**Option A — Reflash (recommended):**
+```bash
+# Push updated module and reflash via Magisk
+# The installer reads /data/cp2077.conf to pre-fill your previous selection
+adb push CP2077-OP7Pro-v3.0.0.zip /sdcard/Download/
+# Magisk → Modules → Install → select ZIP
+```
 
-Or manually edit `/data/cp2077.conf`:
+**Option B — Config edit (no reflash):**
+```bash
+# Edit config directly — post-fs-data.sh re-applies on next boot
+adb shell su -c 'echo -e "variant=flatline\naudio=yes" > /data/cp2077.conf'
+adb reboot
 ```
-variant=glitch   # glitch | flatline | reboot | og1080p
-audio=yes        # yes | no
+
+**Option C — Force restart animation service:**
+```bash
+adb shell su -c 'echo "variant=glitch" > /data/cp2077.conf'
+adb shell su -c 'setprop ctl.restart bootanim'
 ```
-Then reboot — the `post-fs-data.sh` hook re-applies the selected variant on boot.
 
 ---
 
-## Asset Locations in This Workspace
+## 📁 Asset Locations in This Workspace
 
 ```
 06-UI-THEMES-ANIMATIONS/
-├── animations/
+├── 🎬 animations/
 │   ├── CP2077-OP7Pro-bootanimations/
-│   │   ├── flatline/bootanimation.zip
-│   │   ├── glitch/bootanimation.zip
-│   │   ├── og1080p/bootanimation.zip
-│   │   ├── og4k/bootanimation.zip
-│   │   └── reboot/bootanimation.zip
-│   └── CP2077-OP7Pro-shutdownanimations/
-│       ├── flatline/shutdownanimation.zip
-│       ├── glitch/shutdownanimation.zip
-│       └── reboot/shutdownanimation.zip
-├── themes/
-│   ├── CP2077-splash-assets/                   — boot splash PNGs
-│   ├── CP2077-system-audio/ui/                 — .ogg audio files
-│   ├── Cyberpunk-Neon/                         — KDE/GTK/Sway/terminal
-│   ├── K-DE-Cyberpunk-Neon/                    — KDE + Plymouth
-│   ├── cyber-hyprland-theme/                   — Hyprland + eww + Rofi
-│   ├── cybrland/                               — Full Arch dotfiles
-│   ├── cybrcolors/                             — Color palette tokens
-│   └── cyberpunk-technotronic-icon-theme/      — Icon theme (SVG)
-└── wallpapers/
-    ├── Cyberpunk-Wallpapers/                   — AI-gen + curated (JPEG/PNG/WebP)
-    └── cybrpapers/                             — Hand-crafted CC0 collection
+│   │   ├── flatline/bootanimation.zip       (1440×3120 · 60fps)
+│   │   ├── glitch/bootanimation.zip         (1440×3120 · 60fps) ← ACTIVE
+│   │   ├── og1080p/bootanimation.zip        (1080×2340 · 30fps)
+│   │   ├── og4k/bootanimation.zip           (2160×4800 · 30fps · dev)
+│   │   └── reboot/bootanimation.zip         (1440×3120 · 60fps)
+│   ├── CP2077-OP7Pro-shutdownanimations/
+│   │   ├── flatline/shutdownanimation.zip
+│   │   ├── glitch/shutdownanimation.zip
+│   │   ├── og1080p/shutdownanimation.zip
+│   │   └── reboot/shutdownanimation.zip
+│   └── CP2077-Universal-bootanimations/     (auto-scaled variants)
+│
+├── 🎨 themes/
+│   ├── CP2077-splash-assets/                ← boot splash PNGs
+│   ├── CP2077-system-audio/ui/              ← .ogg audio files
+│   ├── Cyberpunk-Neon/                      ← KDE/GTK/Sway/terminal
+│   ├── K-DE-Cyberpunk-Neon/                 ← KDE + Plymouth
+│   ├── cyber-hyprland-theme/                ← Hyprland + eww + Rofi
+│   ├── cybrland/                            ← Full Arch dotfiles
+│   ├── cybrcolors/                          ← Color palette tokens
+│   └── cyberpunk-technotronic-icon-theme/   ← SVG icon theme
+│
+└── 🖼 wallpapers/
+    ├── Cyberpunk-Wallpapers/                ← AI-gen + curated (JPEG/PNG/WebP)
+    └── cybrpapers/                          ← CC0 hand-crafted collection
 ```
 
 ---
 
-## Upstream Source Repos (Animation Reference)
+## 📦 bootanimation.zip Format Reference
 
-| Repo | Location | What It Contributes |
-|---|---|---|
-| `sodasoba1/CyberPunk-2077-OOS13-Modded-Boot-and-Shutdown-Animation` | `03-BUILD/artifacts/cyberpunk-build/CyberPunk-2077-OOS13-…/` | Source of glitch + flatline animation frames used in OP7 Pro port |
-| `Magisk-Modules-Alt-Repo/GlitchedCyberBoot` | `01-DEVELOPMENT/repos/cyberpunk/GlitchedCyberBoot/` | Alternative glitch variant; OOS `my_product/media` path format |
-| `sodasoba1/ONEPLUS9-OOS13-BootAnimation` | `01-DEVELOPMENT/repos/cyberpunk/ONEPLUS9-OOS13-BootAnimation/` | Higher-resolution source frames from OP9 OOS13 |
-| `ENEIZEM/Magisk-Module-Cyberpunk-2077-Bootanimation-SplashScreen-POCO` | `03-BUILD/artifacts/cyberpunk-build/Magisk-Module-…-POCO/` | POCO-targeted module; splash screen reference |
+```bash
+# Standard Android boot animation format:
+bootanimation.zip
+├── desc.txt        ← "1440 3120 60" (width height fps)
+├── part0/          ← intro section (plays once)
+│   ├── frame001.png
+│   ├── frame002.png
+│   └── ...
+└── part1/          ← loop section (loops until boot complete)
+    ├── frame001.png
+    └── ...
+```
+
+**Verify a ZIP:**
+```bash
+python3 -c "
+import zipfile
+z = zipfile.ZipFile('bootanimation.zip')
+print(z.read('desc.txt').decode())
+frames = [n for n in z.namelist() if n.endswith('.png')]
+print(f'Frames: {len(frames)}')
+"
+```
+
+---
+
+## 🔗 Upstream Source Repos
+
+<div align="center">
+
+| 📦 Repo | 📍 Location | 🎨 Contribution |
+|:--------|:-----------|:---------------|
+| `sodasoba1/CyberPunk-2077-OOS13-Modded-Boot-and-Shutdown-Animation` | `03-BUILD/artifacts/cyberpunk-build/` | Source frames for glitch + flatline |
+| `Magisk-Modules-Alt-Repo/GlitchedCyberBoot` | `01-DEVELOPMENT/repos/cyberpunk/GlitchedCyberBoot/` | Alternative glitch variant · OOS path format |
+| `sodasoba1/ONEPLUS9-OOS13-BootAnimation` | `01-DEVELOPMENT/repos/cyberpunk/ONEPLUS9-OOS13-BootAnimation/` | Higher-res source frames (OP9 native) |
+| `ENEIZEM/Magisk-Module-Cyberpunk-2077-Bootanimation-SplashScreen-POCO` | `03-BUILD/artifacts/cyberpunk-build/` | POCO module · splash screen reference |
+
+</div>
+
+---
+
+## 🔗 Related Docs
+
+| 📄 | 🔗 |
+|:---|:---|
+| ⚡ Installation instructions | [INSTALLATION-GUIDE.md](INSTALLATION-GUIDE.md) |
+| 🔧 Build from source | [BUILD-GUIDE.md](BUILD-GUIDE.md) |
+| 🐛 Troubleshoot issues | [TROUBLESHOOTING.md](TROUBLESHOOTING.md) |
+| 📋 Current device state | [../00-CONTROL/PRODUCTION-STATUS.md](../00-CONTROL/PRODUCTION-STATUS.md) |

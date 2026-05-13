@@ -1,0 +1,57 @@
+# Git repository status — 2026-05-13T18:26:07Z
+# format: path  branch  last-commit  remote  dirty
+
+.                                                                       branch=main                  dirty=15    remote=https://github.com/lchtangen/cyberpunk-2077.git
+  last: 3705353 fix: all 6 bugs resolved, 39/39 tests passing
+
+./01-DEVELOPMENT/repos/cyberpunk/AndroidCyberpankIcons                  branch=main                  dirty=0     remote=https://github.com/privatgt/AndroidCyberpankIcons
+  last: 7b7a1c6 Update appfilter.xml
+
+./01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro                          branch=master                dirty=18    remote=(no remote)
+  last: 111b96c fix: og1080p variant now installs shutdown animation + update changelog
+
+./01-DEVELOPMENT/repos/cyberpunk/GlitchedCyberBoot                      branch=main                  dirty=0     remote=https://github.com/Magisk-Modules-Alt-Repo/GlitchedCyberBoot
+  last: 877912f fixed typo
+
+./01-DEVELOPMENT/repos/cyberpunk/ONEPLUS9-OOS13-BootAnimation           branch=main                  dirty=0     remote=https://github.com/sodasoba1/ONEPLUS9-OOS13-BootAnimation
+  last: e970ad6 Update README.md
+
+./01-DEVELOPMENT/repos/oneplus-7-pro/evolution-x-device-guacamole       branch=bka                   dirty=0     remote=https://github.com/Evolution-X-Devices/device_oneplus_guacamole
+  last: 898f649 guacamole: Move system to erofs
+
+./03-BUILD/artifacts/cyberpunk-build/CyberPunk-2077-OOS13-Modded-Boot-and-Shutdown-Animation  branch=main                  dirty=0     remote=https://github.com/sodasoba1/CyberPunk-2077-OOS13-Modded-Boot-and-Shutdown-Animation.git
+  last: d7cd9f4 CyberGlitch-2077 Oxygen OS 13 Boot & Shutdown Animation
+
+./03-BUILD/artifacts/cyberpunk-build/Magisk-Module-Cyberpunk-2077-Bootanimation-SplashScreen-POCO  branch=main                  dirty=0     remote=https://github.com/ENEIZEM/Magisk-Module-Cyberpunk-2077-Bootanimation-SplashScreen-POCO.git
+  last: 16cf51e update descriptions
+
+./06-UI-THEMES-ANIMATIONS/themes/cyber-hyprland-theme                   branch=master                dirty=0     remote=https://github.com/taylor85345/cyber-hyprland-theme
+  last: df6efa9 Updated Hyprland Socket directory
+
+./06-UI-THEMES-ANIMATIONS/themes/Cyberpunk-Neon                         branch=master                dirty=0     remote=https://github.com/Roboron3042/Cyberpunk-Neon
+  last: e74c25c Update Mastodon theme for v4.3
+
+./06-UI-THEMES-ANIMATIONS/themes/cyberpunk-technotronic-icon-theme      branch=main                  dirty=19    remote=https://github.com/dreifacherspass/cyberpunk-technotronic-icon-theme
+  last: 20ebb74 Merge pull request #19 from jamesmcewan/slicers
+
+./06-UI-THEMES-ANIMATIONS/themes/cybrcolors                             branch=main                  dirty=0     remote=https://github.com/scherrer-txt/cybrcolors
+  last: f9b5392 mnt: add loicense
+
+./06-UI-THEMES-ANIMATIONS/themes/cybrland                               branch=main                  dirty=0     remote=https://github.com/scherrer-txt/cybrland
+  last: 1a14226 mnt: sync submodules to latest
+
+./06-UI-THEMES-ANIMATIONS/themes/K-DE-Cyberpunk-Neon                    branch=master                dirty=0     remote=https://github.com/UtkarshKunwar/K-DE-Cyberpunk-Neon
+  last: 2838f73 Added instructions for GRUB theme.
+
+./06-UI-THEMES-ANIMATIONS/wallpapers/cybrpapers                         branch=main                  dirty=0     remote=https://github.com/scherrer-txt/cybrpapers
+  last: 6c402b5 mnt: move download buttons outside the tables and make them smaller
+
+./07-KERNEL-PACKAGE-MODULES/kernel/blu-spark-kernel-op7                 branch=blu_spark-11          dirty=0     remote=https://github.com/engstk/op7
+  last: 4edad4df5 net/wireguard: merge ba45dd6fbfe9f94baf3634a965bcfe6c2c41f4c8 from wireguard-linux-compat
+
+./07-KERNEL-PACKAGE-MODULES/kernel/kernelsu-lineageos-guacamole         branch=main                  dirty=0     remote=https://github.com/surfaceocean/kernelsu_oneplus_7_pro_lineageos_guacamole
+  last: 80f24e9 build.sh: fix defconfig location
+
+./07-KERNEL-PACKAGE-MODULES/kernel/neptune-kernel-sm8150                branch=U-Ice                 dirty=0     remote=https://github.com/0wnerDied/Neptune_kernel_sm8150_oneplus
+  last: 271edab85 defconfig: Remove LOCALVERSION in config
+

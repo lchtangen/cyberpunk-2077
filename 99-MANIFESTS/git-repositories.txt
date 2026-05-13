@@ -1,5 +1,5 @@
 # Git Repositories — cyberpunk-2077 workspace
-# Updated: 2026-05-13 (added build-source, Universal built v1.0.0)
+# Updated: 2026-05-13 (v3.1.0 expansion — CI, Linux HUD, Plymouth, WebUI, device trees)
 # Format: path  branch  remote  category
 
 # ── PRIMARY MODULES (local dev) ───────────────────────────────────────────────
@@ -32,3 +32,9 @@
 /home/arch/cyberpunk-2077/07-KERNEL-PACKAGE-MODULES/kernel/blu-spark-kernel-op7  branch=blu_spark-11  remote=https://github.com/engstk/op7  category=kernel
 /home/arch/cyberpunk-2077/07-KERNEL-PACKAGE-MODULES/kernel/neptune-kernel-sm8150  branch=main  remote=https://github.com/0wnerDied/Neptune_kernel_sm8150_oneplus  category=kernel
 /home/arch/cyberpunk-2077/07-KERNEL-PACKAGE-MODULES/kernel/kernelsu-lineageos-guacamole  branch=main  remote=https://github.com/surfaceocean/kernelsu_oneplus_7_pro_lineageos_guacamole  category=kernel
+
+# ── DEVICE TREES (OnePlus 7 Pro / guacamole, shallow --depth 1 clones) ───────
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/oneplus-7-pro/lineage-device-guacamole        branch=lineage-23.2  remote=https://github.com/LineageOS/android_device_oneplus_guacamole.git          category=device-tree
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/oneplus-7-pro/lineage-device-sm8150-common    branch=lineage-23.2  remote=https://github.com/LineageOS/android_device_oneplus_sm8150-common.git       category=device-tree
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/oneplus-7-pro/lineage-kernel-sm8150           branch=lineage-23.2  remote=https://github.com/LineageOS/android_kernel_oneplus_sm8150.git              category=device-tree
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/oneplus-7-pro/evolution-x-device-guacamole   branch=bka           remote=https://github.com/Evolution-X-Devices/device_oneplus_guacamole.git          category=device-tree  note=Evolution-X-bka-branch-guacamole
