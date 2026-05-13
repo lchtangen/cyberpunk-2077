@@ -1262,9 +1262,9 @@ cpu_temp / sys/class/thermal/thermal_zone0/temp
 - [ ] Per-variant audio tone table
 - [x] `scripts/cp2077-zip-diff.py` — OTA safety ZIP diff tool (2026-05-14)
 - [x] `scripts/cp2077-palette-gen.py` — SVG/CSS/JSON/PNG token generator (2026-05-14)
-- [ ] `cp2077-wallpaper-extract.py`
+- [x] `scripts/cp2077-wallpaper-extract.py` — PNG/WebP frame extractor from bootanim ZIPs (2026-05-14)
 - [ ] `build-universal.py --res-matrix`
-- [ ] `cp2077-module-lint.py`
+- [x] `scripts/cp2077-module-lint.py` — comprehensive Magisk module linter (2026-05-14)
 
 ### P2 Device Expansion
 - [ ] Universal v2
@@ -1629,7 +1629,7 @@ Path: 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/
 | T-34 | APatch install test flow + `apd` docs | P1 |
 | T-35 | Root smoke test: install/status/remount/WebUI/disable/uninstall | P1 |
 | T-36 | `update.json` JSON Schema CI validator | P1 | ✅ 2026-05-14 (added to ci.yml lint stage) |
-| T-37 | `module-lint` check: files/perms/CRLF/META-INF | P2 |
+| T-37 | `module-lint` check: files/perms/CRLF/META-INF | P2 | ✅ 2026-05-14 |
 | T-38 | `ASH_STANDALONE=1` compatibility testing | P2 |
 | T-39 | MMRL metadata: icon + screenshots + categories | P1 |
 | T-40 | `cp2077-root-smoke.sh` Magisk/KSU/APatch/MMRL | P1 |
@@ -1664,7 +1664,7 @@ Path: 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/
 | T-59 | Audio path `/product/media/audio/ui/` (HP-04) | P0 |
 | T-60 | WebUI 5-bridge on Android 16 (HP-05) | P0 |
 | T-61 | 5 MB remount threshold LOS 23.2 (HP-07) | P0 |
-| T-62 | `cp2077-rom-probe.sh` device interrogation | P2 |
+| T-62 | `cp2077-rom-probe.sh` device interrogation | P2 | ✅ 2026-05-14 |
 | T-63 | `devices/*.yaml` ROM profile registry | P1 |
 | T-64 | `cp2077-device-profile-gen.sh` → YAML | P2 |
 | T-65 | Multi-slot A/B support | P3 |
@@ -1710,7 +1710,7 @@ Path: 02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/
 | T-90 | `repo-registry.json` from `git-repositories.txt` | P2 |
 | T-91 | `WHY-CLONED.md` per clone | P2 |
 | T-92 | `repo-health.md` per cloned repo | P3 |
-| T-93 | `cp2077-repo-score.py` scoring all 53 repos | P2 |
+| T-93 | `cp2077-repo-score.py` scoring all 53 repos | P2 | ✅ 2026-05-14 |
 | T-94 | Workspace size → `workspace-size-history.txt` | P2 |
 | T-95 | `cp2077-research-map.py` linking tasks → repos | P3 |
 
@@ -1751,7 +1751,7 @@ Phase      Focus                      Tasks   P0   P1   P2   P3
 | ID | Task | P | Status |
 |:---|:-----|:-|:------:|
 | PH1-01 | LOS 23.2 mount path audit | P0 | 🔴 |
-| PH1-02 | Android 16 boot timing trace | P0 | 🔴 |
+| PH1-02 | Android 16 boot timing trace | P0 | ✅ Timing guards added to post-fs-data.sh + service.sh 2026-05-14 |
 | PH1-03 | SELinux `avc` denial → `sepolicy.rule` | P0 | 🔴 |
 | PH1-04 | Audio path verification LOS 23.2 | P0 | 🔴 |
 | PH1-05 | Magisk WebUI 5-bridge verification | P0 | ✅ APatch bridge added 2026-05-14 |
@@ -1783,7 +1783,7 @@ Phase      Focus                      Tasks   P0   P1   P2   P3
 | PH2-08 | OpenSSF Scorecard weekly | P1 | ✅ 2026-05-14 |
 | PH2-09 | Manifest freshness badge | P1 |
 | PH2-10 | Actions pin-by-SHA + upgrade doc | P1 |
-| PH2-11 | `module-lint` check | P2 |
+| PH2-11 | `module-lint` check | P2 | ✅ 2026-05-14 |
 | PH2-12 | Artifact retention policy | P2 |
 | PH2-13 | `cp2077-ci-local.sh` `act` wrapper | P3 | ✅ 2026-05-14 |
 | PH2-14 | Nightly dry-run build | P3 | ✅ 2026-05-14 |
@@ -1809,7 +1809,7 @@ Phase      Focus                      Tasks   P0   P1   P2   P3
 | PH3-09 | Per-device profile archive | P2 |
 | PH3-10 | ROM detection 14 → 20+ families | P1 |
 | PH3-11 | `device-profile.schema.yaml` | P1 | ✅ 2026-05-14 |
-| PH3-12 | `cp2077-rom-probe.sh` | P2 |
+| PH3-12 | `cp2077-rom-probe.sh` | P2 | ✅ 2026-05-14 |
 | PH3-13 | Extended audio pack v2 | P2 |
 | PH3-14 | Loudness normalization -18 LUFS | P3 |
 | PH3-15 | Variant-specific audio tone palettes | P3 |
@@ -1901,7 +1901,7 @@ Phase      Focus                      Tasks   P0   P1   P2   P3
 
 | ID | Task | P |
 |:---|:-----|:-|
-| PH10-01 | `cp2077-repo-score.py` all repos | P2 |
+| PH10-01 | `cp2077-repo-score.py` all repos | P2 | ✅ 2026-05-14 |
 | PH10-02 | `cp2077-research-map.py` tasks → repos | P3 |
 | PH10-03 | `RESEARCH-SOURCES.md` per repo | P3 |
 | PH10-04 | Quarterly root-ecosystem sync | P3 |
@@ -2000,7 +2000,7 @@ Phase      Focus                      Tasks   P0   P1   P2   P3
 | `cp2077-workspace-audit.sh` | P1 | 🆕🔄 | Weekly cron: symlinks, stale repos, manifests, quarantine |
 | `cp2077-health-dashboard.sh` | P2 | 📋 | Pure ANSI TUI health overview |
 | `cp2077-root-smoke.sh` | P1 | 📋 | Magisk / KernelSU / APatch / MMRL install smoke test |
-| `cp2077-rom-probe.sh` | P1 | 📋 | Device interrogation → `device-profile.yaml` |
+| `cp2077-rom-probe.sh` | P1 | ✅ | Device interrogation → `device-profile.yaml` — rewritten 2026-05-14 (root detect, ROM family, resolution, schema-conforming output) |
 | `cp2077-device-profile-gen.sh` | P2 | 📋 | ADB prop dump + paths + sizes + SELinux mode |
 | `cp2077-slsa-provenance.sh` | P1 | 📋 | SLSA provenance via `slsa-github-generator` |
 | `cp2077-bench.sh` | P2 | 📋 | 5-run boot timing benchmark (mean + stddev) |
@@ -2019,7 +2019,7 @@ Phase      Focus                      Tasks   P0   P1   P2   P3
 | `build-universal.py` | — | ✅ | Universal build — 12 resolutions via FFmpeg LANCZOS |
 | `cp2077-source-lock-validator.py` | P1 | ✅ | Fail CI if lock file diverges from `SOURCES` (shebang fix 2026-05-14) |
 | `cp2077-release-verify.py` | P1 | 📋 | Verify ZIP vs checksum + provenance + update.json |
-| `cp2077-module-lint.py` | P2 | 📋 | Magisk module validator (files, perms, CRLF, META-INF) |
+| `cp2077-module-lint.py` | P2 | ✅ | Magisk module validator (files, perms, CRLF, META-INF, versionCode, bootanim) — 2026-05-14 |
 | `cp2077-repo-score.py` | P2 | 📋 | Score all 53 repos: age, dirty, ahead/behind, links |
 | `cp2077-version-bumper.py` | P2 | 📋 | Atomic bump: build.py + module.prop + update.json |
 | `cp2077-frame-inspector.py` | P3 | 📋 | Terminal frame preview for bootanimation ZIPs |
