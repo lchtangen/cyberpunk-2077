@@ -37,6 +37,12 @@
 # ── QUARANTINE ────────────────────────────────────────────────────────────────
 10-QUARANTINE-invalid-downloads/
 
+# ── RELEASE UPDATE MANIFESTS ──────────────────────────────────────────────────
+# update.json and changelog files served via raw.githubusercontent.com for OTA.
+# Tracked so Magisk can fetch them. ZIPs are excluded via *.zip rule above.
+!releases/
+releases/*.zip
+
 # ── BINARY FILE TYPES (catch-all if anything leaks through) ──────────────────
 *.zip
 *.img
