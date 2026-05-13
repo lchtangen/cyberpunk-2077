@@ -68,21 +68,55 @@ echo -e "  ${DIM}[4/5] git-repositories-status.txt${RST}"
 } > "$MDIR/git-repositories-status.txt"
 echo -e "  ${GRN}✓${RST}  $(grep -c "^\./" "$MDIR/git-repositories-status.txt" || true) repos scanned"
 
-# ── 5. Production artifact SHA-256 ────────────────────────────────
+# ── 5. Production artifact SHA-256 (parallel) ────────────────────
 echo -e "  ${DIM}[5/5] production-artifact-sha256.txt${RST}"
-{
-  echo "# Production artifact checksums — $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
-  echo ""
+PARALLEL="${PARALLEL_SHA256:-8}"
+TMPSHA="$MDIR/.sha256-tmp"
+mkdir -p "$TMPSHA"
+rm -f "$TMPSHA"/*.part
+
+# Collect ZIPs
+mapfile -t ZIP_LIST < <(
   find 02-PRODUCTION 01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/release \
        01-DEVELOPMENT/repos/cyberpunk/CP2077-Universal/release \
-       -name '*.zip' 2>/dev/null \
-    | sort \
-    | while read -r f; do
-        sha256sum "$f"
-      done
-} > "$MDIR/production-artifact-sha256.txt" 2>/dev/null || true
-count=$(grep -c '\.zip' "$MDIR/production-artifact-sha256.txt" 2>/dev/null || echo 0)
-echo -e "  ${GRN}✓${RST}  $count ZIPs checksummed"
+       -name '*.zip' 2>/dev/null | sort
+)
+
+if [ ${#ZIP_LIST[@]} -eq 0 ]; then
+  {
+    echo "# Production artifact checksums — $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+    echo "# No ZIPs found"
+  } > "$MDIR/production-artifact-sha256.txt"
+  echo -e "  ${GRN}✓${RST}  0 ZIPs (none found)"
+else
+  # Dispatch parallel sha256sum workers
+  _running=0
+  for f in "${ZIP_LIST[@]}"; do
+    safe="${f//\//_}"
+    sha256sum "$f" > "$TMPSHA/${safe}.part" &
+    (( _running++ ))
+    if [ "$_running" -ge "$PARALLEL" ]; then
+      wait -n 2>/dev/null || wait
+      (( _running-- ))
+    fi
+  done
+  wait
+
+  {
+    echo "# Production artifact checksums — $(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+    echo "# parallel workers: $PARALLEL"
+    echo ""
+    # Reassemble in sorted order
+    for f in "${ZIP_LIST[@]}"; do
+      safe="${f//\//_}"
+      cat "$TMPSHA/${safe}.part" 2>/dev/null || true
+    done
+  } > "$MDIR/production-artifact-sha256.txt"
+
+  rm -rf "$TMPSHA"
+  count=$(grep -c '\.zip' "$MDIR/production-artifact-sha256.txt" 2>/dev/null || echo 0)
+  echo -e "  ${GRN}✓${RST}  $count ZIPs checksummed (${PARALLEL} parallel workers)"
+fi
 
 echo ""
 echo -e "${YLW}  Manifests updated in 99-MANIFESTS/${RST}"
