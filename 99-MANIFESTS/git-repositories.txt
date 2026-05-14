@@ -1,5 +1,5 @@
 # Git Repositories — cyberpunk-2077 workspace
-# Updated: 2026-05-13 (v3.1.0 expansion — 28 new repos: Magisk ecosystem, Linux theming, OP7 ROMs)
+# Updated: 2026-05-14 (v3.1.0+ — +7 repos: engstk-op7, OrangeFox, OnePlus-OSS kernel, crDroid vendor, Neptune kernel, Lawnchair, Lawnicons)
 # Format: path  branch  remote  category
 
 # ── PRIMARY MODULES (local dev) ───────────────────────────────────────────────
@@ -69,6 +69,19 @@
 /home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/oneplus-7-pro/kernel_oneplus_sm8150          branch=15           remote=https://github.com/DerpFest-Devices/kernel_oneplus_sm8150          category=device-tree
 /home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/oneplus-7-pro/android_kernel_oneplus_sm8150  branch=16.0         remote=https://github.com/crdroidandroid/android_kernel_oneplus_sm8150  category=device-tree
 
-# ── RECOVERY (TWRP / PBRP) ───────────────────────────────────────────────────
-/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/android-roms/android_device_oneplus_guacamole_unified_TWRP  branch=?  remote=(no remote)  category=recovery
+# ── RECOVERY (TWRP / PBRP / OrangeFox) ─────────────────────────────────────
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/android-roms/android_device_oneplus_guacamole_unified_TWRP  branch=?  remote=https://github.com/mauronofrio/android_device_oneplus_guacamole_unified_TWRP  category=recovery
 /home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/android-roms/android_device_oneplus_guacamole-pbrp  branch=android-9.0  remote=https://github.com/PitchBlackRecoveryProject/android_device_oneplus_guacamole-pbrp  category=recovery
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/oneplus-7-pro/orangefox-device-guacamole  branch=fox_9.0  remote=https://github.com/OrangeFoxRecovery/device_oneplus_guacamole.git  category=recovery
+
+# ── KERNELS — OP7 Pro extras ──────────────────────────────────────────────────
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/oneplus-7-pro/engstk-op7                 branch=blu_spark-11  remote=https://github.com/engstk/op7.git                                     category=kernel
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/oneplus-7-pro/oneplus-oss-kernel-sm8150   branch=oneplus/SM8150_P_9.0  remote=https://github.com/OnePlusOSS/android_kernel_oneplus_sm8150.git  category=kernel
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/oneplus-7-pro/neptune-kernel-sm8150       branch=main  remote=https://github.com/0wnerDied/Neptune_kernel_sm8150_oneplus.git             category=kernel
+
+# ── VENDOR BLOBS (guacamole) ─────────────────────────────────────────────────
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/oneplus-7-pro/crdroid-vendor-guacamole    branch=16.0  remote=https://github.com/crdroidandroid/proprietary_vendor_oneplus-guacamole.git  category=vendor-blobs
+
+# ── LAUNCHER (Lawnchair) ─────────────────────────────────────────────────────
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/cyberpunk/lawnchair                       branch=14.0  remote=https://github.com/LawnchairLauncher/lawnchair.git                          category=ui-android
+/home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/cyberpunk/lawnicons                       branch=develop  remote=https://github.com/LawnchairLauncher/lawnicons.git                      category=ui-android
