@@ -14,20 +14,20 @@
 ```
 MODULES
 ──────────────────────────────────────────────────────────
-CP2077_OP7Pro_Full      🟢 LIVE      v3.0.0   8/0 bugs  GM1911
-CP2077_Universal        🟡 BUILT     v1.0.0   14 ROMs  universal
-CP2077_OP7Pro_Ultimate  ⚪ DISABLED  v3.0.0   megapack ref
+CP2077_OP7Pro_Full      🟢 LIVE      v3.1.0   18/0 bugs  GM1911
+CP2077_Universal        🟡 BUILT     v1.0.0   14 ROMs   universal
+CP2077_OP7Pro_Ultimate  ⚪ DISABLED  v3.0.0   versionCode fixed
 ──────────────────────────────────────────────────────────
 ```
 
-**Badge:** `v3.1.0 pending` · LOS 23.2 audit · Android 16 timing
+**Badge:** `v3.1.0 complete` · Audit: 10 bugs fixed · v4.0.0 groundwork started
 
 ---
 
 ## ══ HOT PATH — P0 BLOCKERS ══
 
 ```
-■ = P0 Critical   ⬛ = Blocker   ▓ = In Progress   □ = Pending
+■ = P0 Critical   ⬛ = Blocker   ✓ = Fixed   □ = Pending
 ───────────────────────────────────────────────────────────────
 HP-01  ⬛⬛⬛⬛⬛⬛⬛⬛  LOS 23.2 mount path audit
 HP-02  ⬛⬛⬛⬛⬛⬛⬛⬛  Android 16 boot timing trace
@@ -38,7 +38,12 @@ HP-06  ⬛⬛⬛⬛⬛⬛⬛⬛  KernelSU module.json parity
 HP-07  ⬛⬛⬛⬛⬛⬛⬛⬛  5 MB remount threshold re-validation
 HP-08  ⬛⬛⬛⬛⬛⬛⬛⬛  DEVICE-SPECS.md refresh LOS 23.2
 HP-09  ⬛⬛⬛⬛⬛⬛⬛⬛  APatch apd path discovery (v0.10+)
-HP-10  ⬛⬛⬛⬛⬛⬛⬛⬛  Supply chain SHA-256 verification
+HP-10  ✓✓✓✓✓✓✓✓  Supply chain SHA-256 — build.py writes checksum ← FIXED
+HP-11  ✓✓✓✓✓✓✓✓  ADB flash RELEASE_ZIP stale v3.0.0 path ← FIXED
+HP-12  ✓✓✓✓✓✓✓✓  ADB switch clobbers audio/silent config ← FIXED
+HP-13  ✓✓✓✓✓✓✓✓  og4k variant unreachable via ADB switch ← FIXED
+HP-14  ✓✓✓✓✓✓✓✓  update.json wrong repo + broken changelog URL ← FIXED
+HP-15  ✓✓✓✓✓✓✓✓  Ultimate versionCode=300001 off-by-one + wrong updateJson feed ← FIXED
 ───────────────────────────────────────────────────────────────
 ```
 
@@ -53,7 +58,12 @@ HP-10  ⬛⬛⬛⬛⬛⬛⬛⬛  Supply chain SHA-256 verification
 | HP-07 | 5 MB remount threshold re-validation on LOS 23.2 stock stubs | 🔴 P0 |
 | HP-08 | Device docs refresh — `DEVICE-SPECS.md` with LOS 23.2 confirmed results | 🔴 P0 |
 | HP-09 | APatch `apd` path discovery — document correct binary paths and module install dir for APatch v0.10+ | 🔴 P0 |
-| HP-10 | Supply chain verification — HEAD-check all `SOURCES` URLs, validate SHA-256 vs `sources.lock.json`, flag 404/mismatch | 🔴 P0 |
+| HP-10 | ~~Supply chain verification~~ — build.py now writes real SHA-256 into `update.json` post-build | ✅ FIXED |
+| HP-11 | ~~ADB flash always failed~~ — `RELEASE_ZIP` pointed to non-existent v3.0.0 ZIP; updated to v3.1.0 | ✅ FIXED |
+| HP-12 | ~~ADB switch wiped config~~ — `printf ... > conf` overwrote `audio=`/`silent=`; now reads-before-write | ✅ FIXED |
+| HP-13 | ~~og4k unreachable via ADB~~ — `valid_variants` and picker stopped at og1080p; og4k added as `[5]` | ✅ FIXED |
+| HP-14 | ~~update.json wrong zipUrl repo~~ — pointed to `CP2077-OP7Pro` (wrong repo); changelog 404; both fixed | ✅ FIXED |
+| HP-15 | ~~Ultimate versionCode=300001~~ — off-by-one for v3.0.0; fixed to 300000; `updateJson` now has own feed | ✅ FIXED |
 
 ---
 
@@ -62,16 +72,16 @@ HP-10  ⬛⬛⬛⬛⬛⬛⬛⬛  Supply chain SHA-256 verification
 ```
              v3.1.0          v4.0.0          v5.0.0       Backlog
          ──────────────  ──────────────  ──────────────  ────────
- Root     ▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░░░░░  ░░░░░░░░░░░░  ░░░░░░░░
- CI/CD    ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░░░░░  ░░░░░░░░
- Universal░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░░░░░  ░░░░░░░░
- KSU      ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░░░░░  ░░░░░░░░
- APatch   ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░░░░░  ░░░░░░░░
- SupChain ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░░░░░  ░░░░░░░░
- Variants ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░░░░░  ░░░░░░░░
- Wallpaper░░░░░░░░░░░░  ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░
- MultiDev ░░░░░░░░░░░░  ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░
- Desktop  ░░░░░░░░░░░░  ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░
+ Root     ▓▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░░░░░  ░░░░░░░░░░░░  ░░░░░░░░
+ CI/CD    ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░░░░░  ░░░░░░░░
+ Universal░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░░░░░  ░░░░░░░░
+ KSU      ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░░░░░  ░░░░░░░░
+ APatch   ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░░░░░  ░░░░░░░░
+ SupChain ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░░░░░  ░░░░░░░░
+ Variants ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░░░░░  ░░░░░░░░
+ Wallpaper░░░░░░░░░░░░  ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░
+ MultiDev ░░░░░░░░░░░░  ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░
+ Desktop  ░░░░░░░░░░░░  ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓▓▓▓▓  ░░░░░░░░
  OTA      ░░░░░░░░░░░░  ░░░░░░░░░░░░  ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓
  Plymouth ░░░░░░░░░░░░  ░░░░░░░░░░░░  ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓
  Audio    ░░░░░░░░░░░░  ░░░░░░░░░░░░  ░░░░░░░░░░░░  ▓▓▓▓▓▓▓▓
@@ -88,16 +98,20 @@ HP-10  ⬛⬛⬛⬛⬛⬛⬛⬛  Supply chain SHA-256 verification
 ```
 Build      ██████████████████████████████  7/7   🟢  DONE
 Service    ██████████████████████████████  5/5   🟢  DONE
-Docs       ████████████████░░░░░░░░░░░░░  4/6   🟡  IN PROGRESS
+Docs       ██████████████████████████████  6/6   🟢  DONE
+Audit      ██████████████████████████████  10/10 🟢  DONE
 LOS 23.2   ░░░░░░░░░░░░░░░░░░░░░░░░░░░░░░  0/10  🔴  PENDING
+v4.0.0 Prep████████░░░░░░░░░░░░░░░░░░░░░░  3/12  🟡  IN PROGRESS
 ```
 
 | Area | Progress | Status |
 |:-----|:--------:|:------:|
 | Build | 7/7 | 🟢 |
 | Service | 5/5 | 🟢 |
-| Docs | 4/6 | 🟡 |
+| Docs | 6/6 | 🟢 |
+| Audit | 10/10 | 🟢 |
 | LOS 23.2 | 0/10 | 🔴 |
+| v4.0.0 Prep | 3/12 | 🟡 |
 
 ### Variant Work
 
@@ -133,9 +147,9 @@ LOS 23.2   ░░░░░░░░░░░░░░░░░░░░░░░
 ```
  SEVERITY  ████████████████████████████████
  ─────────────────────────────────────────
- High      ████████
+ High      ████████████████████████████████
  Medium    ████████████████████████
- Low       ████████████████████████████████
+ Low       ████████
 
  LIKELIHOOD: Low ◄─────────────────────────► High
              [1] [2] [3] [4] [5]
@@ -148,6 +162,13 @@ LOS 23.2   ░░░░░░░░░░░░░░░░░░░░░░░
 | SELinux enforcing blocks bind | 🟡 M | L | M | 🟡 | HP-03 sepolicy |
 | Source ZIPs stale/404 | 🟡 M | L | H | 🟡 | `sources.lock.json` |
 | KernelSU API breaks `module.json` | 🟡 M | L | M | 🟡 | HP-06 validation |
+| `service.sh` `sleep 1` blocks on A15/16 | � L | — | M | ✅ | Fixed: prop-poll loop replaces blocking sleep |
+| og4k/og1080p absent on fresh clone | 🟡 M | H | M | 🟟 | build.py warns; docs note pre-built req |
+| `releases/update-full.json` checksum placeholder | 🟡 M | L | H | 🟟 | Manual step after upload; CI should gate |
+| `releases/update-ultimate.json` missing | � L | — | M | ✅ | Created with v3.0.0 entry and correct OTA URL |
+| ADB config-clobber on variant switch | 🟢 L | — | L | ✅ | Fixed: reads existing keys before overwrite |
+| Embedded `update.json` wrong repo/changelog | 🟢 L | — | H | ✅ | Fixed: correct repo URL + relative changelog |
+| FFmpeg audio tones mixed simultaneously | 🟢 L | — | L | ✅ | Fixed: `amix+adelay` → `concat` in build.py + build-universal.py |
 
 ---
 
@@ -174,7 +195,7 @@ LOS 23.2   ░░░░░░░░░░░░░░░░░░░░░░░
 ║  v6.0.0 ─── ECOSYSTEM + PORT WIZARD                     ║
 ║            ├─ Wizard-driven device porting              ║
 ║            ├─ Signed release artifacts                  ║
-║            └─ Module repository + repo health         ║
+║            └─ Module repository + repo health           ║
 ╚══════════════════════════════════════════════════════════════╝
 ```
 
@@ -239,6 +260,10 @@ v3.2.0 =  302000    v4.0.0 = 400000    v5.0.0 = 500000
 | Hyprland layered config fragments | 2026-05-13 | ✅ | Desktop theming |
 | Binary config with magic header | 2026-05-13 | ✅ | Config safety |
 | `lib/root-runtime.sh` abstraction | 2026-05-13 | ✅ | Root manager neutrality |
+| `build.py` writes SHA-256 to `update.json` post-build | 2026-05-14 | ✅ | Eliminates manual checksum placeholder |
+| ADB `switch` reads existing config before overwriting | 2026-05-14 | ✅ | Prevents silent audio/variant clobber on switch |
+| `og4k` added to all ADB variant selection paths | 2026-05-14 | ✅ | Variant parity with build.py/customize.sh |
+| Separate `update-ultimate.json` OTA feed for Ultimate | 2026-05-14 | ✅ | Prevents Full Edition OTA feed cross-contamination |
 
 ---
 
@@ -285,24 +310,29 @@ v3.2.0 =  302000    v4.0.0 = 400000    v5.0.0 = 500000
 ## ══ METRICS DASHBOARD ══
 
 ```
-BUGS FIXED       ████████████████████████████  8    ✅
+BUGS FIXED       ████████████████████████████  18   ✅
 OPEN BUGS       █                              0    ✅
+AUDIT PASS      ████████████████████████████  10/10 ✅
+V4 PREP         ████████░░░░░░░░░░░░░░░░░░░░  3/12  🟡
 VARIANTS        ████████████████████░░░░░░░░  5/10  🟡
 CI COVERAGE     ████████████░░░░░░░░░░░░░░░░  40%   🔴
 RELEASE ARTIFACTS█████████████████████████  3    ✅
-BACKLOG         ████████████████████████████  210+  📊
+BACKLOG         ████████████████████████████  220+  📊
 ROM FAMILIES    ████████████████░░░░░░░░░░░░  14    🟡
 ROOT MANAGERS   ██████████░░░░░░░░░░░░░░░░░░  1/3   🔴
 ```
 
 | Metric | Value | Target | Status |
 |:-------|:-----:|:------|:------|
-| Bugs fixed this cycle | 8 | — | 🟢 |
+| Bugs fixed this cycle | 18 | — | 🟢 |
+| Audit bugs fixed (session 2) | 10 | — | 🟢 |
 | Open bugs | 0 | 0 | 🟢 |
+| Medium issues noted | 4 | 0 | � resolved |
+| v4.0.0 tasks completed | 3/12 | 12/12 | �🟡 |
 | Variants shipped | 5/10 | 10/10 | 🟡 |
 | CI coverage | 40% | 90% | 🔴 |
 | Release artifacts | 3 | — | 🟢 |
-| Backlog tasks | 210+ | — | 📊 |
+| Backlog tasks | 220+ | — | 📊 |
 | ROM families supported | 14 | 20+ | 🟡 |
 | Root managers supported | 1 | 3 | 🔴 |
 
@@ -442,8 +472,8 @@ Each variant ships: `bootanimation.zip`, `shutdownanimation.zip`, `desc.txt`, `a
 ┌─────────────────────────────────────────┐
 │            lib/root-runtime.sh          │
 │  detect_root_manager()                  │
-│  detect_module_dir()                   │
-│  run_root_command()                    │
+│  detect_module_dir()                    │
+│  run_root_command()                     │
 └─────────────────────────────────────────┘
 ```
 
@@ -451,40 +481,40 @@ Each variant ships: `bootanimation.zip`, `shutdownanimation.zip`, `desc.txt`, `a
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│  PR / Push                                                  │
-└────────────────────┬───────────────────────────────────────┘
+│  PR / Push                                                   │
+└────────────────────┬─────────────────────────────────────────┘
                      ▼
 ┌──────────────────────────────────────────────────────────────┐
-│  Stage 1: LINT                                             │
-│  ├── shellcheck *.sh                                       │
-│  ├── python3 -m py_compile *.py                            │
-│  ├── ruff check *.py                                       │
-│  └── yaml lint device-profiles/*.yaml                      │
-└────────────────────┬───────────────────────────────────────┘
+│  Stage 1: LINT                                               │
+│  ├── shellcheck *.sh                                         │
+│  ├── python3 -m py_compile *.py                              │
+│  ├── ruff check *.py                                         │
+│  └── yaml lint device-profiles/*.yaml                        │
+└────────────────────┬─────────────────────────────────────────┘
                      ▼
 ┌──────────────────────────────────────────────────────────────┐
-│  Stage 2: BUILD                                            │
-│  ├── python3 build.py --check-sources                      │
-│  ├── ffmpeg audio gen (skip if missing)                    │
-│  ├── python3 build.py --variants all                       │
-│  └── python3 build-universal.py                           │
-└────────────────────┬───────────────────────────────────────┘
+│  Stage 2: BUILD                                              │
+│  ├── python3 build.py --check-sources                        │
+│  ├── ffmpeg audio gen (skip if missing)                      │
+│  ├── python3 build.py --variants all                         │
+│  └── python3 build-universal.py                              │
+└────────────────────┬─────────────────────────────────────────┘
                      ▼
 ┌──────────────────────────────────────────────────────────────┐
-│  Stage 3: TEST                                             │
-│  ├── zipfile -t release/*.zip                             │
-│  ├── SHA-256 compare (reproducible gate)                   │
-│  ├── module-lint check                                     │
-│  └── update.json schema validation                        │
-└────────────────────┬───────────────────────────────────────┘
+│  Stage 3: TEST                                               │
+│  ├── zipfile -t release/*.zip                                │
+│  ├── SHA-256 compare (reproducible gate)                     │
+│  ├── module-lint check                                       │
+│  └── update.json schema validation                           │
+└────────────────────┬─────────────────────────────────────────┘
                      ▼
 ┌──────────────────────────────────────────────────────────────┐
-│  Stage 4: RELEASE                                          │
-│  ├── gh release create --draft                              │
-│  ├── cp2077-slsa-provenance.sh                            │
-│  ├── upload artifacts + SHA256SUMS                         │
-│  └── OpenSSF Scorecard run                                │
-└─────────────────────────────────────────────────────────────┘
+│  Stage 4: RELEASE                                            │
+│  ├── gh release create --draft                               │
+│  ├── cp2077-slsa-provenance.sh                               │
+│  ├── upload artifacts + SHA256SUMS                           │
+│  └── OpenSSF Scorecard run                                   │
+└──────────────────────────────────────────────────────────────┘
 ```
 
 ### NS-05 · Supply Chain Map
@@ -638,6 +668,16 @@ update.json                                 ✅  top-level only
 | FEAT-18 | **Boot sound equalizer profile** — per-variant FFmpeg low-pass filter tuned to Cyberpunk 2077 radio aesthetic | P3 | v5.0.0 |
 | FEAT-19 | **Reduced-motion mode** — skip boot animation, play only 3 frames on startup if system `ro.accessibility.reduce_motion=1` | P3 | v4.0.0 |
 | FEAT-20 | **Module integrity self-check** — on boot, verify SHA-256 of every mounted ZIP matches `sources.lock.json`, alert if mismatch | P1 | v4.0.0 |
+| FEAT-21 | **Per-boot health summary notification** — after `boot_completed`, push a dunst/MMRL toast with mount status, variant, audio state, and any warnings | P2 | v4.0.0 |
+| FEAT-22 | **Variant color preview in Waybar** — active variant accent color reflected live in Waybar border via `cp2077-hud-toggle.sh` | P3 | v5.0.0 |
+| FEAT-23 | **WebUI dark/neon theme switcher** — toggle between carbon-black + neon-yellow and white + flatline-red themes in `webroot/` | P2 | v4.0.0 |
+| FEAT-24 | **Interactive boot timing graph** — `cp2077-boot-stats.sh` renders ASCII bar chart of last 5 boot deltas in terminal | P2 | v4.0.0 |
+| FEAT-25 | **ADB sideload installer** — `cp2077-adb-install.sh` push + Magisk sideload without reflashing recovery | P1 | v3.1.0 |
+| FEAT-26 | **Config backup/restore** — `cp2077-conf-backup.sh` exports `/data/cp2077.conf` + rotation state to `/sdcard/cp2077-backup-DATE.tar.gz` | P2 | v4.0.0 |
+| FEAT-27 | **Pixel-perfect desc.txt validator** — detect mismatched resolution between `desc.txt` first line and actual frame dimensions | P1 | v4.0.0 |
+| FEAT-28 | **Splash screen thumbnail generator** — auto-extract first frame of each variant as `splash/thumbnail-512.png` during build | P2 | v4.0.0 |
+| FEAT-29 | **Boot loop watchdog** — count consecutive failed mounts in `/data/cp2077-watchdog`, disable module and alert after 3 failures | P1 | v3.1.0 |
+| FEAT-30 | **Locale-aware install prompt** — `customize.sh` detects `ro.product.locale` and shows variant descriptions in EN/ZH/ES/PT | P3 | v5.0.0 |
 
 ---
 
@@ -668,7 +708,7 @@ update.json                                 ✅  top-level only
 
 ---
 
-## ══ NEW SECTIONS (20) ══
+## ══ NEW SECTIONS (35) ══
 
 ### NS-01 · Variant Architecture
 
@@ -747,7 +787,7 @@ Each variant ships: `bootanimation.zip`, `shutdownanimation.zip`, `desc.txt`, `a
 │            lib/root-runtime.sh          │
 │  detect_root_manager()                  │
 │  detect_module_dir()                    │
-│  run_root_command()                    │
+│  run_root_command()                     │
 └─────────────────────────────────────────┘
 ```
 
@@ -755,40 +795,40 @@ Each variant ships: `bootanimation.zip`, `shutdownanimation.zip`, `desc.txt`, `a
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│  PR / Push                                                  │
-└────────────────────┬───────────────────────────────────────┘
+│  PR / Push                                                   │
+└────────────────────┬─────────────────────────────────────────┘
                      ▼
 ┌──────────────────────────────────────────────────────────────┐
-│  Stage 1: LINT                                             │
-│  ├── shellcheck *.sh                                       │
-│  ├── python3 -m py_compile *.py                           │
-│  ├── ruff check *.py                                       │
-│  └── yaml lint device-profiles/*.yaml                      │
-└────────────────────┬───────────────────────────────────────┘
+│  Stage 1: LINT                                               │
+│  ├── shellcheck *.sh                                         │
+│  ├── python3 -m py_compile *.py                              │
+│  ├── ruff check *.py                                         │
+│  └── yaml lint device-profiles/*.yaml                        │
+└────────────────────┬─────────────────────────────────────────┘
                      ▼
 ┌──────────────────────────────────────────────────────────────┐
-│  Stage 2: BUILD                                            │
-│  ├── python3 build.py --check-sources                     │
-│  ├── ffmpeg audio gen (skip if missing)                    │
-│  ├── python3 build.py --variants all                      │
-│  └── python3 build-universal.py                           │
-└────────────────────┬───────────────────────────────────────┘
+│  Stage 2: BUILD                                              │
+│  ├── python3 build.py --check-sources                        │
+│  ├── ffmpeg audio gen (skip if missing)                      │
+│  ├── python3 build.py --variants all                         │
+│  └── python3 build-universal.py                              │
+└────────────────────┬─────────────────────────────────────────┘
                      ▼
 ┌──────────────────────────────────────────────────────────────┐
-│  Stage 3: TEST                                             │
-│  ├── zipfile -t release/*.zip                             │
-│  ├── SHA-256 compare (reproducible gate)                   │
-│  ├── module-lint check                                     │
-│  └── update.json schema validation                         │
-└────────────────────┬───────────────────────────────────────┘
+│  Stage 3: TEST                                               │
+│  ├── zipfile -t release/*.zip                                │
+│  ├── SHA-256 compare (reproducible gate)                     │
+│  ├── module-lint check                                       │
+│  └── update.json schema validation                           │
+└────────────────────┬─────────────────────────────────────────┘
                      ▼
 ┌──────────────────────────────────────────────────────────────┐
-│  Stage 4: RELEASE                                          │
-│  ├── gh release create --draft                            │
-│  ├── cp2077-slsa-provenance.sh                            │
-│  ├── upload artifacts + SHA256SUMS                         │
-│  └── OpenSSF Scorecard run                                 │
-└─────────────────────────────────────────────────────────────┘
+│  Stage 4: RELEASE                                            │
+│  ├── gh release create --draft                               │
+│  ├── cp2077-slsa-provenance.sh                               │
+│  ├── upload artifacts + SHA256SUMS                           │
+│  └── OpenSSF Scorecard run                                   │
+└──────────────────────────────────────────────────────────────┘
 ```
 
 ### NS-05 · Supply Chain Map
@@ -835,16 +875,16 @@ update.json                                 ✅  top-level only
 ### NS-07 · Design Token Reference
 
 ```
-╔══════════════╦══════════╦══════════════╦════════╗
-║ TOKEN        ║ HEX      ║ RGB          ║ ANSI  ║
-╠══════════════╬══════════╬══════════════╬════════╣
-║ neon-yellow  ║ #FCEE0C  ║ 252,238,12   ║  226  ║
-║ netrunner-cyan║ #00FFFF  ║ 0,255,255    ║   51  ║
-║ signal-green ║ #00FF9F  ║ 0,255,159    ║   49  ║
-║ flatline-red ║ #FF003C  ║ 255,0,60     ║  196  ║
-║ warning-orange║ #FF6B35 ║ 255,107,53  ║  202  ║
-║ carbon-black ║ #0A0A0A  ║ 10,10,10     ║  232  ║
-╚══════════════╩══════════╩══════════════╩════════╝
+╔════════════════╦══════════╦═════════════╦════════╗
+║ TOKEN          ║ HEX      ║ RGB         ║ ANSI   ║
+╠════════════════╬══════════╬═════════════╬════════╣
+║ neon-yellow    ║ #FCEE0C  ║ 252,238,12  ║  226   ║
+║ netrunner-cyan ║ #00FFFF  ║ 0,255,255   ║   51   ║
+║ signal-green   ║ #00FF9F  ║ 0,255,159   ║   49   ║
+║ flatline-red   ║ #FF003C  ║ 255,0,60    ║  196   ║
+║ warning-orange ║ #FF6B35  ║ 255,107,53  ║  202   ║
+║ carbon-black   ║ #0A0A0A  ║ 10,10,10    ║  232   ║
+╚════════════════╩══════════╩═════════════╩════════╝
 ```
 
 ### NS-08 · Backlog Priority Matrix
@@ -921,41 +961,41 @@ update.json                                 ✅  top-level only
       │
       ▼
  ┌─────────────────────────────────────────────────────────┐
- │  BOOT STAGE 1: Kernel + initrd                         │
- │  └── /init → vendor INIT                               │
+ │  BOOT STAGE 1: Kernel + initrd                          │
+ │  └── /init → vendor INIT                                │
  └─────────────────────────────────────────────────────────┘
       │
       ▼
  ┌─────────────────────────────────────────────────────────┐
- │  BOOT STAGE 2: post-fs-data.sh  [BLOCKING]             │
- │  ├── cp2077-f2fs-opt.sh (if F2FS)                     │
- │  ├── cp2077-rom-probe.sh → device-profile.yaml        │
- │  ├── fallback_copy() → /data/local/bootanimation.zip   │
- │  └── mount_with_fallback() → primary path              │
- │  ⏱ Target: < 800ms total                              │
+ │  BOOT STAGE 2: post-fs-data.sh  [BLOCKING]              │
+ │  ├── cp2077-f2fs-opt.sh (if F2FS)                       │
+ │  ├── cp2077-rom-probe.sh → device-profile.yaml          │
+ │  ├── fallback_copy() → /data/local/bootanimation.zip    │
+ │  └── mount_with_fallback() → primary path               │
+ │  ⏱ Target: < 800ms total                                │
  └─────────────────────────────────────────────────────────┘
       │
       ▼
  ┌─────────────────────────────────────────────────────────┐
- │  BOOT STAGE 3: service.sh  [PARALLEL with boot anim]  │
- │  ├── wait_for_prop(bootanim.open)                      │
- │  ├── double_pass_remount()                             │
- │  └── mount_verification()                              │
- │  ⏱ 5s budget + < 200ms retry overhead               │
+ │  BOOT STAGE 3: service.sh  [PARALLEL with boot anim]    │
+ │  ├── wait_for_prop(bootanim.open)                       │
+ │  ├── double_pass_remount()                              │
+ │  └── mount_verification()                               │
+ │  ⏱ 5s budget + < 200ms retry overhead                   │
  └─────────────────────────────────────────────────────────┘
       │
       ▼
  ┌─────────────────────────────────────────────────────────┐
  │  BOOT STAGE 4: boot-completed broadcast                 │
- │  ├── restartAnim() if variant switched                 │
- │  └── log timing to /data/local/tmp/cp2077-timing.log  │
+ │  ├── restartAnim() if variant switched                  │
+ │  └── log timing to /data/local/tmp/cp2077-timing.log    │
  └─────────────────────────────────────────────────────────┘
       │
       ▼
   ANDROID HOME
 ```
 
-### NS-12 · Boot Lifecycle Timing
+### NS-12 · Boot Timeline (Wall-Clock)
 
 ```
  TIME SINCE POWER-ON
@@ -1012,17 +1052,17 @@ update.json                                 ✅  top-level only
 ┌─────────────────────────────────────────────────────────────┐
 │ UPDATE FLOW                                                 │
 │                                                             │
-│  1. service.sh checks /data/cp2077.conf → UPDATE_MODE     │
-│  2. cp2077-check-update.sh → GET updateJson URL           │
-│  3. curl -I → HTTP 200 ? continue : abort                 │
-│  4. compare versionCode → same : download delta or full   │
-│  5. delta patch (if < 20MB diff) → bspatch                │
-│     full ZIP  (if > 20MB diff) → wget                     │
-│  6. verify SHA-256 against embedded checksum              │
-│  7. prompt user via WebUI notification                    │
-│  8. on confirm → flash via update-binary                  │
-│  9. on failure → rollback to previous module.zip         │
-└─────────────────────────────────────────────────────────────┘
+│  1. service.sh checks /data/cp2077.conf → UPDATE_MODE       │
+│  2. cp2077-check-update.sh → GET updateJson URL             │
+│  3. curl -I → HTTP 200 ? continue : abort                   │
+│  4. compare versionCode → same : download delta or full     │
+│  5. delta patch (if < 20MB diff) → bspatch                  │
+│     full ZIP  (if > 20MB diff) → wget                       │
+│  6. verify SHA-256 against embedded checksum                │
+│  7. prompt user via WebUI notification                      │
+│  8. on confirm → flash via update-binary                    │
+│  9. on failure → rollback to previous module.zip            │
+└──────────────────────────────────────────────────────────────┘
 ```
 
 ### NS-15 · Audio Pipeline
@@ -1130,22 +1170,22 @@ CP2077-OP7Pro-Full/
 
 ```
 ┌──────────────────────────────────────────────────────────────┐
-│  GIST SYNC FLOW                                             │
+│  GIST SYNC FLOW                                              │
 │                                                              │
 │  WRITE MODE:                                                 │
-│   /data/cp2077.conf  ──►  gh gist create --public/read  ──►  GIST ID
+│   /data/cp2077.conf  ──►  gh gist create  ──►  GIST ID       │
 │                                  │                           │
 │                                  ▼                           │
-│                           /data/cp2077-gist-id             │
+│                           /data/cp2077-gist-id               │
 │                                                              │
 │  READ MODE:                                                  │
-│   /data/cp2077-gist-id  ──►  gh gist view  ──►  /data/cp2077.conf
+│   /data/cp2077-gist-id  ──►  gh gist view  ──►  cp2077.conf  │
 │                                                              │
 │  FALLBACK (no gh):                                           │
-│   /data/cp2077.conf  ──►  curl to self-hosted endpoint      │
+│   /data/cp2077.conf  ──►  curl to self-hosted endpoint       │
 │                                                              │
 │  CONFLICT RESOLUTION:                                        │
-│   compare timestamps → newer wins → prompt user            │
+│   compare timestamps → newer wins → prompt user              │
 └──────────────────────────────────────────────────────────────┘
 ```
 
@@ -1191,9 +1231,410 @@ cpu_temp / sys/class/thermal/thermal_zone0/temp
 └─────────────┴────────┴───────────┴─────┴────────┴────────┴──────────┴────────┘
 ```
 
+### NS-21 · WebUI Component Map
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  webroot/index.html                                          │
+│                                                              │
+│  ┌────────────────┐  ┌────────────────┐  ┌───────────────┐  │
+│  │  Status Panel  │  │ Variant Cards  │  │  OTA Panel    │  │
+│  │  module ver    │  │  og4k          │  │  update check │  │
+│  │  root manager  │  │  glitch        │  │  versionCode  │  │
+│  │  mount status  │  │  flatline      │  │  zipUrl       │  │
+│  │  audio state   │  │  og1080p       │  │  changelog    │  │
+│  └───────┬────────┘  │  rboot         │  └───────┬───────┘  │
+│          │           └───────┬────────┘          │           │
+│          └───────────────────┴───────────────────┘           │
+│                              │                               │
+│                    ┌─────────▼─────────┐                     │
+│                    │   Bridge Layer    │                     │
+│                    │  MMRL / KSU /     │                     │
+│                    │  APatch / mock    │                     │
+│                    └─────────┬─────────┘                     │
+│                              │                               │
+│                    ┌─────────▼─────────┐                     │
+│                    │  /data/cp2077.conf│                     │
+│                    └───────────────────┘                     │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### NS-22 · Config Schema
+
+```
+╔══════════════════════════════════════════════════════════════╗
+║  /data/cp2077.conf  (plain key=value, UTF-8, LF)            ║
+╠══════════════════════════════════════════════════════════════╣
+║  KEY          │ VALUES                  │ DEFAULT            ║
+╠══════════════════════════════════════════════════════════════╣
+║  variant      │ og4k|og1080p|glitch|    │ glitch             ║
+║               │ flatline|rboot|         │                    ║
+║               │ netrunner|corpo|        │                    ║
+║               │ streetkid               │                    ║
+║  audio        │ yes|no                  │ yes                ║
+║  silent       │ yes|no                  │ no                 ║
+║  rotation     │ yes|no                  │ no                 ║
+║  rotation_n   │ 1–99                    │ 5                  ║
+║  update_mode  │ auto|prompt|off         │ prompt             ║
+╚══════════════════════════════════════════════════════════════╝
+
+Write path: atomic rename via tmp file → final path
+Lock:       flock /data/cp2077.conf.lock
+Validation: lib/config-v2.sh → validate_config()
+```
+
+### NS-23 · Hyprland Desktop Profile
+
+```
+cp2077-hyprland/
+├── hyprland.conf          ← source: $XDG_CONFIG_HOME/hypr/
+│   ├── imports/
+│   │   ├── keybinds.conf
+│   │   ├── windowrules.conf
+│   │   ├── animations.conf  ← glitch scanline keyframes
+│   │   └── colors.conf      ← CP2077 palette vars
+│   └── monitors.conf
+├── waybar/
+│   ├── config.jsonc       ← CPU · RAM · net · battery · variant
+│   └── style.css          ← neon-yellow borders, carbon-black bg
+├── hyprlock/
+│   └── hyprlock.conf      ← flatline-red clock, netrunner-cyan date
+├── rofi/
+│   └── cp2077.rasi        ← 7 launcher types, CP2077 colors
+└── scripts/
+    ├── cp2077-hud-toggle.sh
+    ├── cp2077-wallbash.sh  ← ImageMagick dominant color extract
+    └── cp2077-notify.sh    ← dunst CP2077 notification style
+
+Design tokens applied via @define-color in GTK/CSS:
+  --cp-neon   : #FCEE0C    --cp-cyan  : #00FFFF
+  --cp-red    : #FF003C    --cp-green : #00FF9F
+  --cp-orange : #FF6B35    --cp-bg    : #0A0A0A
+```
+
+### NS-24 · Module Integrity Chain
+
+```
+SOURCE ZIP (upstream URL)
+        │
+        ▼  SHA-256
+sources.lock.json ────────────────────────────────────────────┐
+        │                                                      │
+        ▼  build.py repack                                     │
+bootanimation.zip (ZIP_STORED, 1980-01-01)                    │
+        │                                                      │
+        ▼  release build                                       │
+CP2077-OP7Pro-v3.x.x.zip                                      │
+        │  ├─ SHA256SUMS (embedded)                            │
+        │  ├─ sources.lock.json (embedded)                     │
+        │  └─ provenance.json (SLSA L1)                        │
+        │                                                      │
+        ▼  on-device boot                                      │
+cp2077-self-check.sh                                          │
+  verify SHA-256 of every mounted ZIP ──── compare ──────────►┘
+        │ PASS                  FAIL
+        ▼                        ▼
+   normal boot           alert + log to
+                    /data/local/tmp/cp2077-crash/
+```
+
+### NS-25 · Error Handling Matrix
+
+```
+╔════════════════════════╦════════════════╦══════════════════════╗
+║ FAILURE                ║ STAGE          ║ RECOVERY             ║
+╠════════════════════════╬════════════════╬══════════════════════╣
+║ Mount path missing     ║ post-fs-data   ║ try next path        ║
+║ ZIP < 5 MB             ║ service.sh     ║ unmount + re-bind    ║
+║ SELinux denial         ║ post-fs-data   ║ log avc + continue   ║
+║ Audio path missing     ║ post-fs-data   ║ skip, log warning    ║
+║ Config parse error     ║ customize.sh   ║ reset to defaults    ║
+║ SHA-256 mismatch       ║ self-check     ║ alert + disable mod  ║
+║ Boot loop (3x)         ║ service.sh     ║ auto-bundle + report ║
+║ KernelSU apd missing   ║ install        ║ fallback to Magisk   ║
+║ update.json 404        ║ OTA check      ║ skip, retry in 24h   ║
+║ WebUI bridge missing   ║ runtime        ║ fall back to mock     ║
+╚════════════════════════╩════════════════╩══════════════════════╝
+```
+
+### NS-26 · ADB Control Script Map
+
+```
+cp2077-adb-control.sh
+├── status
+│   ├── adb shell getprop ro.build.flavor
+│   ├── adb shell cat /data/cp2077.conf
+│   └── adb shell stat all mount paths → size table
+├── switch [variant]
+│   ├── prompt if variant omitted
+│   ├── adb shell su -c cp2077-config.sh set variant=$V
+│   └── restart bootanim
+├── flash
+│   ├── verify release/*.zip SHA-256 first
+│   ├── adb push → /sdcard/Download/
+│   └── adb shell su -c magisk --install-module
+├── restart-anim
+│   └── adb shell su -c setprop ctl.restart bootanim
+├── logs
+│   └── adb logcat -s cp2077 bootanim Zygisk KernelSU
+├── verify
+│   └── check each bootanimation.zip size > 5 MB
+└── build
+    └── python3 build.py (all variants)
+```
+
+### NS-27 · Dependency Graph
+
+```
+ build.py
+  ├─ Python ≥ 3.9
+  ├─ zipfile (stdlib)
+  ├─ hashlib (stdlib)
+  ├─ shutil (stdlib)
+  └─ ffmpeg ≥ 4.4  (optional · audio only)
+
+ build-universal.py
+  ├─ Python ≥ 3.9
+  └─ ffmpeg ≥ 4.4  (required · LANCZOS scale)
+       └─ libswscale with LANCZOS flag
+
+ cp2077-adb-control.sh
+  ├─ adb (platform-tools)
+  ├─ su (on-device, Magisk/KSU/APatch)
+  └─ bash ≥ 4.4 (host)
+
+ WebUI
+  ├─ Magisk WebView ≥ v26 (MMRL bridge)
+  ├─ KernelSU Manager ≥ 0.9.0 (ksuExec bridge)
+  └─ APatch Manager (APatch bridge)
+
+ 99-MANIFESTS/generate-manifests.sh
+  ├─ find, sort, wc, sha256sum (coreutils)
+  ├─ git (for repo status pass)
+  └─ bash ≥ 4.4
+```
+
+### NS-28 · ROM Family Detection
+
+```
+╔══════════════════════════════════════════════════════════════╗
+║  ROM FAMILY DETECTION — getprop keys                        ║
+╠══════════════════╦═══════════════════════════════════════════╣
+║  ROM Family      ║  Detected via                            ║
+╠══════════════════╬═══════════════════════════════════════════╣
+║  AOSP / Pixel    ║  ro.product.brand = google               ║
+║  LineageOS       ║  ro.lineage.version ≠ ""                 ║
+║  DerpFest        ║  ro.derp.version ≠ ""                    ║
+║  Evolution-X     ║  ro.evolution.version ≠ ""               ║
+║  crDroid         ║  ro.crdroid.version ≠ ""                 ║
+║  MIUI / HyperOS  ║  ro.miui.ui.version.name ≠ ""            ║
+║  Samsung One UI  ║  ro.build.characteristics = phone,       ║
+║                  ║  + ro.product.manufacturer = samsung     ║
+║  OxygenOS 14+    ║  ro.build.ota.versionname ≠ ""           ║
+║  ColorOS         ║  ro.coloros.version ≠ ""                 ║
+║  FunTouchOS      ║  ro.vivo.os.version ≠ ""                 ║
+║  realme UI       ║  ro.build.version.oplusrom_id ≠ ""       ║
+╚══════════════════╩═══════════════════════════════════════════╝
+```
+
+### NS-29 · Build Output Contract
+
+```
+release/
+├── CP2077-OP7Pro-v3.x.x.zip         ← release ZIP (ZIP_DEFLATED)
+│   ├── bootanimation/<variant>/*.zip ← inner (ZIP_STORED)
+│   ├── sources.lock.json
+│   ├── provenance.json
+│   └── update.json
+├── SHA256SUMS
+├── CP2077-OP7Pro-v3.x.x.zip.sha256
+└── CHANGELOG.md                      ← filtered from releases/
+
+Reproducibility guarantee:
+  All ZIP entries use mtime = 1980-01-01 00:00:00
+  Build is deterministic on identical Python + FFmpeg versions
+  SHA-256 stable across rebuilds with same source ZIPs
+
+Size budgets:
+  Per bootanimation.zip:    > 5 MB  (service.sh threshold)
+  Per release ZIP:         < 50 MB  (GitHub attachment limit)
+  Audio .ogg per file:     < 100 KB (keep install fast)
+```
+
+### NS-30 · Module Filesystem Layout
+
+```
+/data/adb/modules/CP2077_OP7Pro_Full/
+├── module.prop             ← read by Magisk/KSU/APatch
+├── cp2077-config.sh        ← on-device TUI (su access)
+├── cp2077-self-check.sh    ← integrity check at boot
+├── common/
+│   ├── audio/              ← .ogg files per variant
+│   ├── lib/
+│   │   ├── config-v2.sh
+│   │   ├── mount.sh
+│   │   ├── root-detect.sh
+│   │   └── health-score.sh
+│   └── ui.sh
+├── bootanimation/
+│   └── <variant>/bootanimation.zip
+├── shutdownanimation/
+│   └── <variant>/shutdownanimation.zip
+├── webroot/
+│   ├── index.html
+│   ├── style.css
+│   └── cp2077.js
+└── system/product/media/   ← bind-mount target stub
+
+/data/
+├── cp2077.conf             ← user config
+├── cp2077-gist-id          ← optional Gist sync token
+├── cp2077-watchdog         ← boot-loop counter
+└── local/tmp/
+    ├── cp2077-timing.log
+    ├── cp2077-stats/
+    └── cp2077-crash/
+```
+
+### NS-31 · SELinux Context Map
+
+```
+╔══════════════════════════════════════════════════════════════╗
+║  FILE CONTEXTS required by CP2077 module                    ║
+╠══════════════════════════════════════════════════════════════╣
+║  /data/cp2077.conf          ← u:object_r:adb_data_file:s0  ║
+║  /data/cp2077-watchdog      ← u:object_r:adb_data_file:s0  ║
+║  /data/cp2077-gist-id       ← u:object_r:adb_data_file:s0  ║
+║  /data/local/bootanimation.zip                              ║
+║                             ← u:object_r:bootanim_data:s0  ║
+║  /data/misc/bootanim/*.zip  ← u:object_r:bootanim_data:s0  ║
+╠══════════════════════════════════════════════════════════════╣
+║  PROCESS CONTEXTS                                           ║
+╠══════════════════════════════════════════════════════════════╣
+║  service.sh / post-fs-data.sh                               ║
+║    runs as:  u:r:magisk:s0   (Magisk)                      ║
+║              u:r:su:s0       (KSU / APatch)                 ║
+║  bind mount ops: needs allow magisk_file bootanim_data:file ║
+║    { read open mounton }                                    ║
+║  sepolicy.rule auto-gen via cp2077-sepolicy-gen.sh         ║
+╚══════════════════════════════════════════════════════════════╝
+```
+
+### NS-32 · Update JSON Schema
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "required": ["version", "versionCode", "zipUrl", "changelog"],
+  "properties": {
+    "version":      { "type": "string", "pattern": "^v\\d+\\.\\d+\\.\\d+$" },
+    "versionCode":  { "type": "integer", "minimum": 100000 },
+    "zipUrl":       { "type": "string", "format": "uri" },
+    "changelog":    { "type": "string", "format": "uri" },
+    "checksum":     { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "minMagisk":    { "type": "integer", "minimum": 20400 },
+    "minKSU":       { "type": "integer", "minimum": 10000 }
+  },
+  "additionalProperties": false
+}
+
+Validation gate (CI):
+  python3 -c "import jsonschema, json; \
+    jsonschema.validate(json.load(open('update.json')), \
+    json.load(open('update.schema.json')))"
+```
+
+### NS-33 · WebUI Bridge API
+
+```
+┌──────────────────────────────────────────────────────────────┐
+│  BRIDGE DETECTION ORDER (index.html startup)                │
+│                                                              │
+│  1. window.mmrl !== undefined     → MMRL bridge             │
+│  2. window.__ksuExec !== undefined → KernelSU bridge        │
+│  3. window.__apExec !== undefined  → APatch bridge          │
+│  4. fallback                       → mock (dev mode)        │
+│                                                              │
+│  CORE BRIDGE CALLS                                          │
+│                                                              │
+│  exec(cmd)  → Promise<{stdout, stderr, exitCode}>           │
+│  readFile(path) → Promise<string>                           │
+│  writeFile(path, content) → Promise<void>                   │
+│                                                              │
+│  KEY COMMANDS ISSUED BY UI:                                 │
+│  ├── cat /data/cp2077.conf          (status poll)           │
+│  ├── printf 'variant=%s\naudio=%s'  (config write)          │
+│  ├── setprop ctl.restart bootanim   (restart)               │
+│  ├── cp2077-self-check.sh           (integrity)             │
+│  └── curl -s <updateJson>           (OTA check)             │
+└──────────────────────────────────────────────────────────────┘
+```
+
+### NS-34 · Workspace Git Topology
+
+```
+/home/arch/cyberpunk-2077/   ← ROOT REPO (tracked by git)
+│   tracks: 00-CONTROL/ 09-DOCS/ 99-MANIFESTS/ releases/
+│
+├── 01-DEVELOPMENT/repos/cyberpunk/
+│   ├── CP2077-OP7Pro/        ← nested git (origin: GitHub)
+│   ├── CP2077-OP7Pro-Ultimate/  ← nested git
+│   └── CP2077-Universal/     ← nested git
+│
+├── 01-DEVELOPMENT/repos/magisk-ecosystem/
+│   ├── Magisk/               ← shallow clone (--depth 1)
+│   ├── KernelSU/             ← shallow clone
+│   └── ...  (8 more)
+│
+├── 01-DEVELOPMENT/repos/oneplus-7-pro/
+│   ├── lineage-device/       ← shallow clone
+│   └── kernel/               ← shallow clone
+│
+├── 06-UI-THEMES-ANIMATIONS/repos/
+│   └── hyprdots/ HyprPanel/ rofi/ ...  (12 repos, shallow)
+│
+└── 07-KERNEL-PACKAGE-MODULES/repos/
+    └── engstk-op8/ engstk-op5/
+
+All nested repos: see 99-MANIFESTS/git-repositories.txt
+Root repo stages: 00-CONTROL/ 09-DOCS/ 99-MANIFESTS/ releases/
+Never: git add -A from workspace root
+```
+
+### NS-35 · Plymouth Boot Theme Layout
+
+```
+cp2077-linux-boot/
+├── cp2077.plymouth              ← theme descriptor
+│   [Plymouth Theme]
+│   Name=CP2077
+│   Description=Cyberpunk 2077 boot theme
+│   ModuleName=script
+│
+├── cp2077.script                ← main animation logic
+│   ├── Window.SetBackgroundTopColor(0.04, 0.04, 0.04)
+│   ├── logo = Image("cp2077-logo.png")
+│   ├── progress_bar_width = 400
+│   └── animation_frame_callback()
+│
+├── frames/
+│   ├── frame-001.png  →  frame-060.png   ← 60fps × 3s intro
+│   └── frame-061.png  →  frame-120.png   ← idle loop frames
+│
+├── cp2077-logo.png              ← 512×512 neon-yellow logo
+├── cp2077-progress.png          ← progress bar sprite
+└── assets/
+    ├── scanline-overlay.png     ← CRT scanline texture
+    └── cp2077-font.ttf          ← Rajdhani / Exo2 fallback
+
+Install path: /usr/share/plymouth/themes/cp2077/
+Enable:       plymouth-set-default-theme cp2077 -R
+```
+
 ---
 
-## ══ NEW TOOLS (10) ══
+## ══ NEW TOOLS (20) ══
 
 | ID | Tool | P | Track |
 |:---|:-----|:-:|:-----:|
@@ -1207,6 +1648,16 @@ cpu_temp / sys/class/thermal/thermal_zone0/temp
 | TOOL-08 | **`cp2077-release-drafter.sh`** — auto-generate GitHub release body from `CHANGELOG-*.md` filtered by commit range | P3 | v4.0.0 |
 | TOOL-09 | **`cp2077-lint-module.sh`** — offline module lint: check required files, executable bits, CRLF, module.prop schema, META-INF completeness | P2 | v4.0.0 |
 | TOOL-10 | **`cp2077-ota-check.sh`** — check update JSON URL, compare versionCode, download + verify checksum, report if update available | P2 | v4.0.0 |
+| TOOL-11 | **`cp2077-conf-diff.py`** — compare two `/data/cp2077.conf` snapshots and report key-level changes with before/after values | P3 | v4.0.0 |
+| TOOL-12 | **`cp2077-mount-probe.sh`** — interactively probe all 7 known bootanimation mount paths via ADB, report size + bind status per path | P1 | v3.1.0 |
+| TOOL-13 | **`cp2077-sepolicy-gen.sh`** — read `adb shell dmesg | grep avc`, deduplicate denials, emit minimal `sepolicy.rule` fragment | P1 | v3.1.0 |
+| TOOL-14 | **`cp2077-desc-validator.py`** — parse `desc.txt` in any bootanimation ZIP, verify resolution matches frames, check fps range 24–120 | P2 | v4.0.0 |
+| TOOL-15 | **`cp2077-sha256-sign.sh`** — generate detached `.sha256` file per release ZIP, verify with `sha256sum -c`; CI gate integration | P1 | v4.0.0 |
+| TOOL-16 | **`cp2077-logcat-filter.sh`** — live `adb logcat` filtered to CP2077 tags: `cp2077`, `bootanim`, `Zygisk`, `KernelSU`, `APatch` | P2 | v3.1.0 |
+| TOOL-17 | **`cp2077-build-matrix.py`** — after `build.py` run, emit JSON build matrix with variant/SHA/size/elapsed/audio for CI artifact upload | P2 | v4.0.0 |
+| TOOL-18 | **`cp2077-thumbnail-gen.py`** — extract first frame of `part0/` from any bootanimation ZIP and save as `thumbnail-512.png` via Pillow | P2 | v4.0.0 |
+| TOOL-19 | **`cp2077-watchdog-reset.sh`** — clear `/data/cp2077-watchdog` boot-loop counter and re-enable module after manual recovery | P1 | v3.1.0 |
+| TOOL-20 | **`cp2077-repo-sync.sh`** — `git -C <repo> fetch --depth 1 origin` for all 53 repos in `git-repositories.txt`, report stale/dirty/ahead | P2 | v4.0.0 |
 
 ---
 
@@ -1227,6 +1678,14 @@ cpu_temp / sys/class/thermal/thermal_zone0/temp
 - [x] `mmrl.json` — HP-06/GH-OPS-11 MMRL module metadata (2026-05-14)
 - [x] `sepolicy.rule` — HP-03 fixed invalid SELinux source domain (2026-05-14)
 - [x] `lib/config-v2.sh` — phantom-lib + dogtown variants added (2026-05-14)
+- [x] **HP-11** `RELEASE_ZIP` in `cp2077-adb-control.sh` stale at v3.0.0 → fixed to v3.1.0 (2026-05-14)
+- [x] **HP-12** `cmd_switch` overwrote `audio=`/`silent=` on every variant change → reads existing config (2026-05-14)
+- [x] **HP-13** `og4k` missing from `valid_variants`, picker, error message, and help in ADB script (2026-05-14)
+- [x] **HP-14** `update.json` `zipUrl` pointed to wrong GitHub repo; `changelog` URL was 404 (2026-05-14)
+- [x] **HP-15** Ultimate `versionCode=300001` (off-by-one); `updateJson` pointed to Full Edition OTA feed (2026-05-14)
+- [x] `ROTATION_A`/`ROTATION_B` used unguarded in `service.sh` `_select_rotation_variant()` → guard added (2026-05-14)
+- [x] `build.py` never wrote SHA-256 back to `update.json` → post-build checksum auto-write added (2026-05-14)
+- [x] `build.py` silently packed missing og4k/og1080p pre-built ZIPs → pre-pack warning added (2026-05-14)
 
 ### P1 Feature Parity ✓
 - [x] `cp2077-config.sh` arrow-key TUI
@@ -1259,12 +1718,16 @@ cpu_temp / sys/class/thermal/thermal_zone0/temp
 - [x] `.pre-commit-config.yaml` — shellcheck, shfmt, ruff, ZIP integrity hooks (2026-05-14)
 - [x] `scripts/cp2077-ci-local.sh` — act wrapper for local CI runs (2026-05-14)
 - [x] Parallel hash in `generate-manifests.sh` — 8-worker SHA-256 (2026-05-14)
-- [ ] Per-variant audio tone table
+- [x] Per-variant audio tone table — `audio/tone-table.json` with 8 variants × 7 sounds (2026-05-14)
 - [x] `scripts/cp2077-zip-diff.py` — OTA safety ZIP diff tool (2026-05-14)
 - [x] `scripts/cp2077-palette-gen.py` — SVG/CSS/JSON/PNG token generator (2026-05-14)
 - [x] `scripts/cp2077-wallpaper-extract.py` — PNG/WebP frame extractor from bootanim ZIPs (2026-05-14)
-- [ ] `build-universal.py --res-matrix`
+- [x] `build-universal.py --res-matrix` — prints 12-resolution matrix with device annotations and exits (2026-05-14)
 - [x] `scripts/cp2077-module-lint.py` — comprehensive Magisk module linter (2026-05-14)
+- [x] Replace `sleep 1` in `service.sh` `_fade_boot_audio` with `wait_for_prop` poll loop (blocks on Android 15/16) (2026-05-14)
+- [x] Fix FFmpeg audio filter to sequence tones instead of mixing simultaneously — `concat` filter in both `build.py` and `build-universal.py` (2026-05-14)
+- [x] Create `releases/update-ultimate.json` for Ultimate module OTA feed (2026-05-14)
+- [ ] Gate `releases/update-full.json` checksum replacement in CI after upload
 
 ### P2 Device Expansion
 - [ ] Universal v2

@@ -241,6 +241,181 @@ adb shell su -c 'rm /data/cp2077.conf'
 
 ---
 
+### HP-02: Boot Timing Trace — measure post-fs-data.sh and service.sh budgets
+
+**Purpose:** Verify `post-fs-data.sh` completes in < 800 ms and `service.sh` first-pass in < 200 ms on your device.
+
+**One-shot timing measurement (boot to boot_complete):**
+```bash
+# Clear logcat buffer
+adb logcat -c
+
+# Boot the device — logcat will capture timestamps
+adb reboot
+
+# Wait for boot completed
+adb wait-for-device
+
+# Pull relevant logcat lines
+adb logcat -d -b events,main,system \
+  | grep -E 'boot_completed|init.svc.bootanim|cp2077|post-fs-data|service.sh' \
+  > /tmp/cp2077-boot-timing.log
+
+# View the timing window
+cat /tmp/cp2077-boot-timing.log
+```
+
+**Measure post-fs-data.sh wall-clock time:**
+```bash
+# Instrument the device for timing (needs root)
+adb shell su -c '
+  # Add timestamp to trace log at start of post-fs-data
+  echo "$(date +%s%3N) post-fs-data START" >> /data/local/tmp/cp2077-trace.log
+'
+
+adb reboot
+adb wait-for-device
+
+# Check trace log
+adb shell su -c "cat /data/local/tmp/cp2077-trace.log"
+```
+
+**Quick timing verification without trace flags:**
+```bash
+# Get boot timestamps from logcat events
+adb logcat -d -b events \
+  | grep -E 'boot_received|boot_completed|sys.boot_complete|init.svc.bootanim' \
+  | head -20
+
+# Get prop timings
+adb shell "getprop sys.boot_completed"    # should return 1
+adb shell "getprop init.svc.bootanim"       # should return "stopped"
+adb shell "getprop dev.bootcomplete"          # LOS fallback prop
+```
+
+**Interpretation guide:**
+| Event | Target | Problem if over |
+|-------|--------|----------------|
+| `post-fs-data.sh` completes | < 800 ms | Boot animation delayed |
+| `service.sh` first-pass after `boot_completed=1` | < 200 ms | Animation starts late |
+| `service.sh` second-pass after `bootanim=stopped` | < 100 ms | Late remounts may fail |
+| Total `boot_completed` to home screen | < 15 s from power-on | User-perceivable regression |
+
+**If timing is bad:**
+```bash
+# Enable trace mode to see which mount is slow
+adb shell su -c "touch /data/adb/modules/CP2077_OP7Pro_Full/trace.flag"
+adb reboot
+
+# After boot: pull trace log
+adb shell su -c "cat /data/local/tmp/cp2077-trace.log"
+```
+
+---
+
+### HP-04: Audio Path Verification — verify /product/media/audio/ui/ on LOS 23.2
+
+**Purpose:** Confirm audio overlay paths exist and have write access on LineageOS 23.2.
+
+**Check audio paths (all variants):**
+```bash
+# Primary: /product/media/audio/ui/  (AOSP / LOS)
+adb shell su -c 'ls -la /product/media/audio/ui/'
+
+# Fallback: /system/media/audio/ui/   (some ROMs)
+adb shell su -c 'ls -la /system/media/audio/ui/'
+
+# OOS: /my_product/media/audio/ui/
+adb shell su -c 'ls -la /my_product/media/audio/ui/ 2>/dev/null || echo "path absent"'
+
+# Check which paths the module is mounting to
+adb shell su -c 'ls -la /product/media/audio/ui/*.ogg 2>/dev/null | wc -l'
+adb shell 'mount | grep "audio/ui"'
+```
+
+**Audio file presence check:**
+```bash
+# If audio=yes but no sounds play, check if OGG files are present
+adb shell su -c '
+for p in /product/media/audio/ui /system/media/audio/ui /my_product/media/audio/ui; do
+  if [ -d "$p" ]; then
+    count=$(ls -1 "$p"/*.ogg 2>/dev/null | wc -l)
+    echo "$p: $count OGG files"
+  else
+    echo "$p: absent"
+  fi
+done
+'
+
+# Expected: 7 OGG files (Lock, Unlock, ChargingStarted, etc.)
+```
+
+**If audio path is absent on your ROM:**
+```bash
+# Manually create the audio directory
+adb shell su -c 'mkdir -p /product/media/audio/ui'
+
+# Or force audio=no in config if path truly doesn't exist
+adb shell su -c "sed -i 's/^audio=yes/audio=no/' /data/cp2077.conf"
+adb shell su -c 'setprop ctl.restart bootanim'
+```
+
+---
+
+### HP-07: 5 MB Remount Threshold — verify LOS 23.2 stock stub sizes
+
+**Purpose:** Confirm the 5 MB threshold correctly identifies stock stubs vs CP2077 animations on your LOS 23.2 build.
+
+**Measure current mounted animation sizes:**
+```bash
+adb shell su -c '
+for path in \
+  /product/media/bootanimation.zip \
+  /product/media/bootanimation-dark.zip \
+  /system/product/media/bootanimation.zip \
+  /system/media/bootanimation.zip \
+  /data/local/bootanimation.zip \
+  /data/misc/bootanim/bootanimation.zip; do
+  if [ -f "$path" ]; then
+    sz=$(wc -c < "$path")
+    szmb=$(printf "%.1f" "$(echo "$sz/1024/1024" | bc -l 2>/dev/null || echo 0)")
+    if [ "$sz" -lt 5000000 ]; then
+      echo "STOCK STUB:  $path  ${szmb} MB"
+    else
+      echo "CP2077 OK:   $path  ${szmb} MB"
+    fi
+  else
+    echo "ABSENT:      $path"
+  fi
+done
+'
+```
+
+**Expected result on LOS 23.2 + CP2077:**
+- Every present path should show ≥ 5 MB (CP2077) OR absent (not mounted yet)
+- Stock stubs should be < 100 KB — easily caught by the 5 MB threshold
+- If a CP2077 path shows < 5 MB → the wrong ZIP is mounted (check `service.sh`)
+
+**Force re-verification (remount all paths):**
+```bash
+# Restart service.sh to trigger a remount pass
+adb shell su -c 'setprop ctl.restart cp2077-service 2>/dev/null || setprop ctl.restart service 2>/dev/null'
+
+# Or reboot to trigger full post-fs-data.sh + service.sh cycle
+adb reboot
+```
+
+**If threshold fires incorrectly (very rare):**
+```bash
+# Check the actual bytes on the path
+adb shell su -c 'wc -c < /product/media/bootanimation.zip'
+
+# Override threshold temporarily (not recommended — indicates other problem)
+adb shell su -c 'echo 1000000 > /proc/sys/vm/drop_caches'  # NOT the right fix
+```
+
+---
+
 ## 🔍 Full Diagnostic Suite
 
 ```bash
