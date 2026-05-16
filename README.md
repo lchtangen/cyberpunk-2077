@@ -328,7 +328,7 @@ cyberpunk-2077/
 ├── 🤖 04-ANDROID/                      ADB tools, APK staging, device snapshots
 ├── 🐧 05-LINUX/                        Arch host scripts and desktop setup
 ├── 🎨 06-UI-THEMES-ANIMATIONS/         animations, wallpapers, themes, audio
-├── ⚙️  07-KERNEL-PACKAGE-MODULES/      kernel images, sources, modules, packages
+├── ⚙️ 07-KERNEL-PACKAGE-MODULES/       kernel images, sources, modules, packages
 ├── 🔐 08-HACKING-RESEARCH/             NetHunter and security research
 ├── 📚 09-DOCS/                         documentation vault
 ├── 🚫 10-QUARANTINE-invalid-downloads/ invalid APK/ZIP downloads — never install

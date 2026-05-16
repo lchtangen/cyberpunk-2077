@@ -43,8 +43,6 @@
 | RisingOS | Any version |
 | crDroid | Any version |
 | DerpFest | Any version |
-| PixelOS | Any version |
-| RisingOS | Any version |
 
 </div>
 

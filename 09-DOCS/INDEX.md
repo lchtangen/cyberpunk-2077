@@ -60,7 +60,7 @@
 | 📄 Document | 🔗 Link | 📝 Description |
 |:------------|:--------|:--------------|
 | 🗺 **Workspace Guide** | [WORKSPACE-GUIDE.md](WORKSPACE-GUIDE.md) | Directory layout · repo inventory · common task commands |
-| 📚 **Repos** | [REPOS.md](REPOS.md) | Full catalogue of all 17 cloned repos with descriptions |
+| 📚 **Repos** | [REPOS.md](REPOS.md) | Full catalogue of all 39 cloned repos with descriptions |
 | 🗺 **Roadmap** | [ROADMAP.md](ROADMAP.md) | Bug tracker · planned features · completed items |
 
 </div>

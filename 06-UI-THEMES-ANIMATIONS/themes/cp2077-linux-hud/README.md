@@ -262,7 +262,7 @@ listener {
 ### Screen layout
 
 ```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ← #FCEE0C accent bar
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ← Neon Yellow accent bar
           ░▒▓  CYBERPUNK 2077  ▓▒░
           NIGHT CITY NEVER SLEEPS
                HH:MM:SS
