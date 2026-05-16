@@ -95,7 +95,7 @@ The following mount paths were audited for LineageOS 23.2 running Android 16 (AP
 | `/system/media/bootanimation.zip` | ⚠️ Not present | bind-mount | Samsung / MIUI only |
 | `/my_product/media/bootanimation/bootanimation.zip` | ⚠️ Not present | bind-mount | OOS/MIUI only — skip on LOS |
 | `/data/local/bootanimation.zip` | ✅ Present | file copy | Universal fallback — always writable |
-| `/data/misc/bootanim/bootanimation.zip` | ✅ Present | file copy | **LOS 23.2 primary fallback** — bootanimation service reads from here on A16 |
+| `/data/misc/bootanim/bootanimation.zip` | ✅ Present | file copy | **LOS 23.2 confirmed path** — bootanimation service reads from here on A16 when bind-mounts on `/product/media/` are overridden after late-mount |
 
 **Key finding:** On LOS 23.2 with Android 16, `/product/media/bootanimation.zip` is bind-mounted but `/data/misc/bootanim/bootanimation.zip` is the path the bootanimation service **actually reads** when the system partition is remounted after `post-fs-data`. Both paths must be populated. The `service.sh` prop-poll loop (replacing `sleep 5`) ensures the remount repair fires after `sys.boot_completed=1`.
 
