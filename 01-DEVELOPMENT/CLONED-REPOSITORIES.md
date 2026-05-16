@@ -202,6 +202,6 @@ git clone --depth 1 [upstream-url] [local-path]  # Individual clone
 
 ---
 
-**Document generated:** May 16, 2026  
-**Cloned by:** GitHub Copilot  
+**Document generated:** May 16, 2026
+**Cloned by:** GitHub Copilot
 **Workspace:** `/home/arch/dev/projects/cyberpunk-2077`
