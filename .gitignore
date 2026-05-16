@@ -1,65 +1,65 @@
-# cyberpunk-2077 workspace — .gitignore
+# cyberpunk-2077 workspace .gitignore
 #
-# This repo tracks: README.md, .gitignore, 00-CONTROL/, 09-DOCS/, 99-MANIFESTS/
-# Everything else is ignored — repos are catalogued in 99-MANIFESTS/git-repositories.txt
-# Artifacts are checksummed in 99-MANIFESTS/artifact-sha256.txt
+# Policy: keep the workspace source tree visible to git so GitHub agents can
+# inspect and edit the project. Ignore only local tool state, nested repository
+# internals, generated caches, and files that cannot be pushed through normal
+# GitHub git hosting without Git LFS.
 
-# ── DEVELOPMENT REPOS ────────────────────────────────────────────────────────
-# All nested git repos and source trees live here.
-# Their remotes/branches are recorded in 99-MANIFESTS/git-repositories.txt.
-01-DEVELOPMENT/
+# Local git internals from nested reference clones. The parent repo should not
+# absorb object databases, packfiles, reflogs, or hooks from embedded repos.
+**/.git/
 
-# ── PRODUCTION ARTIFACTS ─────────────────────────────────────────────────────
-# Release ZIPs are SHA-256'd in 99-MANIFESTS/production-artifact-sha256.txt.
-02-PRODUCTION/
-
-# ── BUILD WORKSPACE ───────────────────────────────────────────────────────────
-03-BUILD/
-
-# ── ANDROID DEVICE FILES ──────────────────────────────────────────────────────
-04-ANDROID/
-
-# ── LINUX HOST SCRIPTS ────────────────────────────────────────────────────────
-# Contains broken symlinks from home-dir restructure; scripts live in ~/scripts/
-05-LINUX/
-
-# ── UI THEMES / ANIMATIONS / WALLPAPERS ──────────────────────────────────────
-# Nested git repos (Cyberpunk-Neon, cybrland, cybrpapers, etc.)
-# and large binary assets (PNG, WebP, OGG, ZIP).
-06-UI-THEMES-ANIMATIONS/
-
-# ── KERNEL SOURCES & BOOT IMAGES ─────────────────────────────────────────────
-07-KERNEL-PACKAGE-MODULES/
-
-# ── SECURITY / NETHUNTER RESEARCH ────────────────────────────────────────────
-08-HACKING-RESEARCH/
-
-# ── QUARANTINE ────────────────────────────────────────────────────────────────
-10-QUARANTINE-invalid-downloads/
-
-# ── RELEASE UPDATE MANIFESTS ──────────────────────────────────────────────────
-# update.json and changelog files served via raw.githubusercontent.com for OTA.
-# Tracked so Magisk can fetch them. ZIPs are excluded via *.zip rule above.
-!releases/
-releases/*.zip
-
-# ── BINARY FILE TYPES (catch-all if anything leaks through) ──────────────────
-*.zip
-*.img
-*.apk
-*.tar.xz
-*.tar.gz
-*.tar.bz2
-*.ogg
-*.png
-*.jpg
-*.jpeg
-*.webp
-*.svg
-
-# ── TOOLING ───────────────────────────────────────────────────────────────────
-__pycache__/
-*.pyc
+# Local agent/editor/tool state.
+.claude/
+.codex/
+.agents/
 .vscode/
+.idea/
 *.swp
 *.swo
+*~
+
+# Python and local environments.
+.venv/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+
+# OS noise.
+.DS_Store
+Thumbs.db
+
+# Local Android device/download dumps. These are not source workspace inputs
+# and include third-party APKs/images/tarballs that exceed GitHub's 100 MB
+# normal git object limit.
+04-ANDROID/device/sdcard-Download/
+04-ANDROID/device/**/*.apk
+04-ANDROID/device/**/*.img
+04-ANDROID/device/**/*.tar.xz
+04-ANDROID/device/**/*.tar.gz
+04-ANDROID/device/**/*.tar.bz2
+
+# Known oversized artifacts (>95 MB) that will be rejected by GitHub without
+# Git LFS. Keep manifests and checksums tracked instead.
+01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/bootanimation/og4k/bootanimation.zip
+01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/release/CP2077-OP7Pro-v3.1.0-variant-Original-4K.zip
+01-DEVELOPMENT/repos/cyberpunk/CP2077-Universal/release/CP2077-Universal-v1.0.0.zip
+01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/release/CP2077-OP7Pro-v2.0.0-beta-megapack.zip
+01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro-Ultimate/release/CP2077-OP7Pro-v2.0.0-ultimate-all-in-one.zip
+01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/release/CP2077-OP7Pro-v3.1.0.zip
+01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro-Ultimate/bootanimation/og1080p/bootanimation.zip
+02-PRODUCTION/magisk-modules/surfaceocean-los21/boot.img
+
+# Generated dependency/build caches commonly present in cloned reference repos.
+node_modules/
+dist/
+build/
+out/
+target/
+.gradle/
+.cxx/
+cmake-build-*/

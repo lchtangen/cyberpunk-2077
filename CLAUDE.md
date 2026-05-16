@@ -8,14 +8,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A Magisk theme suite workspace for Android (OnePlus 7 Pro, plus a Universal all-device edition). It installs Cyberpunk 2077 boot/shutdown animations, UI audio, and splash assets via Magisk/KernelSU/APatch. The workspace also contains Linux desktop theming for the Arch host (Plymouth, Waybar, eww, hyprlock, Hyprland).
 
-The **git repo itself only tracks**:
+The **root git repo is intended to expose the workspace to GitHub agents**:
 - `README.md`, `CLAUDE.md`, `AGENTS.md`, `.gitignore`, `.markdownlint.json`
 - `00-CONTROL/` — workspace policy and live device status
+- `01-DEVELOPMENT/` through `08-HACKING-RESEARCH/` — source trees, scripts, themes, kernels, and research files
 - `09-DOCS/` — all documentation
 - `99-MANIFESTS/` — auto-generated inventories and checksums
-- `releases/` — `update-*.json` OTA pointers and changelogs (no ZIPs)
+- `releases/` — `update-*.json` OTA pointers and changelogs
 
-Everything under `01-DEVELOPMENT/` through `08-HACKING-RESEARCH/` is `.gitignore`d. Those directories contain nested git repos tracked by their own remotes (catalogued in `99-MANIFESTS/git-repositories.txt`).
+The root `.gitignore` excludes local tool state, nested `.git/` internals,
+cache directories, device download dumps, and known artifacts too large for
+normal GitHub git hosting without Git LFS. Nested repos are catalogued in
+`99-MANIFESTS/git-repositories.txt`; do not commit their `.git/` directories.
 
 ## Current release state
 
@@ -297,7 +301,7 @@ When bumping a version, update all of these in one pass — version drift across
 ## What NOT to do
 
 - Do not install anything from `10-QUARANTINE-invalid-downloads/` — those files are HTML documents masquerading as APKs/ZIPs.
-- Do not run `git add -A` or commit from the workspace root — only `00-CONTROL/`, `09-DOCS/`, `99-MANIFESTS/`, `releases/`, `README.md`, `CLAUDE.md`, `AGENTS.md`, `.gitignore`, and `.markdownlint.json` belong in the workspace git history.
+- Do not commit nested `.git/` directories, local tool state, virtualenvs, device download dumps, or >95 MB artifacts without Git LFS.
 - Do not edit `module.prop` version strings without also updating `build.py` constants and the corresponding `releases/update-*.json` files.
 - Do not trust `99-MANIFESTS/` files as live state — they are snapshots from the last manifest generation run.
 - Do not treat `10-QUARANTINE-invalid-downloads/` files as source artifacts — they are invalid downloads flagged for disposal.

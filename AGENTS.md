@@ -10,9 +10,10 @@ This is a Cyberpunk 2077 Android theme/module workspace for OnePlus 7 Pro and
 Universal Android builds. It also contains Arch/Linux theming references and
 device/kernel research material.
 
-The root repository is a control/documentation repo. Most source trees under
-`01-DEVELOPMENT/` through `08-HACKING-RESEARCH/` are ignored by the root git
-repo and may be nested git repositories with their own history.
+The root repository is now intended to expose the full workspace to GitHub
+agents. Source trees under `01-DEVELOPMENT/` through `08-HACKING-RESEARCH/`
+may still be nested git repositories with their own history, but their working
+tree files should remain visible from the root checkout.
 
 ## Critical invariants
 
@@ -31,17 +32,20 @@ repo and may be nested git repositories with their own history.
 
 ## Git workflow
 
-The root repo tracks control/docs/release metadata only:
+The root repo should make workspace source, scripts, docs, manifests, release
+metadata, themes, and research files available to GitHub agents. The root
+`.gitignore` excludes only local tool state, nested `.git/` internals, cache
+directories, device download dumps, and known artifacts too large for normal
+GitHub git hosting without Git LFS.
 
-- `README.md`, `CLAUDE.md`, `AGENTS.md`, `.gitignore`
-- `00-CONTROL/`
-- `09-DOCS/`
-- `99-MANIFESTS/`
-- `releases/`
+Before staging broad workspace changes, check for large files:
 
-Do not run `git add -A` from the workspace root. Stage root changes explicitly.
-For code under nested repos, work inside that nested repo and respect its own git
-state. Do not rewrite or clean unrelated user changes.
+```bash
+find . -path './.git' -prune -o -path '*/.git/*' -prune -o -type f -size +95M -print
+```
+
+For code under nested repos, avoid committing their `.git/` directories into the
+root repo. Do not rewrite or clean unrelated user changes.
 
 ## Important paths
 
