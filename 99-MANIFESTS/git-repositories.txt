@@ -29,6 +29,10 @@
 /home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/magisk-ecosystem/MMRL                branch=master  remote=https://github.com/MMRLApp/MMRL                category=magisk-root
 /home/arch/cyberpunk-2077/01-DEVELOPMENT/repos/magisk-ecosystem/awesome-android-root  branch=main  remote=https://github.com/awesome-android-root/awesome-android-root  category=magisk-root
 
+# ── KWin / Plasma Effects ────────────────────────────────────────────────────
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/repos/kwin-forceblur          branch=main  remote=https://github.com/taj-ny/kwin-effects-forceblur          category=kde-effect
+/home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/repos/smart-video-wallpaper   branch=main  remote=https://github.com/luisbocanegra/plasma-smart-video-wallpaper-reborn  category=kde-effect
+
 # ── LINUX THEMES (KDE / GTK / Hyprland / Wayland) ────────────────────────────
 /home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/repos/hyprdots                branch=main  remote=https://github.com/prasanthrangan/hyprdots                category=theme-linux
 /home/arch/cyberpunk-2077/06-UI-THEMES-ANIMATIONS/repos/HyprPanel                branch=master  remote=https://github.com/Jas-SinghFSU/HyprPanel                category=theme-linux

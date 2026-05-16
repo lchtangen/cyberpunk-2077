@@ -104,7 +104,7 @@ fastboot reboot
 1. **Wrong kernel = brick!** Always verify device codename matches
 2. **Android 16 = `_b` suffix** - Don't use `_v` or `_u` for LOS 23.2
 3. **Backup first!** Keep a copy of your original boot.img
-4. **LOS 23.2 required** - This build is specifically for LineageOS 23.2
+4. **LOS 23.2 required for this guide** - This SukiSU Ultra build is specifically for LineageOS 23.2 (Android 16). For LOS 21 (Android 14) use the SurfaceOcean pre-built instead (see Alternative section below).
 
 ## Troubleshooting
 
@@ -123,14 +123,23 @@ fastboot reboot
 - Verify you flashed correct kernel for your device
 - Check SELinux contexts with `dmesg | grep avc`
 
-## Alternative: Pre-built KernelSU for LineageOS 21/22
+## Alternative: Pre-built KernelSU for LineageOS 21 (Android 14)
 
-If you want a quicker solution for Android 14/15:
+If you want a pre-built option for **Android 14** instead of building SukiSU Ultra for Android 16:
 
 - **Source:** https://github.com/surfaceocean/kernelsu_oneplus_7_pro_lineageos_guacamole
-- **Latest:** v20251215
-- **Compatible:** LineageOS 21/22 (Android 14-15)
-- **Root:** KernelSU v0.9.5 pre-installed
+- **Latest:** v20251215 (32 releases as of 2026-05-14)
+- **Compatible:** LineageOS 21 (Android 14) — **not LOS 22/23**
+- **Root:** KernelSU pre-installed
+
+> ⚠️ **Full flash mandatory.** Kernel-only swap breaks Wi-Fi and audio on guacamole. Required flashing sequence:
+> 1. Factory reset
+> 2. `fastboot flash boot boot.img`
+> 3. `fastboot flash dtbo dtbo.img`
+> 4. `fastboot flash vbmeta vbmeta.img`
+> 5. Sideload lineage ZIP (`adb sideload lineage-21.0-*.zip`)
+
+> ⚠️ **Not for LOS 23.2 / Android 16.** If you are on LOS 23.2, use the SukiSU Ultra build guide above.
 
 ## Support
 

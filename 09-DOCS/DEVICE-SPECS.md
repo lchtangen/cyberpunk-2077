@@ -109,13 +109,13 @@ fastboot reboot
 |:---------|:-------|:-----------|:--------|
 | **blu-spark** | `kernel/blu-spark-kernel-op7/` | `engstk/op7` | CAF-based · perf/battery · OP7/7T/7Pro |
 | **Neptune** | `kernel/neptune-kernel-sm8150/` | `0wnerDied/Neptune_kernel` | CLO `LA.UM.9.1.r1-15500` |
-| **KernelSU (pre-built)** | `kernel/kernelsu-lineageos-guacamole/` | `surfaceocean/kernelsu_op7` | v0.9.5 · LineageOS only |
+| **KernelSU (pre-built)** | `kernel/kernelsu-lineageos-guacamole/` | `surfaceocean/kernelsu_oneplus_7_pro_lineageos_guacamole` | v20251215 (32 releases) · LOS 21 (Android 14) · full flash required |
 | **LineageOS** | `kernel/oneplus-7-pro-lineage-kernel-sm8150/` | LineageOS upstream | Official LOS SM8150 |
 | **NetHunter** | `kernel/kali-nethunter-kernel-builder/` | NetHunter upstream | NetHunter-patched builder |
 
 </div>
 
-> ⚠️ **KernelSU + LineageOS Note:** Requires full LineageOS flash (not just kernel swap). Swapping only the kernel breaks Wi-Fi and audio on guacamole.
+> ⚠️ **KernelSU + LineageOS Note:** Requires **full LineageOS 21 flash** — not just a kernel swap. The SurfaceOcean pre-built (`v20251215`) requires: factory reset + flash `boot.img` + `dtbo.img` + `vbmeta.img` + lineage ZIP. Swapping only the kernel (`boot.img`) breaks Wi-Fi and audio on guacamole.
 
 ---
 
