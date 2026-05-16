@@ -2,6 +2,5 @@
   "version": "v3.1.0",
   "versionCode": 301000,
   "zipUrl": "https://github.com/lchtangen/cyberpunk-2077/releases/download/v3.1.0-full/CP2077-OP7Pro-v3.1.0.zip",
-  "checksum": "REPLACE_WITH_SHA256_AFTER_BUILD",
   "changelog": "https://raw.githubusercontent.com/lchtangen/cyberpunk-2077/main/releases/CHANGELOG-full.md"
 }

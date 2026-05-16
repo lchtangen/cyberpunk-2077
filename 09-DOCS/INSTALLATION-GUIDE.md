@@ -43,7 +43,7 @@
 ```bash
 # Step 1: Push module ZIP to device
 adb push \
-  02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/CP2077-OP7Pro-v3.0.0.zip \
+  02-PRODUCTION/magisk-modules/CP2077-OP7Pro-release/CP2077-OP7Pro-v3.1.0.zip \
   /sdcard/Download/
 
 # Step 2: Open Magisk → Modules → Install from storage
@@ -68,6 +68,7 @@ The `customize.sh` installer runs inside Magisk recovery. It reads `/data/cp2077
 ║  [2] Cyberpunk-Flatline  — flatline ECG, 60fps          ║
 ║  [3] Re-Boot Animation   — OP logo + glitch, 60fps      ║
 ║  [4] Original 1080p      — 8T SE port, 30fps            ║
+║  [5] Original 4K         — 4K upscale, 30fps (dev)      ║
 ╚══════════════════════════════════════════════════════════╝
 ```
 
@@ -111,7 +112,7 @@ Config is saved to `/data/cp2077.conf` after each install:
 
 ```bash
 # /data/cp2077.conf
-variant=glitch   # glitch | flatline | reboot | og1080p
+variant=glitch   # glitch | flatline | reboot | og1080p | og4k
 audio=yes        # yes | no
 oos=auto         # auto | yes | no (force OOS path)
 ```
@@ -163,11 +164,11 @@ adb push \
 
 ```bash
 # Push the ZIP and install via TWRP or Magisk CLI
-adb push CP2077-OP7Pro-v3.0.0.zip /sdcard/Download/
+adb push CP2077-OP7Pro-v3.1.0.zip /sdcard/Download/
 # Then use TWRP: Install → select ZIP → Swipe to install
 
 # Or Magisk CLI (if available):
-adb shell su -c 'magisk --install-module /sdcard/Download/CP2077-OP7Pro-v3.0.0.zip'
+adb shell su -c 'magisk --install-module /sdcard/Download/CP2077-OP7Pro-v3.1.0.zip'
 ```
 
 ---
