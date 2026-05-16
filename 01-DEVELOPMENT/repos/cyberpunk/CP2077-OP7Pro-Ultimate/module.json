@@ -1,0 +1,66 @@
+{
+  "id": "CP2077_OP7Pro_Ultimate",
+  "name": "Cyberpunk 2077 Ultimate All-In-One — OnePlus 7 Pro",
+  "version": "v3.0.0",
+  "versionCode": 300000,
+  "author": "lchtangen",
+  "description": "Ultimate Cyberpunk 2077 theme: all 4 boot animation variants (CyberGlitch, Flatline, Re-Boot, Original 1080p) at 1440×3120, matching shutdown animations, CP2077 audio pack, optional live wallpaper, splash screen, and fully interactive config-file installer. Multi-path mount engine for AOSP/LineageOS/OOS/yaap. OnePlus 7 Pro (guacamole), Android 14–16+.",
+  "license": "CC BY-NC-SA 4.0",
+  "homepage": "https://github.com/lchtangen/cyberpunk-2077",
+  "donate": "",
+  "support": "https://github.com/lchtangen/cyberpunk-2077/issues",
+  "minMagisk": 20400,
+  "minKernelSU": 10000,
+  "minAPatch": 10000,
+  "androidApi": 26,
+  "updateJson": "https://raw.githubusercontent.com/lchtangen/cyberpunk-2077/main/releases/update-ultimate.json",
+  "categories": ["Boot Animation", "Theming", "UI"],
+  "screenshots": [
+    "https://raw.githubusercontent.com/lchtangen/cyberpunk-2077/main/01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro-Ultimate/splash/module-thumbnail.png"
+  ],
+  "features": {
+    "webui": false,
+    "action": false
+  },
+  "compat": {
+    "magisk": true,
+    "kernelsu": true,
+    "apatch": true
+  },
+  "mount": {
+    "bootanimation": [
+      "/product/media/bootanimation.zip",
+      "/product/media/bootanimation-dark.zip",
+      "/system/product/media/bootanimation.zip",
+      "/system/product/media/bootanimation-dark.zip",
+      "/system/media/bootanimation.zip",
+      "/my_product/media/bootanimation/bootanimation.zip",
+      "/data/local/bootanimation.zip",
+      "/data/misc/bootanim/bootanimation.zip"
+    ],
+    "shutdownanimation": [
+      "/product/media/shutdownanimation.zip",
+      "/product/media/rbootanimation.zip",
+      "/system/product/media/shutdownanimation.zip",
+      "/system/product/media/rbootanimation.zip",
+      "/my_product/media/bootanimation/rbootanimation.zip",
+      "/data/local/shutdownanimation.zip",
+      "/data/misc/bootanim/shutdownanimation.zip"
+    ],
+    "audio": [
+      "/product/media/audio/ui/",
+      "/system/product/media/audio/ui/",
+      "/system/media/audio/ui/"
+    ],
+    "stub_threshold_bytes": 5000000
+  },
+  "variants": [
+    { "id": "glitch",   "name": "CyberGlitch",  "resolution": "1440x3120", "fps": 60 },
+    { "id": "flatline", "name": "Flatline",      "resolution": "1440x3120", "fps": 60 },
+    { "id": "reboot",   "name": "Re-Boot",       "resolution": "1440x3120", "fps": 60 },
+    { "id": "og1080p",  "name": "Original 1080p","resolution": "1080x2340", "fps": 60 }
+  ],
+  "devices": [
+    { "codename": "guacamole", "model": "OnePlus 7 Pro", "soc": "SM8150", "recommended": true }
+  ]
+}

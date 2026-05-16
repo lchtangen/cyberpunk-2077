@@ -90,14 +90,14 @@
  ┌──────────────────────────────────────────────────────────────────────────┐
  │  STATUS KEY:  ⬛ BLOCKER  ·  ✓ FIXED  ·  🔴 P0  ·  ✅ CLOSED            │
  ├──────────────────────────────────────────────────────────────────────────┤
- │  HP-01  ⬛⬛⬛⬛⬛⬛⬛⬛  🔴  LOS 23.2 mount path audit                   │
- │  HP-02  ⬛⬛⬛⬛⬛⬛⬛⬛  🔴  Android 16 boot timing trace                │
- │  HP-03  ⬛⬛⬛⬛⬛⬛⬛⬛  🔴  SELinux avc denial + sepolicy.rule          │
+ │  HP-01  ✅✅✅✅✅✅✅✅  ✅  LOS 23.2 mount path audit                   │
+ │  HP-02  ✅✅✅✅✅✅✅✅  ✅  Android 16 boot timing trace                │
+ │  HP-03  ✅✅✅✅✅✅✅✅  ✅  SELinux avc denial + sepolicy.rule          │
  │  HP-04  ⬛⬛⬛⬛⬛⬛⬛⬛  🔴  Audio path verification LOS 23.2            │
  │  HP-05  ⬛⬛⬛⬛⬛⬛⬛⬛  🔴  Magisk WebUI 5-bridge verification          │
- │  HP-06  ⬛⬛⬛⬛⬛⬛⬛⬛  🔴  KernelSU module.json parity                 │
- │  HP-07  ⬛⬛⬛⬛⬛⬛⬛⬛  🔴  5 MB remount threshold re-validation        │
- │  HP-08  ⬛⬛⬛⬛⬛⬛⬛⬛  🔴  DEVICE-SPECS.md refresh LOS 23.2           │
+ │  HP-06  ✅✅✅✅✅✅✅✅  ✅  KernelSU module.json parity                 │
+ │  HP-07  ✅✅✅✅✅✅✅✅  ✅  5 MB remount threshold re-validation        │
+ │  HP-08  ✅✅✅✅✅✅✅✅  ✅  DEVICE-SPECS.md refresh LOS 23.2           │
  │  HP-09  ⬛⬛⬛⬛⬛⬛⬛⬛  🔴  APatch apd path discovery (v0.10+)         │
  ├──────────────────────────────────────────────────────────────────────────┤
  │  HP-10  ✓ FIXED   Supply chain SHA-256 — build.py writes checksum       │
@@ -111,14 +111,14 @@
 
 | ID | Task | Pri | Owner | Status |
 |:---|:-----|:---:|:-----:|:------:|
-| HP-01 | LOS 23.2 mount path audit — all 7 known paths | 🔴 P0 | — | ⬛ |
-| HP-02 | Android 16 boot timing trace — `post-fs-data.sh` + `service.sh` | 🔴 P0 | — | ⬛ |
-| HP-03 | SELinux `avc` denial audit → generate `sepolicy.rule` | 🔴 P0 | — | ⬛ |
+| HP-01 | LOS 23.2 mount path audit — all 7 known paths | 🔴 P0 | — | ✅ |
+| HP-02 | Android 16 boot timing trace — `post-fs-data.sh` + `service.sh` | 🔴 P0 | — | ✅ |
+| HP-03 | SELinux `avc` denial audit → generate `sepolicy.rule` | 🔴 P0 | — | ✅ |
 | HP-04 | Audio path verification on LOS 23.2 `/product/media/audio/ui/` | 🔴 P0 | — | ⬛ |
 | HP-05 | Magisk WebUI verification — 5 bridge functions on Android 16 WebView | 🔴 P0 | — | ⬛ |
-| HP-06 | KernelSU `module.json` parity with Magisk install behavior | 🔴 P0 | — | ⬛ |
-| HP-07 | 5 MB remount threshold re-validation on LOS 23.2 stock stubs | 🔴 P0 | — | ⬛ |
-| HP-08 | `DEVICE-SPECS.md` refresh with LOS 23.2 confirmed results | 🔴 P0 | — | ⬛ |
+| HP-06 | KernelSU `module.json` parity with Magisk install behavior | 🔴 P0 | — | ✅ |
+| HP-07 | 5 MB remount threshold re-validation on LOS 23.2 stock stubs | 🔴 P0 | — | ✅ |
+| HP-08 | `DEVICE-SPECS.md` refresh with LOS 23.2 confirmed results | 🔴 P0 | — | ✅ |
 | HP-09 | APatch `apd` path discovery — document paths for APatch v0.10+ | 🔴 P0 | — | ⬛ |
 | HP-10 | ~~Supply chain verification~~ — `build.py` writes real SHA-256 to `update.json` | ✅ | audit | ✅ |
 | HP-11 | ~~ADB flash always failed~~ — `RELEASE_ZIP` path updated to v3.1.0 | ✅ | audit | ✅ |

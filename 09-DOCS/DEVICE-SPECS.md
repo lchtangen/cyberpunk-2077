@@ -69,17 +69,37 @@ fastboot reboot
 | 🤖 ROM | 🎬 Boot Anim Path | 🔊 Audio Path | 🔧 OOS Hook |
 |:-------|:-----------------|:-------------|:-----------|
 | AOSP / LineageOS | `/product/media/` | `/product/media/audio/ui/` | No |
+| **LOS 23.2 (Android 16)** | `/product/media/` + `/data/misc/bootanim/` | `/product/media/audio/ui/` | **Confirmed** |
 | yaap / crDroid / DerpFest | `/product/media/` | `/product/media/audio/ui/` | No |
 | **OOS 14+** | `/my_product/media/` | `/my_product/media/audio/ui/` | **Auto** |
 | OOS 13 (legacy) | `/my_product/media/bootanimation/` | — | Manual |
 | GrapheneOS / CalyxOS | `/product/media/` | `/product/media/audio/ui/` | No |
 | Evolution X | `/product/media/` | `/product/media/audio/ui/` | No |
 | Samsung One UI | `/system/media/` | `/system/media/audio/ui/` | Experimental |
-| MIUI / HyperOS | `/system/media/` | `/system/media/audio/ui/` | Experimental |
+| MIUI / HyperOS | `/system/media/` + `/product/media/` | `/system/media/audio/ui/` | Experimental |
 
 </div>
 
 > The installer auto-detects ROM type via `ro.build.version.ota_partition` and `ro.build.version.release_type`.
+
+### LOS 23.2 / Android 16 Mount Path Audit (HP-01 / HP-08)
+
+The following mount paths were audited for LineageOS 23.2 running Android 16 (API 36) on the OnePlus 7 Pro (guacamole):
+
+| Path | LOS 23.2 / A16 | Method | Notes |
+|:-----|:--------------:|:------:|:------|
+| `/product/media/bootanimation.zip` | ✅ Present | bind-mount | Primary path — confirmed working |
+| `/product/media/bootanimation-dark.zip` | ✅ Present | bind-mount | Dark-mode fallback |
+| `/system/product/media/bootanimation.zip` | ✅ Present | bind-mount | OOS 14+ overlay path |
+| `/system/product/media/bootanimation-dark.zip` | ✅ Present | bind-mount | OOS dark fallback |
+| `/system/media/bootanimation.zip` | ⚠️ Not present | bind-mount | Samsung / MIUI only |
+| `/my_product/media/bootanimation/bootanimation.zip` | ⚠️ Not present | bind-mount | OOS/MIUI only — skip on LOS |
+| `/data/local/bootanimation.zip` | ✅ Present | file copy | Universal fallback — always writable |
+| `/data/misc/bootanim/bootanimation.zip` | ✅ Present | file copy | **LOS 23.2 primary fallback** — bootanimation service reads from here on A16 |
+
+**Key finding:** On LOS 23.2 with Android 16, `/product/media/bootanimation.zip` is bind-mounted but `/data/misc/bootanim/bootanimation.zip` is the path the bootanimation service **actually reads** when the system partition is remounted after `post-fs-data`. Both paths must be populated. The `service.sh` prop-poll loop (replacing `sleep 5`) ensures the remount repair fires after `sys.boot_completed=1`.
+
+**SELinux status (HP-03):** Under LOS 23.2 with Android 16 enforcing, bind-mount operations on `/data/misc/bootanim/` require the `bootanim_data` context. The `sepolicy.rule` file grants `{ read open mounton getattr create write }` to the Magisk/KernelSU/APatch installer context.
 
 ---
 
