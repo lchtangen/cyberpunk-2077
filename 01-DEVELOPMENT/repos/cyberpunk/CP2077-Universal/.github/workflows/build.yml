@@ -1,0 +1,96 @@
+name: Build CP2077-Universal
+
+on:
+  push:
+    branches: [master, main]
+    tags:     ['v*']
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install dependencies
+        run: sudo apt-get install -y ffmpeg zip unzip
+
+      - name: Build universal ZIPs
+        run: python3 build-universal.py
+
+      - name: Validate universal ZIP
+        run: |
+          ZIP="release/CP2077-Universal-v1.0.0.zip"
+          echo "── Contents ──"
+          unzip -l "$ZIP" | head -40
+          for f in module.prop customize.sh post-fs-data.sh service.sh uninstall.sh \
+                   cp2077-config.sh "META-INF/com/google/android/update-binary"; do
+            unzip -l "$ZIP" | grep -q "$f" \
+              && echo "  ✓ $f" \
+              || { echo "  ✗ MISSING: $f"; exit 1; }
+          done
+
+      - name: ROM compatibility matrix test
+        run: |
+          python3 - <<'EOF'
+          import zipfile, sys
+          z = zipfile.ZipFile('release/CP2077-Universal-v1.0.0.zip')
+          names = z.namelist()
+          cs = z.read('customize.sh').decode()
+          required_rom_families = ['aosp', 'lineage', 'samsung', 'oos', 'miui']
+          for fam in required_rom_families:
+              if fam not in cs:
+                  print(f'FAIL: ROM family "{fam}" missing from customize.sh')
+                  sys.exit(1)
+              print(f'  OK  {fam}')
+          print('All ROM families present.')
+          EOF
+
+      - name: Compute SHA-256
+        run: |
+          sha256sum release/CP2077-Universal-v1.0.0.zip > SHA256SUMS.txt
+          sha256sum release/per-variant/*.zip >> SHA256SUMS.txt
+          cat SHA256SUMS.txt
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: CP2077-Universal-${{ github.sha }}
+          path: |
+            release/CP2077-Universal-v1.0.0.zip
+            release/per-variant/
+            SHA256SUMS.txt
+          retention-days: 30
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release/CP2077-Universal-v1.0.0.zip
+            release/per-variant/*.zip
+            SHA256SUMS.txt
+          generate_release_notes: true
+          body: |
+            ## Cyberpunk 2077 — Universal Edition
+
+            Works on **ALL Android devices**. Auto-detects ROM, resolution, and root solution at install time.
+
+            | Feature | Detail |
+            |---------|--------|
+            | ROM families | 14 (AOSP, LineageOS, Samsung One UI, OOS, MIUI/HyperOS, Pixel, crDroid, Evolution X, yaap, ArrowOS…) |
+            | Root solutions | Magisk 20.4+ · KernelSU · APatch |
+            | Resolution | Auto-scaled to any screen at install time |
+            | Min API | 21 (Android 5.0+) |
+
+            **Variants:** CyberGlitch-2077 · Cyberpunk-Flatline · Re-Boot Animation · Original 1080p

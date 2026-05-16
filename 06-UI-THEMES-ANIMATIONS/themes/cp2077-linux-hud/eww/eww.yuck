@@ -1,0 +1,93 @@
+;;; cp2077-linux-hud — eww HUD widgets
+;;; Cyberpunk 2077 system monitor overlay
+;;; Usage: eww open cp2077-hud
+
+;; ── Variables ────────────────────────────────────────────────────
+(defpoll cpu_usage   :interval "2s"  `top -bn1 | awk '/Cpu/ {printf "%.0f", $2}'`)
+(defpoll mem_pct     :interval "5s"  `free | awk '/Mem/ {printf "%.0f", $3/$2*100}'`)
+(defpoll mem_used    :interval "5s"  `free -h | awk '/Mem/ {print $3}'`)
+(defpoll mem_total   :interval "5s"  `free -h | awk '/Mem/ {print $2}'`)
+(defpoll disk_pct    :interval "30s" `df -h / | awk 'NR==2 {gsub(/%/,""); print $5}'`)
+(defpoll net_info    :interval "3s"  `~/.config/eww/scripts/net.sh`)
+(defpoll bat_pct     :interval "30s" `cat /sys/class/power_supply/BAT0/capacity 2>/dev/null || echo --`)
+(defpoll bat_status  :interval "10s" `cat /sys/class/power_supply/BAT0/status 2>/dev/null || echo --`)
+(defpoll clock_time  :interval "1s"  `date '+%H:%M:%S'`)
+(defpoll clock_date  :interval "60s" `date '+%Y-%m-%d'`)
+
+;; ── Widgets ──────────────────────────────────────────────────────
+
+;; Stat row
+(defwidget stat-row [label value ?warn-threshold ?crit-threshold]
+  (box :class "stat-row" :orientation "h" :spacing 0
+    (label :class "stat-label" :text label)
+    (box :hexpand true)
+    (label :class {
+      (if (and (defined? warn-threshold) (> (to-int value) (to-int warn-threshold)))
+        (if (and (defined? crit-threshold) (> (to-int value) (to-int crit-threshold)))
+          "stat-value crit" "stat-value warn")
+        "stat-value ok")} :text value)))
+
+;; Progress bar
+(defwidget cp-bar [value max-val]
+  (box :class "bar-track" :orientation "h"
+    (box :class "bar-fill"
+         :hexpand false
+         :style {`min-width: ${(* (/ (to-int value) (to-int max-val)) 200)}px`})))
+
+;; Section header
+(defwidget section-header [title]
+  (box :class "section-header" :orientation "h"
+    (label :text "◈  ")
+    (label :text title)
+    (box :hexpand true)
+    (label :text "  ◈")))
+
+;; ── Main HUD ─────────────────────────────────────────────────────
+(defwidget cp2077-hud []
+  (box :class "cp2077-hud" :orientation "v" :spacing 0
+
+    ;; Header
+    (box :class "hud-header" :orientation "v"
+      (label :class "hud-title" :text "░▒▓ CP2077 HUD ▓▒░")
+      (label :class "hud-clock" :text clock_time)
+      (label :class "hud-date"  :text clock_date))
+
+    ;; CPU
+    (section-header :title "PROCESSOR / ICE")
+    (stat-row :label "LOAD"  :value {cpu_usage + "%"}
+              :warn-threshold "70" :crit-threshold "90")
+    (cp-bar   :value cpu_usage :max-val "100")
+
+    ;; Memory
+    (section-header :title "NEURAL BUFFER / RAM")
+    (stat-row :label "USAGE" :value {mem_used + " / " + mem_total}
+              :warn-threshold "80" :crit-threshold "95")
+    (cp-bar   :value mem_pct :max-val "100")
+
+    ;; Storage
+    (section-header :title "CYBERWARE STORAGE")
+    (stat-row :label "ROOT" :value {disk_pct + "%"}
+              :warn-threshold "80" :crit-threshold "95")
+    (cp-bar   :value disk_pct :max-val "100")
+
+    ;; Network
+    (section-header :title "NETRUNNER / UPLINK")
+    (stat-row :label "STATUS" :value net_info)
+
+    ;; Battery
+    (section-header :title "POWER CELL")
+    (stat-row :label "CHARGE"  :value {bat_pct + "%"}
+              :warn-threshold "30" :crit-threshold "15")
+    (stat-row :label "STATUS"  :value bat_status)
+    (cp-bar   :value bat_pct :max-val "100")))
+
+;; ── Window ───────────────────────────────────────────────────────
+(defwindow cp2077-hud
+  :monitor 0
+  :geometry (geometry :x "12px" :y "48px"
+                       :width "220px" :height "auto"
+                       :anchor "top right")
+  :stacking "overlay"
+  :focusable false
+  :namespace "cp2077-hud"
+  (cp2077-hud))

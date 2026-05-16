@@ -1,0 +1,93 @@
+// cp2077-linux-hud — eww stylesheet
+// Cyberpunk 2077 color palette
+
+$yellow:  #FCEE0C;
+$cyan:    #00FFFF;
+$red:     #FF003C;
+$green:   #00FF9F;
+$orange:  #FF6B35;
+$bg:      rgba(10, 10, 10, 0.92);
+$bg2:     rgba(20, 18, 5, 0.96);
+$border:  rgba(42, 42, 42, 0.80);
+$text:    #AAAAAA;
+$dim:     #444444;
+
+* {
+  font-family: "JetBrains Mono", "Fira Code", monospace;
+  font-size: 11px;
+}
+
+.cp2077-hud {
+  background: $bg;
+  border: 1px solid $border;
+  border-left: 3px solid $yellow;
+  padding: 8px 0;
+  color: $text;
+}
+
+// ── Header ──────────────────────────────────────────────────────
+.hud-header {
+  padding: 6px 12px 10px;
+  border-bottom: 1px solid $border;
+  margin-bottom: 4px;
+}
+.hud-title {
+  color: $yellow;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-shadow: 0 0 8px rgba(252, 238, 12, 0.4);
+}
+.hud-clock {
+  color: $cyan;
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 4px;
+  letter-spacing: 1px;
+}
+.hud-date {
+  color: $dim;
+  font-size: 9px;
+  margin-top: 2px;
+  letter-spacing: 1px;
+}
+
+// ── Section header ───────────────────────────────────────────────
+.section-header {
+  padding: 6px 12px 2px;
+  color: $dim;
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+// ── Stat rows ────────────────────────────────────────────────────
+.stat-row {
+  padding: 2px 12px;
+}
+.stat-label {
+  color: $dim;
+  font-size: 10px;
+  min-width: 60px;
+}
+.stat-value {
+  font-size: 10px;
+  font-weight: bold;
+  &.ok   { color: $cyan; }
+  &.warn { color: $orange; }
+  &.crit { color: $red; }
+}
+
+// ── Progress bar ─────────────────────────────────────────────────
+.bar-track {
+  background: rgba(42, 42, 42, 0.5);
+  margin: 3px 12px 6px;
+  min-height: 2px;
+  max-height: 2px;
+}
+.bar-fill {
+  background: $yellow;
+  min-height: 2px;
+  max-height: 2px;
+  box-shadow: 0 0 6px rgba(252, 238, 12, 0.5);
+}

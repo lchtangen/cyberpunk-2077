@@ -1,0 +1,140 @@
+// cp2077-linux-hud — Waybar config
+// Cyberpunk 2077 HUD-style status bar for Hyprland / Sway
+// Drop into ~/.config/waybar/config.jsonc  (or source from there)
+{
+  "layer": "top",
+  "position": "top",
+  "height": 32,
+  "spacing": 0,
+  "margin-top": 4,
+  "margin-left": 8,
+  "margin-right": 8,
+
+  "modules-left": [
+    "hyprland/workspaces",
+    "custom/sep",
+    "hyprland/window"
+  ],
+  "modules-center": [
+    "custom/cp2077-clock"
+  ],
+  "modules-right": [
+    "custom/netrunner",
+    "custom/sep",
+    "cpu",
+    "memory",
+    "custom/sep",
+    "battery",
+    "custom/sep",
+    "pulseaudio",
+    "custom/sep",
+    "tray",
+    "custom/power"
+  ],
+
+  // ── Workspaces ────────────────────────────────────────────────
+  "hyprland/workspaces": {
+    "format": "{icon}",
+    "format-icons": {
+      "1": "①", "2": "②", "3": "③",
+      "4": "④", "5": "⑤", "6": "⑥",
+      "urgent": "",
+      "active": "",
+      "default": "○"
+    },
+    "sort-by-number": true,
+    "on-click": "activate"
+  },
+
+  "hyprland/window": {
+    "format": "▸ {}",
+    "max-length": 40,
+    "separate-outputs": true
+  },
+
+  // ── Centre clock (corp terminal style) ───────────────────────
+  "custom/cp2077-clock": {
+    "exec": "date '+%H:%M:%S  //  %Y-%m-%d'",
+    "interval": 1,
+    "format": "◈  {}  ◈",
+    "tooltip": false
+  },
+
+  // ── Network ───────────────────────────────────────────────────
+  "custom/netrunner": {
+    "exec": "~/.config/waybar/scripts/cp2077-net.sh",
+    "interval": 3,
+    "format": "⬡ NETRUNNER  {}",
+    "tooltip": true
+  },
+
+  // ── CPU (ICE layer) ───────────────────────────────────────────
+  "cpu": {
+    "interval": 2,
+    "format": "⚙ ICE  {usage}%",
+    "format-alt": "⚙ {avg_frequency} GHz",
+    "tooltip": false,
+    "states": {
+      "warning":  70,
+      "critical": 90
+    },
+    "on-click": "kitty --title 'sys-monitor' btop"
+  },
+
+  // ── RAM (neural buffer) ───────────────────────────────────────
+  "memory": {
+    "interval": 5,
+    "format": "▩ RAM  {percentage}%",
+    "format-alt": "▩ {used:0.1f}/{total:0.1f} GiB",
+    "tooltip-format": "{used:0.1f} GiB / {total:0.1f} GiB",
+    "states": {
+      "warning":  80,
+      "critical": 95
+    },
+    "on-click": "kitty --title 'sys-monitor' btop"
+  },
+
+  // ── Battery (power cell) ──────────────────────────────────────
+  "battery": {
+    "interval": 30,
+    "states": {
+      "good":     80,
+      "warning":  30,
+      "critical": 15
+    },
+    "format":          "⚡ CELL  {capacity}%",
+    "format-charging": "⚡ CHARGING  {capacity}%",
+    "format-plugged":  "⚡ WIRED  {capacity}%",
+    "format-full":     "⚡ FULL",
+    "tooltip-format":  "{time} remaining  ({power:.1f}W)"
+  },
+
+  // ── Audio ─────────────────────────────────────────────────────
+  "pulseaudio": {
+    "format":        "♪ VOL  {volume}%",
+    "format-muted":  "♪ MUTED",
+    "on-click":      "pavucontrol",
+    "on-click-right": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+    "scroll-step":   5,
+    "tooltip": false
+  },
+
+  // ── System tray ───────────────────────────────────────────────
+  "tray": {
+    "icon-size": 14,
+    "spacing": 8
+  },
+
+  // ── Power button ─────────────────────────────────────────────
+  "custom/power": {
+    "format": "⏻",
+    "tooltip": false,
+    "on-click": "wlogout"
+  },
+
+  // ── Separator ────────────────────────────────────────────────
+  "custom/sep": {
+    "format": "│",
+    "tooltip": false
+  }
+}

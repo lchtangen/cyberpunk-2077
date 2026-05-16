@@ -16,6 +16,7 @@
 [![Android](https://img.shields.io/badge/ANDROID-API_36_%2F_14--16+-fcee0c?style=flat-square&logo=android&logoColor=black&labelColor=0a0a0a)](09-DOCS/DEVICE-SPECS.md)
 [![Root](https://img.shields.io/badge/ROOT-Magisk_30.7_%2B_KSU_%2B_APatch-00ff9f?style=flat-square&labelColor=0a0a0a)](09-DOCS/INSTALLATION-GUIDE.md)
 [![Workspace](https://img.shields.io/badge/WORKSPACE-17G_%2F_53_repos-ff6b35?style=flat-square&labelColor=0a0a0a)](99-MANIFESTS/workspace-size.txt)
+[![Updated](https://img.shields.io/badge/UPDATED-May_2026-555555?style=flat-square&labelColor=0a0a0a)](99-MANIFESTS/git-repositories-status.txt)
 
 <br>
 
@@ -37,7 +38,7 @@
 | Current variant | `CyberGlitch-2077` at 60 fps |
 | Asset surface | 5 boot variants, 5 shutdown variants, 7 UI sounds |
 | Root layer | Magisk 20.4+, KernelSU, APatch |
-| Workspace snapshot | 17G, 310,578 files, 53 repo entries |
+| Workspace snapshot | 17G, 53 repo entries (kernel/theme clones local-only) |
 
 <br>
 

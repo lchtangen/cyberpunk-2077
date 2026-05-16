@@ -1,0 +1,1 @@
+/home/arch/scripts/install-kde-wayland-minimal.sh

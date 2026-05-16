@@ -1,0 +1,131 @@
+/* CP2077 Rofi launcher theme
+   Merged from: cyber-hyprland-theme keybinds + Cyberpunk-Neon palette + CP2077 design tokens
+   Usage: rofi -show drun -theme ~/cyberpunk-2077/05-LINUX/arch-host/rofi/launcher.rasi */
+
+* {
+    bg:       #000b1ef2;
+    bg2:      #0A0A0Aee;
+    bg3:      #111108ee;
+    border:   #FCEE0C60;
+    accent:   #FCEE0C;
+    cyan:     #00FFFF;
+    red:      #FF003C;
+    green:    #00FF9F;
+    orange:   #FF6B35;
+    text:     #C0C0C0;
+    dim:      #555555;
+    selected-bg:   #1A1800dd;
+    selected-text: #FCEE0C;
+
+    font:               "JetBrains Mono 11";
+    background-color:   transparent;
+    text-color:         @text;
+    border-color:       @border;
+}
+
+window {
+    width:            520px;
+    background-color: @bg;
+    border:           1px solid;
+    border-color:     @border;
+    border-radius:    0px;
+    padding:          0px;
+}
+
+/* Yellow left accent bar */
+window > box {
+    border-left: 3px solid @accent;
+}
+
+mainbox {
+    background-color: transparent;
+    padding:          0px;
+    children:         [inputbar, listview];
+}
+
+/* ── Search input ── */
+inputbar {
+    background-color: @bg2;
+    border-bottom:    1px solid;
+    border-color:     @border;
+    padding:          12px 14px;
+    children:         [prompt, textbox-prompt-colon, entry];
+}
+
+prompt {
+    background-color: transparent;
+    text-color:       @accent;
+    font:             "JetBrains Mono Bold 11";
+    letter-spacing:   2px;
+    padding:          0 6px 0 0;
+}
+
+textbox-prompt-colon {
+    background-color: transparent;
+    text-color:       @dim;
+    padding:          0 6px 0 0;
+    expand:           false;
+    str:              "//";
+}
+
+entry {
+    background-color: transparent;
+    text-color:       @cyan;
+    placeholder:      "SEARCH NIGHT CITY…";
+    placeholder-color: @dim;
+    cursor-color:     @accent;
+}
+
+/* ── Results list ── */
+listview {
+    background-color: transparent;
+    padding:          6px 0px;
+    lines:            8;
+    columns:          1;
+    scrollbar:        false;
+    fixed-height:     true;
+}
+
+element {
+    background-color: transparent;
+    padding:          8px 14px;
+    border-radius:    0px;
+    spacing:          10px;
+    children:         [element-icon, element-text];
+}
+element.normal.normal    { background-color: transparent; text-color: @text; }
+element.normal.urgent    { background-color: transparent; text-color: @red; }
+element.normal.active    { background-color: transparent; text-color: @cyan; }
+element.selected.normal  { background-color: @selected-bg; text-color: @selected-text;
+                           border-left: 2px solid; border-color: @accent; }
+element.selected.urgent  { background-color: #FF003C22; text-color: @red; }
+element.selected.active  { background-color: #00FFFF11; text-color: @cyan; }
+element.alternate.normal { background-color: transparent; }
+
+element-icon {
+    size:            20px;
+    vertical-align:  0.5;
+}
+
+element-text {
+    background-color: transparent;
+    text-color:       inherit;
+    vertical-align:   0.5;
+}
+
+/* ── No results ── */
+textbox {
+    background-color: transparent;
+    text-color:       @dim;
+    padding:          8px 14px;
+    font:             "JetBrains Mono 10";
+}
+
+/* ── Message / error ── */
+message {
+    background-color: #FF003C11;
+    border:           1px solid;
+    border-color:     @red;
+    padding:          6px 14px;
+    margin:           4px;
+}

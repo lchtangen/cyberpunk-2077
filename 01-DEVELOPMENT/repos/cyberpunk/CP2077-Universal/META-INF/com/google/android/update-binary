@@ -1,0 +1,26 @@
+#!/sbin/sh
+# CP2077 Universal — Magisk/KernelSU/APatch install trampoline
+SKIPUNZIP=1
+
+# Source Magisk util_functions if available
+for f in /data/adb/magisk/util_functions.sh /data/magisk/util_functions.sh; do
+  [ -f "$f" ] && . "$f" && break
+done
+
+# Minimal stubs for recovery/non-Magisk environments
+type ui_print        >/dev/null 2>&1 || ui_print()        { echo "$@"; }
+type set_perm        >/dev/null 2>&1 || set_perm()        { chmod "${3:-755}" "$1" 2>/dev/null; }
+type set_perm_recursive >/dev/null 2>&1 || set_perm_recursive() { chmod -R "${3:-755}" "$1" 2>/dev/null; }
+
+umask 022
+
+[ -z "$MODPATH" ] && {
+  MODPATH="/data/adb/modules_update/CP2077_Universal"
+  mkdir -p "$MODPATH"
+}
+
+ui_print "- Extracting CP2077 Universal..."
+unzip -o "$ZIPFILE" -d "$MODPATH" >/dev/null 2>&1
+
+chmod 755 "$MODPATH/customize.sh"
+. "$MODPATH/customize.sh"

@@ -1,0 +1,168 @@
+/* cp2077-linux-hud — Waybar stylesheet
+   Cyberpunk 2077 color palette:
+     yellow  #FCEE0C   cyan  #00FFFF   red  #FF003C
+     green   #00FF9F   bg    #0A0A0A   dim  #2A2A2A  */
+
+@define-color yellow  #FCEE0C;
+@define-color cyan    #00FFFF;
+@define-color red     #FF003C;
+@define-color green   #00FF9F;
+@define-color orange  #FF6B35;
+@define-color bg      rgba(10, 10, 10, 0.92);
+@define-color bg2     rgba(18, 18, 8,  0.95);
+@define-color border  rgba(42, 42, 42, 0.80);
+@define-color text    #AAAAAA;
+@define-color dim     #555555;
+
+* {
+  font-family: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+  font-size: 11px;
+  min-height: 0;
+  border: none;
+  border-radius: 0;
+}
+
+/* ── Bar ────────────────────────────────────────────────────── */
+window#waybar {
+  background: @bg;
+  border-bottom: 1px solid @border;
+  color: @text;
+}
+
+/* ── Workspaces ─────────────────────────────────────────────── */
+#workspaces {
+  background: transparent;
+  padding: 0 4px;
+}
+#workspaces button {
+  color: @dim;
+  padding: 4px 8px;
+  background: transparent;
+  min-width: 24px;
+  transition: all 0.15s;
+}
+#workspaces button:hover {
+  color: @yellow;
+  background: rgba(252, 238, 12, 0.06);
+  box-shadow: inset 0 -2px @yellow;
+}
+#workspaces button.active {
+  color: @yellow;
+  background: rgba(252, 238, 12, 0.10);
+  box-shadow: inset 0 -2px @yellow;
+  text-shadow: 0 0 8px rgba(252, 238, 12, 0.5);
+}
+#workspaces button.urgent {
+  color: @red;
+  box-shadow: inset 0 -2px @red;
+  animation: urgentPulse 1s ease-in-out infinite;
+}
+@keyframes urgentPulse {
+  0%, 100% { background: transparent; }
+  50%       { background: rgba(255, 0, 60, 0.12); }
+}
+
+/* ── Window title ────────────────────────────────────────────── */
+#window {
+  color: @dim;
+  padding: 0 12px;
+  font-size: 10px;
+  letter-spacing: 0.5px;
+}
+
+/* ── Centre clock ────────────────────────────────────────────── */
+#custom-cp2077-clock {
+  color: @yellow;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px rgba(252, 238, 12, 0.4);
+  padding: 0 16px;
+}
+
+/* ── Right modules — shared ──────────────────────────────────── */
+#cpu, #memory, #battery, #pulseaudio,
+#custom-netrunner, #custom-power, #tray {
+  padding: 0 10px;
+  color: @text;
+}
+
+/* ── CPU (ICE layer) ─────────────────────────────────────────── */
+#cpu {
+  color: @cyan;
+}
+#cpu.warning  { color: @orange; }
+#cpu.critical { color: @red; animation: redPulse 0.5s ease-in-out infinite; }
+
+/* ── Memory ──────────────────────────────────────────────────── */
+#memory {
+  color: @cyan;
+}
+#memory.warning  { color: @orange; }
+#memory.critical { color: @red; }
+
+/* ── Battery ─────────────────────────────────────────────────── */
+#battery {
+  color: @green;
+}
+#battery.warning  { color: @orange; }
+#battery.critical {
+  color: @red;
+  animation: redPulse 1s ease-in-out infinite;
+}
+#battery.charging { color: @yellow; }
+
+/* ── Network ─────────────────────────────────────────────────── */
+#custom-netrunner {
+  color: @cyan;
+  font-size: 10px;
+}
+
+/* ── Audio ───────────────────────────────────────────────────── */
+#pulseaudio {
+  color: @text;
+}
+#pulseaudio.muted { color: @dim; }
+
+/* ── Separator ───────────────────────────────────────────────── */
+#custom-sep {
+  color: @border;
+  padding: 0 2px;
+}
+
+/* ── Tray ────────────────────────────────────────────────────── */
+#tray {
+  padding: 0 6px;
+}
+#tray > .passive { -gtk-icon-effect: dim; }
+#tray > .needs-attention {
+  -gtk-icon-effect: highlight;
+  background: rgba(255, 0, 60, 0.15);
+}
+
+/* ── Power button ────────────────────────────────────────────── */
+#custom-power {
+  color: @dim;
+  font-size: 13px;
+  padding: 0 10px 0 6px;
+  transition: color 0.15s;
+}
+#custom-power:hover {
+  color: @red;
+  text-shadow: 0 0 8px rgba(255, 0, 60, 0.6);
+}
+
+/* ── Tooltip ─────────────────────────────────────────────────── */
+tooltip {
+  background: @bg2;
+  border: 1px solid @border;
+  color: @text;
+  padding: 6px 10px;
+  font-size: 10px;
+}
+
+/* ── Animations ──────────────────────────────────────────────── */
+@keyframes redPulse {
+  0%, 100% { color: @red;  }
+  50%       { color: @orange; }
+}

@@ -45,6 +45,8 @@ The workspace maintains shallow `--depth 1` clones of upstream references in the
 | `06-UI-THEMES-ANIMATIONS/themes/` | Cyberpunk-Neon, K-DE-Cyberpunk-Neon, cyber-hyprland-theme, cybrland, cybrcolors, cyberpunk-technotronic-icon-theme |
 | `07-KERNEL-PACKAGE-MODULES/` | engstk op8 (blu-spark-16), op5 (blu-spark-10); Neptune SM8150 kernel |
 
+> **Note:** All directories above except `01-DEVELOPMENT/repos/cyberpunk/` and `06-UI-THEMES-ANIMATIONS/themes/` are excluded from git via `.gitignore` (too large — 10+ GB of kernel sources and icon theme SVGs). They are catalogued in `99-MANIFESTS/git-repositories.txt` and can be re-cloned locally.
+
 ---
 
 ## Build commands

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LineageOS Downloads</title>
+  <script type="module" crossorigin src="/assets/index-BbZvZao6.js"></script>
+  <link rel="modulepreload" crossorigin href="/assets/runtime-core.esm-bundler-CuEVVu3l.js">
+  <link rel="modulepreload" crossorigin href="/assets/mdi-B4-yVMnD.js">
+  <link rel="modulepreload" crossorigin href="/assets/runtime-dom.esm-bundler-CYz9vLCP.js">
+  <link rel="modulepreload" crossorigin href="/assets/ui-DoYg6Sj1.js">
+  <link rel="modulepreload" crossorigin href="/assets/CollapsibleItem-DRGX4ldx.js">
+  <link rel="modulepreload" crossorigin href="/assets/ApiService-D1BPIBzL.js">
+  <link rel="stylesheet" crossorigin href="/assets/mdi-D9QsoJBz.css">
+  <link rel="stylesheet" crossorigin href="/assets/CollapsibleItem-DW72pZjh.css">
+  <link rel="stylesheet" crossorigin href="/assets/index-DctIi6Sv.css">
+</head>
+<body>
+    <div id="app"></div>
+</body>
+</html>

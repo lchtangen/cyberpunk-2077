@@ -1,0 +1,165 @@
+// cp2077.script — Plymouth Cyberpunk 2077 Boot Theme
+// Requires: plymouth-plugin-script
+
+// ── Palette ──────────────────────────────────────────────────────
+black  = 0.039;                    // #0A0A0A
+yellow = [0.988, 0.933, 0.047];    // #FCEE0C
+cyan   = [0.000, 1.000, 1.000];    // #00FFFF
+red    = [1.000, 0.000, 0.235];    // #FF003C
+green  = [0.000, 1.000, 0.624];    // #00FF9F
+dark_y = [0.200, 0.190, 0.010];    // dim yellow for glow bg
+
+screen_w = Window.GetWidth();
+screen_h = Window.GetHeight();
+
+// ── Background ───────────────────────────────────────────────────
+Window.SetBackgroundTopColor(black, black, black);
+Window.SetBackgroundBottomColor(black, black, black);
+
+// ── Title sprite (drawn as a rectangle + text) ───────────────────
+// CP2077 title block — centred, upper third
+title_img = Image.Text("░▒▓  CYBERPUNK  2077  ▓▒░",
+                        yellow[0], yellow[1], yellow[2], 1.0,
+                        "Monospace Bold 18");
+title = Sprite(title_img);
+title.SetX((screen_w - title_img.GetWidth()) / 2);
+title.SetY(screen_h * 0.30);
+
+// Sub-title
+sub_img = Image.Text("NIGHT CITY NEVER SLEEPS",
+                      cyan[0], cyan[1], cyan[2], 0.55,
+                      "Monospace 9");
+sub = Sprite(sub_img);
+sub.SetX((screen_w - sub_img.GetWidth()) / 2);
+sub.SetY(screen_h * 0.30 + title_img.GetHeight() + 8);
+
+// ── Progress bar ─────────────────────────────────────────────────
+bar_w = screen_w * 0.55;
+bar_h = 3;
+bar_x = (screen_w - bar_w) / 2;
+bar_y = screen_h * 0.68;
+
+// Track background
+track_img = Image(bar_w, bar_h);
+track_img.Scale(bar_w, bar_h);
+track = Sprite(track_img);
+track.SetX(bar_x);
+track.SetY(bar_y);
+track.SetOpacity(0.15);
+
+// Fill (actual progress)
+bar_fill_img = Image(1, bar_h);
+bar_fill = Sprite();
+bar_fill.SetX(bar_x);
+bar_fill.SetY(bar_y);
+
+// Bar border decorators
+bar_l_img = Image.Text("[", yellow[0], yellow[1], yellow[2], 0.7, "Monospace Bold 11");
+bar_r_img = Image.Text("]", yellow[0], yellow[1], yellow[2], 0.7, "Monospace Bold 11");
+bar_l = Sprite(bar_l_img);
+bar_r = Sprite(bar_r_img);
+bar_l.SetX(bar_x - bar_l_img.GetWidth() - 4);
+bar_r.SetX(bar_x + bar_w + 4);
+bar_l.SetY(bar_y - (bar_l_img.GetHeight() - bar_h) / 2);
+bar_r.SetY(bar_y - (bar_r_img.GetHeight() - bar_h) / 2);
+
+// Percentage text
+pct_img  = Image.Text("0%", yellow[0], yellow[1], yellow[2], 0.8, "Monospace 9");
+pct_spr  = Sprite(pct_img);
+pct_spr.SetX((screen_w - pct_img.GetWidth()) / 2);
+pct_spr.SetY(bar_y + bar_h + 8);
+
+// ── Status message ───────────────────────────────────────────────
+msg_spr = Sprite();
+msg_y   = bar_y + bar_h + 28;
+
+fun update_msg(text) {
+  local.img = Image.Text(text, cyan[0], cyan[1], cyan[2], 0.6, "Monospace 9");
+  msg_spr.SetImage(local.img);
+  msg_spr.SetX((screen_w - local.img.GetWidth()) / 2);
+  msg_spr.SetY(msg_y);
+}
+update_msg("Initialising Night City…");
+
+// ── Boot messages ─────────────────────────────────────────────────
+boot_msgs = ["Initialising Night City…",
+             "Loading neural interface…",
+             "Scanning implants…",
+             "Connecting to Militech grid…",
+             "Bypassing ICE…",
+             "Netrunner protocol active…",
+             "Mounting system partitions…",
+             "Spawning daemons…",
+             "Engaging cyberware…",
+             "System online. Wake up, Samurai."];
+msg_idx   = 0;
+msg_timer = 0;
+
+// ── Pulse/glow effect on title ────────────────────────────────────
+glow_phase = 0.0;
+
+// ── Refresh function ─────────────────────────────────────────────
+fun refresh_callback() {
+  // Advance boot messages
+  msg_timer = msg_timer + 1;
+  if (msg_timer >= 20) {
+    msg_timer = 0;
+    msg_idx   = (msg_idx + 1) % 10;
+    update_msg(boot_msgs[msg_idx]);
+  }
+
+  // Subtle title glow pulse
+  glow_phase = glow_phase + 0.08;
+  if (glow_phase > 6.283) { glow_phase = glow_phase - 6.283; }
+  local.alpha = 0.75 + 0.25 * Math.Sin(glow_phase);
+  title.SetOpacity(local.alpha);
+}
+Plymouth.SetRefreshFunction(refresh_callback);
+
+// ── Progress bar update ──────────────────────────────────────────
+fun progress_callback(duration, progress) {
+  local.fill_w = Math.Max(1, Math.Int(bar_w * progress));
+  local.fill_img = Image(local.fill_w, bar_h);
+
+  // Draw yellow fill via colour image
+  local.fill_img.Scale(local.fill_w, bar_h);
+  bar_fill.SetImage(local.fill_img);
+
+  // Update percent text
+  local.pct_val  = Math.Int(progress * 100);
+  local.pct_new  = Image.Text(local.pct_val + "%",
+                               yellow[0], yellow[1], yellow[2], 0.8,
+                               "Monospace 9");
+  pct_spr.SetImage(local.pct_new);
+  pct_spr.SetX((screen_w - local.pct_new.GetWidth()) / 2);
+}
+Plymouth.SetBootProgressFunction(progress_callback);
+
+// ── Messages from systemd ────────────────────────────────────────
+fun message_callback(text) {
+  update_msg(text);
+}
+Plymouth.SetMessageFunction(message_callback);
+
+// ── Password prompt ──────────────────────────────────────────────
+fun password_callback(prompt, bullets) {
+  local.prompt_img = Image.Text("ENCRYPTION KEY: " + String.Repeat("█", bullets),
+                                 red[0], red[1], red[2], 1.0,
+                                 "Monospace Bold 11");
+  local.p = Sprite(local.prompt_img);
+  local.p.SetX((screen_w - local.prompt_img.GetWidth()) / 2);
+  local.p.SetY(screen_h * 0.55);
+}
+Plymouth.SetDisplayPasswordFunction(password_callback);
+
+// ── Quit ─────────────────────────────────────────────────────────
+fun quit_callback() {
+  title.SetOpacity(0);
+  sub.SetOpacity(0);
+  bar_fill.SetOpacity(0);
+  bar_l.SetOpacity(0);
+  bar_r.SetOpacity(0);
+  pct_spr.SetOpacity(0);
+  msg_spr.SetOpacity(0);
+}
+Plymouth.SetQuitFunction(quit_callback);

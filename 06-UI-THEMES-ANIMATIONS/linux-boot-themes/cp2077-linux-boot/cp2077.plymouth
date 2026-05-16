@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=Cyberpunk 2077
+Description=Cyberpunk 2077 boot splash — black background with neon yellow/cyan progress bar and typewriter status text
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/cp2077
+ScriptFile=/usr/share/plymouth/themes/cp2077/cp2077.script

@@ -1,0 +1,9 @@
+id=CP2077_Universal
+name=Cyberpunk 2077 — Universal Edition
+version=v1.0.0
+versionCode=100000
+author=lchtangen
+description=Complete Cyberpunk 2077 theme for ALL Android devices. Auto-detects resolution & ROM (AOSP, LineageOS, Samsung One UI, OOS, MIUI/HyperOS, Pixel, CalyxOS, GrapheneOS, crDroid, Evolution X, yaap, ArrowOS, PixelOS, RisingOS, DerpFest). 4 boot animation variants auto-scaled to any resolution. Works with Magisk 20.4+, KernelSU, APatch.
+minMagisk=20400
+androidApi=21
+updateJson=https://raw.githubusercontent.com/lchtangen/cyberpunk-2077/main/releases/update-universal.json

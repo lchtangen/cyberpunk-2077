@@ -1,0 +1,78 @@
+# CP2077 Alacritty color theme
+# Merged from Cyberpunk-Neon (Roboron3042) + CP2077 design tokens
+# Drop into ~/.config/alacritty/alacritty.toml or import with:
+#   import = ["~/cyberpunk-2077/05-LINUX/arch-host/terminal-themes/alacritty.toml"]
+
+[font]
+size = 11.0
+[font.normal]
+family = "JetBrains Mono"
+style  = "Regular"
+[font.bold]
+family = "JetBrains Mono"
+style  = "Bold"
+[font.italic]
+family = "JetBrains Mono"
+style  = "Italic"
+
+[cursor]
+style = { shape = "Block", blinking = "On" }
+blink_interval = 500
+[cursor.vi_mode_style]
+shape = "Underline"
+
+[window]
+opacity         = 0.95
+padding         = { x = 8, y = 8 }
+decorations     = "full"
+
+[colors.primary]
+background = "0x000b1e"
+foreground = "0x00FFFF"
+dim_foreground  = "0x555555"
+bright_foreground = "0xC0C0C0"
+
+[colors.cursor]
+text   = "0x000000"
+cursor = "0xFCEE0C"
+
+[colors.selection]
+text       = "0x00FFFF"
+background = "0x711c91"
+
+[colors.search.matches]
+foreground = "0x000b1e"
+background = "0xFCEE0C"
+[colors.search.focused_match]
+foreground = "0x000000"
+background = "0x00FF9F"
+
+[colors.normal]
+black   = "0x0A0A0A"
+red     = "0xFF003C"
+green   = "0x00FF9F"
+yellow  = "0xFCEE0C"
+blue    = "0x133e7c"
+magenta = "0x711c91"
+cyan    = "0x00FFFF"
+white   = "0xAAAAAA"
+
+[colors.bright]
+black   = "0x2A2A2A"
+red     = "0xFF003C"
+green   = "0x00FF9F"
+yellow  = "0xFCEE0C"
+blue    = "0x1c61c2"
+magenta = "0xea00d9"
+cyan    = "0x00FFFF"
+white   = "0xC0C0C0"
+
+[colors.dim]
+black   = "0x0A0A0A"
+red     = "0x88001f"
+green   = "0x007a4d"
+yellow  = "0x888000"
+blue    = "0x0d2652"
+magenta = "0x3d0f52"
+cyan    = "0x007777"
+white   = "0x555555"

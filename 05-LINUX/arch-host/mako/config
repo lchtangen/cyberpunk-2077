@@ -1,0 +1,50 @@
+# CP2077 Mako notification daemon config
+# Merged from: Cyberpunk-Neon sway/mako/config + CP2077 design tokens
+# Drop into ~/.config/mako/config or symlink from there
+# Requires: mako (pacman -S mako)
+
+# ── Layout ────────────────────────────────────────────────────────
+max-visible=5
+sort=-time
+layer=overlay
+anchor=top-right
+margin=8
+padding=10,14
+width=320
+height=100
+border-size=1
+border-radius=0
+
+# ── Typography ────────────────────────────────────────────────────
+font=JetBrains Mono 10
+
+# ── Colors — default (informational) ─────────────────────────────
+background-color=#0A0A0Aee
+text-color=#C0C0C0
+border-color=#FCEE0C80
+progress-color=over #FCEE0C22
+
+# ── Timeout ───────────────────────────────────────────────────────
+default-timeout=5000
+ignore-timeout=0
+
+# ── Urgency: low ─────────────────────────────────────────────────
+[urgency=low]
+background-color=#000b1Eee
+text-color=#555555
+border-color=#2A2A2A80
+default-timeout=3000
+
+# ── Urgency: normal ───────────────────────────────────────────────
+[urgency=normal]
+background-color=#0A0A0Aee
+text-color=#C0C0C0
+border-color=#FCEE0C80
+default-timeout=5000
+
+# ── Urgency: critical ─────────────────────────────────────────────
+[urgency=critical]
+background-color=#0A0A0Aee
+text-color=#FF003C
+border-color=#FF003Ccc
+default-timeout=0

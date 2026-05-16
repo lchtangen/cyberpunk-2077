@@ -1,0 +1,46 @@
+# Cyberpunk 2077 — Alacritty Color Theme
+# Apply: add `import = ["~/.config/alacritty/cp2077-alacritty.toml"]` to alacritty.toml
+
+[colors.primary]
+background = "#0a0a0a"
+foreground = "#fcee0c"
+
+[colors.cursor]
+text   = "#0a0a0a"
+cursor = "#00ffff"
+
+[colors.selection]
+text       = "#fcee0c"
+background = "#2a2a2a"
+
+[colors.normal]
+black   = "#0a0a0a"
+red     = "#ff003c"
+green   = "#00ff9f"
+yellow  = "#fcee0c"
+blue    = "#0050ff"
+magenta = "#ff6b35"
+cyan    = "#00ffff"
+white   = "#cccccc"
+
+[colors.bright]
+black   = "#2a2a2a"
+red     = "#ff003c"
+green   = "#00ff9f"
+yellow  = "#fcee0c"
+blue    = "#4d9fff"
+magenta = "#ff6b35"
+cyan    = "#00ffff"
+white   = "#ffffff"
+
+[colors.search.matches]
+foreground = "#0a0a0a"
+background = "#fcee0c"
+
+[colors.search.focused_match]
+foreground = "#0a0a0a"
+background = "#00ffff"
+
+[colors.hints.start]
+foreground = "#0a0a0a"
+background = "#fcee0c"

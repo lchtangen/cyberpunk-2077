@@ -1,5 +1,5 @@
-# Workspace size — 2026-05-13T21:07:39Z
-17G	.
+# Workspace size — 2026-05-16T19:52:37Z
+22G	.
 
 # File count (excluding .git)
-310578
+519395
