@@ -8,6 +8,10 @@
 ╚══════════════════════════════════════════════════════════════════════════╝
 ```
 
+[![Size](https://img.shields.io/badge/SIZE-17_GB_workspace-FF6B35?style=for-the-badge&labelColor=0a0a0a)](./)
+[![Repos](https://img.shields.io/badge/REPOS-53_cloned-FCEE0C?style=for-the-badge&labelColor=0a0a0a)](./)
+[![Policy](https://img.shields.io/badge/POLICY-WORKSPACE--POLICY.md-00FFFF?style=for-the-badge&labelColor=0a0a0a)](../00-CONTROL/WORKSPACE-POLICY.md)
+
 </div>
 
 ---

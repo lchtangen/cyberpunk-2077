@@ -160,20 +160,44 @@ adb shell su -c "setprop ctl.restart bootanim"
 ## ⚡ Fastboot Reference
 
 ```bash
-# ── Flash boot image ─────────────────────────────────────────────────
-fastboot flash boot magisk_patched-30700_rLeMH.img
-fastboot reboot
-
-# ── Flash stock boot (recovery / undo root) ──────────────────────────
-fastboot flash boot boot.img
-fastboot reboot
-
-# ── Enter fastboot mode ──────────────────────────────────────────────
+# ── Enter fastboot mode ──────────────────────────────────────────────────────
 adb reboot bootloader
 # Or: hold Volume Down + Power during boot
 
-# ── Check fastboot devices ───────────────────────────────────────────
+# ── Check fastboot devices ───────────────────────────────────────────────────
 fastboot devices
+
+# ── Flash Magisk-patched boot image ─────────────────────────────────────────
+fastboot flash boot magisk_patched-30700_rLeMH.img
+fastboot reboot
+
+# ── Flash stock boot (recovery / undo root) ──────────────────────────────────
+fastboot flash boot boot.img
+fastboot reboot
+```
+
+---
+
+## 🗺 Mount Path Matrix
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│         CP2077 BIND-MOUNT PATH COVERAGE — 8 TARGET PATHS                   │
+│                                                                             │
+│  post-fs-data.sh tries ALL paths in order:                                 │
+│                                                                             │
+│  1. /product/media/bootanimation.zip              ← AOSP / LOS / yaap      │
+│  2. /product/media/bootanimation-dark.zip         ← AOSP dark-mode fallback│
+│  3. /system/product/media/bootanimation.zip       ← OOS 14+                │
+│  4. /system/media/bootanimation.zip               ← Samsung One UI          │
+│  5. /my_product/media/bootanimation/bootanimation.zip ← MIUI / HyperOS     │
+│  6. /data/local/bootanimation.zip                 ← universal fallback      │
+│  7. /data/misc/bootanim/bootanimation.zip         ← LineageOS custom path   │
+│                                                                             │
+│  service.sh re-checks all paths after boot:                                 │
+│    IF mounted file < 5 MB (= stock stub won) → unmount → re-bind           │
+│    CP2077 ZIPs are always > 5 MB · stock stubs are always < 100 KB         │
+└─────────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---

@@ -228,6 +228,26 @@ du -sh . > 99-MANIFESTS/workspace-size.txt
 
 ## ⚙️ Installer Script Reference
 
+```
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  BOOT LIFECYCLE — THREE-STAGE INSTALL PIPELINE                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+  ┌────────────────┐   ┌─────────────────────┐   ┌──────────────────────────┐
+  │  customize.sh  │   │  post-fs-data.sh    │   │  service.sh              │
+  │  ─────────     │   │  ─────────────────  │   │  ──────────              │
+  │  Runs at flash │   │  Runs at early boot │   │  Runs late-start (boot+5s│
+  │                │   │                     │   │                          │
+  │  ▸ Interactive │   │  ▸ Read config      │   │  ▸ Check mounted size    │
+  │    menu        │   │  ▸ Bind-mount all   │   │  ▸ If < 5 MB → unmount  │
+  │  ▸ Read/write  │   │    ROM paths        │   │    and re-bind           │
+  │    /data/cp    │   │  ▸ Audio OGGs       │   │  ▸ Repairs ROMs that    │
+  │    2077.conf   │   │  ▸ /data/local +    │   │    re-mount /product     │
+  │  ▸ Install ZIP │   │    /data/misc/      │   │    after post-fs-data    │
+  └────────────────┘   └─────────────────────┘   └──────────────────────────┘
+        [FLASH]               [EARLY BOOT]              [LATE BOOT]
+```
+
 ### customize.sh — Interactive installer
 
 Runs during Magisk module flash. Reads `/data/cp2077.conf` on re-installs.
@@ -265,6 +285,29 @@ Runs after boot completes. Used for size-threshold remount repair (if bind-mount
 | `desc.txt format error` | First line must be `width height fps` (space-separated integers) |
 | `Module won't flash` | Check `module.prop` format — no trailing spaces, Unix line endings |
 | `customize.sh: syntax error` | Update Magisk — old busybox sh can't handle arrays |
+
+---
+
+## 🤖 CI/CD Workflows
+
+<div align="center">
+
+| ⚙️ Workflow | ⏱ Trigger | 🎯 Purpose |
+|:----------|:---------|:---------|
+| `release.yml` | Git tag push | Validate → build → SLSA provenance → draft GitHub Release |
+| `nightly.yml` | Daily 02:00 UTC | `--check-sources` · build verify · ShellCheck · lock drift |
+| `codeql.yml` | Push + PR | Python + JS CodeQL · ShellCheck SARIF upload |
+| `scorecard.yml` | Weekly | OpenSSF Scorecard + SARIF to GitHub Advanced Security |
+
+</div>
+
+Local CI with `act`:
+
+```bash
+cd 01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro
+bash cp2077-ci-local.sh release    # run release workflow locally
+bash cp2077-ci-local.sh nightly    # run nightly dry-run locally
+```
 
 ---
 

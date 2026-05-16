@@ -1,26 +1,81 @@
-# CP2077 Linux HUD — Installation Guide
+<div align="center">
 
-Cyberpunk 2077 UI theme suite for Arch/Wayland desktops.
-Covers: Waybar status bar, eww overlay widget, hyprlock lock screen, swaylock lock screen.
+```
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  ░▒▓  CP2077 LINUX HUD — ARCH/WAYLAND DESKTOP THEME SUITE  ▓▒░             ║
+║  ────────────────────────────────────────────────────────────────────────── ║
+║  Waybar · eww · hyprlock · swaylock · Hyprland · Sway                      ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+```
 
----
+[![Waybar](https://img.shields.io/badge/Waybar-Status_Bar-FCEE0C?style=for-the-badge&labelColor=0a0a0a)](./)
+[![eww](https://img.shields.io/badge/eww-Overlay_HUD-00FFFF?style=for-the-badge&labelColor=0a0a0a)](./)
+[![hyprlock](https://img.shields.io/badge/hyprlock-Lock_Screen-FF003C?style=for-the-badge&labelColor=0a0a0a)](./)
+[![swaylock](https://img.shields.io/badge/swaylock-Lock_Screen-00FF9F?style=for-the-badge&labelColor=0a0a0a)](./)
 
-## Color Palette
-
-| Role    | Hex       | Usage                        |
-|---------|-----------|------------------------------|
-| Yellow  | `#FCEE0C` | Primary accent, active state |
-| Cyan    | `#00FFFF` | Data readouts, clock         |
-| Red     | `#FF003C` | Errors, wrong password       |
-| Green   | `#00FF9F` | OK states, verified          |
-| Orange  | `#FF6B35` | Warnings, caps lock          |
-| BG      | `#0A0A0A` | Panel background             |
-
-Font: **JetBrains Mono** (all components). Install via `pacman -S ttf-jetbrains-mono`.
+</div>
 
 ---
 
-## 1. Waybar
+## 🎨 CP2077 Color Palette
+
+```
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  DESIGN TOKENS — ALL COMPONENTS USE THESE CONSISTENTLY                     ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+```
+
+<div align="center">
+
+| 🎨 Token | 🔑 Hex | 💡 Usage |
+|:--------|:------|:--------|
+| 🟡 **Neon Yellow** | `#FCEE0C` | Primary accent · active state · corp-ID gold |
+| 🔵 **Netrunner Cyan** | `#00FFFF` | Data readouts · clock · secondary accent |
+| 🔴 **Flatline Red** | `#FF003C` | Errors · wrong password · critical state |
+| 🟢 **Signal Green** | `#00FF9F` | OK states · verified · success |
+| 🟠 **Warning Orange** | `#FF6B35` | Warnings · caps lock · caution |
+| ⬛ **Carbon Black** | `#0A0A0A` | Panel background · deep dark |
+| 🔲 **Grid Border** | `#2A2A2A` | Dividers · frame borders · low-emphasis |
+
+</div>
+
+**Font:** `JetBrains Mono` across all components.
+
+```bash
+pacman -S ttf-jetbrains-mono
+```
+
+---
+
+## ⚡ Component Overview
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    CP2077 LINUX HUD — COMPONENT MAP                         │
+│                                                                             │
+│  ┌───────────────────────────────────────────────────────────────────────┐  │
+│  │  WAYBAR  [workspaces | window-title] [⏰ clock] [net|cpu|ram|bat|vol] │  │
+│  └───────────────────────────────────────────────────────────────────────┘  │
+│                                                                             │
+│                          ┌─────────────┐                                   │
+│                          │  eww HUD    │  ← top-right overlay              │
+│                          │  PROCESSOR  │                                   │
+│                          │  RAM BUFFER │                                   │
+│                          │  STORAGE    │                                   │
+│                          │  NETRUNNER  │                                   │
+│                          │  POWER CELL │                                   │
+│                          └─────────────┘                                   │
+│                                                                             │
+│  ┌───────────────────────────────────────────────────────────────────────┐  │
+│  │  HYPRLOCK / SWAYLOCK  — full-screen lock overlay with CP2077 identity │  │
+│  └───────────────────────────────────────────────────────────────────────┘  │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+
+---
+
+## 1. 📊 Waybar — Status Bar
 
 ### Dependencies
 
@@ -42,38 +97,45 @@ cp waybar/scripts/cp2077-net.sh ~/.config/waybar/scripts/
 chmod +x ~/.config/waybar/scripts/cp2077-net.sh
 ```
 
+### Hyprland Autostart
+
+```
+# ~/.config/hypr/hyprland.conf
+exec-once = waybar
+```
+
+### Bar Layout
+
+```
+┌──────────────────────────────────────────────────────────────────────────┐
+│  [1][2][3] │ window-title │  ◈  HH:MM:SS  //  YYYY-MM-DD  ◈  │ NET CPU RAM BAT VOL │
+└──────────────────────────────────────────────────────────────────────────┘
+  workspaces     active window         cyberpunk clock             right modules
+```
+
+### Custom Modules
+
+<div align="center">
+
+| 📡 Module | 🔧 Script | ⏱ Interval | ⚠️ Warning | 🔴 Critical |
+|:---------|:---------|:----------|:---------|:---------|
+| Network | `scripts/cp2077-net.sh` | 3 s | — | — |
+| CPU | Built-in Waybar | 2 s | > 70% | > 90% |
+| Memory | Built-in Waybar | 5 s | > 80% | > 95% |
+| Battery | Built-in Waybar | 30 s | < 30% | < 15% |
+
+</div>
+
 ### Launch
 
 ```bash
 waybar &
 ```
 
-Add to your Hyprland config:
-
-```
-exec-once = waybar
-```
-
-### Layout
-
-```
-[workspaces | window-title]   [◈  HH:MM:SS  //  YYYY-MM-DD  ◈]   [NET | CPU | RAM | BAT | VOL | tray | ⏻]
-```
-
-### Custom Modules
-
-| Module  | Script                        | Interval |
-|---------|-------------------------------|----------|
-| network | `scripts/cp2077-net.sh`       | 3 s      |
-| cpu     | Built-in Waybar               | 2 s      |
-| memory  | Built-in Waybar               | 5 s      |
-| battery | Built-in Waybar               | 30 s     |
-
-Warning thresholds: CPU >70%, RAM >80%, Battery <30%. Critical: CPU >90%, Battery <15%.
 
 ---
 
-## 2. eww (Elkowar's Wacky Widgets)
+## 2. 🖥 eww — Overlay HUD Widget
 
 ### Dependencies
 
@@ -142,7 +204,7 @@ Top-right overlay (220×auto), 12px from edge, 48px from top:
 
 ---
 
-## 3. hyprlock (Hyprland lock screen)
+## 3. 🔐 hyprlock — Hyprland Lock Screen
 
 ### Dependencies
 
@@ -200,7 +262,7 @@ listener {
 ### Screen layout
 
 ```
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ← yellow accent bar
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ← Neon Yellow accent bar
           ░▒▓  CYBERPUNK 2077  ▓▒░
           NIGHT CITY NEVER SLEEPS
                HH:MM:SS
@@ -216,7 +278,7 @@ Background: blurred screenshot of current desktop (brightness 0.3).
 
 ---
 
-## 4. swaylock (Sway / generic Wayland)
+## 4. 🔒 swaylock — Sway / Generic Wayland Lock Screen
 
 ### Dependencies
 
@@ -266,19 +328,23 @@ exec swayidle -w \
     before-sleep 'swaylock -f'
 ```
 
-### Color states
+### Color State Map
 
-| State         | Ring color             | Text                |
-|---------------|------------------------|---------------------|
-| Idle          | `#2A2A2A`              | dim grey            |
-| Verifying     | `#FFFFFF`              | VERIFYING…          |
-| Wrong         | `#FF003C`              | ACCESS DENIED       |
-| Cleared       | `#FCEE0C`              | *(empty)*           |
-| Caps lock     | `#FF6B35`              | indicator shown     |
+<div align="center">
+
+| 🔐 State | 💎 Ring Color | 📝 Label |
+|:--------|:------------|:-------|
+| Idle | `#2A2A2A` | dim grey ring |
+| Verifying | `#FFFFFF` | `VERIFYING…` |
+| Wrong password | `#FF003C` | `ACCESS DENIED` |
+| Cleared / unlocked | `#FCEE0C` | *(empty)* |
+| Caps lock active | `#FF6B35` | indicator shown |
+
+</div>
 
 ---
 
-## Quick-install all components
+## 🚀 Quick-Install All Components
 
 ```bash
 #!/usr/bin/env bash
@@ -286,12 +352,15 @@ exec swayidle -w \
 
 THEME_DIR="$(cd "$(dirname "$0")" && pwd)"
 
+echo "⚡ Installing CP2077 Linux HUD..."
+
 # Waybar
 mkdir -p ~/.config/waybar/scripts
 cp "$THEME_DIR/waybar/config.jsonc"           ~/.config/waybar/config
 cp "$THEME_DIR/waybar/style.css"              ~/.config/waybar/style.css
 cp "$THEME_DIR/waybar/scripts/cp2077-net.sh"  ~/.config/waybar/scripts/cp2077-net.sh
 chmod +x ~/.config/waybar/scripts/cp2077-net.sh
+echo "  ✅ Waybar installed"
 
 # eww
 mkdir -p ~/.config/eww/scripts
@@ -299,30 +368,56 @@ cp "$THEME_DIR/eww/eww.yuck"  ~/.config/eww/eww.yuck
 cp "$THEME_DIR/eww/eww.scss"  ~/.config/eww/eww.scss
 cp "$THEME_DIR/waybar/scripts/cp2077-net.sh"  ~/.config/eww/scripts/net.sh
 chmod +x ~/.config/eww/scripts/net.sh
+echo "  ✅ eww installed"
 
 # hyprlock
 mkdir -p ~/.config/hypr
 cp "$THEME_DIR/hyprlock/hyprlock.conf" ~/.config/hypr/hyprlock.conf
+echo "  ✅ hyprlock installed"
 
 # swaylock
 mkdir -p ~/.config/swaylock
 cp "$THEME_DIR/swaylock/swaylock.conf" ~/.config/swaylock/config
+echo "  ✅ swaylock installed"
 
-echo "CP2077 Linux HUD installed."
-echo "Restart Waybar: pkill waybar && waybar &"
-echo "Open eww HUD:   eww daemon && eww open cp2077-hud"
+echo ""
+echo "╔══════════════════════════════════════════╗"
+echo "║  CP2077 Linux HUD — JACK IN COMPLETE  ⚡ ║"
+echo "╚══════════════════════════════════════════╝"
+echo "  Waybar:   waybar &"
+echo "  eww HUD:  eww daemon && eww open cp2077-hud"
+echo "  Lock:     hyprlock  (or  swaylock)"
 ```
 
 ---
 
-## Troubleshooting
+## 🐛 Troubleshooting
 
-**Waybar shows no icons** — Install a Nerd Font or replace Unicode symbols in `config.jsonc` with text labels.
+<div align="center">
 
-**eww fails to start** — Ensure `eww-wayland` is installed (not the X11 build). Run `eww logs` to inspect errors.
+| ❌ Problem | 🔧 Fix |
+|:---------|:------|
+| Waybar shows no icons | Install a Nerd Font or replace Unicode symbols in `config.jsonc` with text labels |
+| eww fails to start | Ensure `eww-wayland` is installed (not the X11 build). Run `eww logs` for details |
+| hyprlock shape blocks not rendering | Update hyprlock to ≥ 0.3.0. On older versions, remove the two `shape {}` blocks from `hyprlock.conf` |
+| swaylock no blur | Install `swaylock-effects` (AUR) instead of the standard `swaylock`. Comment out `effect-blur` and `effect-vignette` |
+| Font missing / glyph misalign | `pacman -S ttf-jetbrains-mono`. eww/Waybar fall back to the system monospace font if missing, but glyph alignment may break |
+| eww HUD not toggling | Ensure `eww daemon` is running before calling `eww open cp2077-hud` |
+| Waybar modules not updating | Check `interval` in `config.jsonc` — must be an integer (not `"3s"`) |
 
-**hyprlock shape blocks not rendering** — Update hyprlock to ≥ 0.3.0. On older versions, remove the two `shape {}` blocks from `hyprlock.conf`.
+</div>
 
-**swaylock no blur** — Install `swaylock-effects` (AUR) instead of the standard `swaylock`. Without it, comment out the `effect-blur` and `effect-vignette` lines.
+---
 
-**Font missing** — `pacman -S ttf-jetbrains-mono`. eww/Waybar will fall back to the system monospace font if missing, but glyph alignment may break.
+<div align="center">
+
+```
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  ⚡  WAKE THE F**K UP, SAMURAI. YOUR DESKTOP IS WAITING.  ⚡                ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+```
+
+[![Android Theme](https://img.shields.io/badge/Android_Theme-CP2077_OP7Pro-FF003C?style=flat-square&labelColor=0a0a0a)](../../../01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/)
+[![Docs](https://img.shields.io/badge/Docs-09--DOCS-FCEE0C?style=flat-square&labelColor=0a0a0a)](../../../09-DOCS/INDEX.md)
+
+</div>
