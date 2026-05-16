@@ -4,7 +4,8 @@
 ╔══════════════════════════════════════════════════════════════════════════╗
 ║  ░▒▓  CYBERPUNK 2077 — DOCUMENTATION NEXUS  ▓▒░                        ║
 ║  ────────────────────────────────────────────────────────────────────── ║
-║  Night City Knowledge Vault · v3.1.0 · Updated 2026-05-16              ║
+║  Night City Knowledge Vault · v3.1.1 · Updated 2026-05-16              ║
+║  +Kernel Solutions · SukiSU Ultra (LOS 23.2 / Android 16)             ║
 ╚══════════════════════════════════════════════════════════════════════════╝
 ```
 
@@ -19,6 +20,8 @@
 | 📄 Document | 🔗 Link | 📝 Description |
 |:------------|:--------|:--------------|
 | ⚡ **Installation Guide** | [INSTALLATION-GUIDE.md](INSTALLATION-GUIDE.md) | Step-by-step flash · Magisk · KernelSU · APatch |
+| 🔌 **Kernel Solutions (LOS 23.2)** | [KERNEL-SOLUTIONS-OP7PRO-LOS23.md](KERNEL-SOLUTIONS-OP7PRO-LOS23.md) | SukiSU Ultra · APatch · local builds · non-GKI challenges · troubleshooting |
+| ⚡ **Kernel Quick Reference** | [KERNEL-QUICK-REFERENCE.md](KERNEL-QUICK-REFERENCE.md) | TL;DR · 5-min GitHub Actions build · flash methods · backup/restore |
 | 🎬 **Variants** | [VARIANTS.md](VARIANTS.md) | All boot/shutdown animation variants · audio pack · asset paths |
 | 🔧 **Build Guide** | [BUILD-GUIDE.md](BUILD-GUIDE.md) | Building · packaging · modifying from source |
 | 📱 **Device Specs** | [DEVICE-SPECS.md](DEVICE-SPECS.md) | OnePlus 7 Pro specs · ROM compat · ADB/fastboot reference |
