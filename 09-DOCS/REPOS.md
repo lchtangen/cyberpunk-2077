@@ -1,16 +1,24 @@
-# REPOSITORY CATALOGUE — CYBERPUNK 2077 WORKSPACE
-
 <div align="center">
 
-![Cyberpunk 2077](https://img.shields.io/badge/CYBERPUNK-2077-FF003C?style=for-the-badge&logo=cyberpunk&logoColor=FCEE0C)
-![Repos](https://img.shields.io/badge/REPOSITORIES-39-FCEE0C?style=flat-square)
-![Kernels](https://img.shields.io/badge/KERNELS-7-00FF9F?style=flat-square)
-![Themes](https://img.shields.io/badge/THEMES-12-00FFFF?style=flat-square)
+```
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  ░▒▓  REPOSITORY CATALOGUE — CYBERPUNK 2077 WORKSPACE  ▓▒░                 ║
+║  ────────────────────────────────────────────────────────────────────────── ║
+║  All cloned repos · Categories · Remotes · Last audited 2026-05-13         ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+```
+
+[![Repos](https://img.shields.io/badge/REPOSITORIES-39_cloned-FCEE0C?style=for-the-badge&labelColor=0a0a0a)](./)
+[![Kernels](https://img.shields.io/badge/KERNELS-7_sources-00FF9F?style=for-the-badge&labelColor=0a0a0a)](./)
+[![Themes](https://img.shields.io/badge/THEMES-12_sets-00FFFF?style=for-the-badge&labelColor=0a0a0a)](./)
+[![Root](https://img.shields.io/badge/ROOT_ECOSYSTEM-10_repos-FF003C?style=for-the-badge&labelColor=0a0a0a)](./)
 
 > **Live manifest:** [`../99-MANIFESTS/git-repositories.txt`](../99-MANIFESTS/git-repositories.txt)
 
-| Metric | Value |
-|:-------|------:|
+<div align="center">
+
+| 📊 Metric | 🔢 Value |
+|:---------|:--------|
 | Total Repositories | **39** |
 | Cyberpunk Animation Sources | **4** |
 | Linux Themes | **8** |
@@ -19,7 +27,9 @@
 | Wallpapers | **2** |
 | Last Audited | **2026-05-13** |
 
----
+</div>
+
+</div>
 
 ```
 ┌────────────────────────────────────────────────────────────────────────────┐
@@ -35,9 +45,11 @@
 
 ---
 
-## SECTION INDEX
+## 📋 SECTION INDEX
 
-| # | Category | Count | Location |
+<div align="center">
+
+| # | 📁 Category | 🔢 Count | 📍 Location |
 |:--|:---------|------:|:---------|
 | [01] | Primary Modules (CP2077) | 3 | `01-DEVELOPMENT/repos/cyberpunk/` |
 | [02] | Upstream Animation Sources | 4 | `01-DEVELOPMENT/` + `03-BUILD/` |
@@ -47,6 +59,8 @@
 | [06] | Wallpapers | 2 | `06-UI-THEMES-ANIMATIONS/wallpapers/` |
 | [07] | Android UI / Icons | 1 | `01-DEVELOPMENT/repos/cyberpunk/` |
 | [08] | Full Repository Table | — | End of document |
+
+</div>
 
 ---
 

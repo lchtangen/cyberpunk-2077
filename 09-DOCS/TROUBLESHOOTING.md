@@ -8,6 +8,10 @@
 ╚══════════════════════════════════════════════════════════════════════════╝
 ```
 
+[![Issues](https://img.shields.io/badge/BUGS-0_OPEN-00FF9F?style=for-the-badge&labelColor=0a0a0a)](./)
+[![Diagnostics](https://img.shields.io/badge/DIAGNOSTICS-ADB_LOGS-FCEE0C?style=for-the-badge&labelColor=0a0a0a)](./)
+[![Support](https://img.shields.io/badge/SUPPORT-cp2077--adb--control.sh-00FFFF?style=for-the-badge&labelColor=0a0a0a)](../05-LINUX/arch-host/device-arch-scripts/)
+
 </div>
 
 ---

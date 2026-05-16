@@ -46,31 +46,55 @@
 
 ---
 
-## Command Deck
+## 🚀 Command Deck
 
-| Intent | Entry Point |
-|:--|:--|
-| Install on OP7 Pro | [`09-DOCS/INSTALLATION-GUIDE.md`](09-DOCS/INSTALLATION-GUIDE.md) |
-| Inspect active device | [`00-CONTROL/PRODUCTION-STATUS.md`](00-CONTROL/PRODUCTION-STATUS.md) |
-| Compare animation variants | [`09-DOCS/VARIANTS.md`](09-DOCS/VARIANTS.md) |
-| Build from source | [`09-DOCS/BUILD-GUIDE.md`](09-DOCS/BUILD-GUIDE.md) |
-| Navigate the workspace | [`09-DOCS/WORKSPACE-GUIDE.md`](09-DOCS/WORKSPACE-GUIDE.md) |
-| Track v3.1.0 and beyond | [`09-DOCS/ROADMAP.md`](09-DOCS/ROADMAP.md) |
-| Debug boot/audio issues | [`09-DOCS/TROUBLESHOOTING.md`](09-DOCS/TROUBLESHOOTING.md) |
-| Audit cloned references | [`09-DOCS/REPOS.md`](09-DOCS/REPOS.md) |
+<div align="center">
+
+| 🎯 Intent | 📍 Entry Point |
+|:---------|:-------------|
+| ⚡ Install on OP7 Pro | [`09-DOCS/INSTALLATION-GUIDE.md`](09-DOCS/INSTALLATION-GUIDE.md) |
+| 📡 Inspect active device | [`00-CONTROL/PRODUCTION-STATUS.md`](00-CONTROL/PRODUCTION-STATUS.md) |
+| 🎬 Compare animation variants | [`09-DOCS/VARIANTS.md`](09-DOCS/VARIANTS.md) |
+| 🔧 Build from source | [`09-DOCS/BUILD-GUIDE.md`](09-DOCS/BUILD-GUIDE.md) |
+| 🗺 Navigate the workspace | [`09-DOCS/WORKSPACE-GUIDE.md`](09-DOCS/WORKSPACE-GUIDE.md) |
+| 📋 Track v3.1.0 and beyond | [`09-DOCS/ROADMAP.md`](09-DOCS/ROADMAP.md) |
+| 🐛 Debug boot/audio issues | [`09-DOCS/TROUBLESHOOTING.md`](09-DOCS/TROUBLESHOOTING.md) |
+| 📚 Audit cloned references | [`09-DOCS/REPOS.md`](09-DOCS/REPOS.md) |
+
+</div>
 
 ---
 
 ## System Overview
 
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│              CYBERPUNK 2077 — ANDROID THEME ARCHITECTURE                    │
+│                                                                             │
+│   SOURCE                BUILD               FLASH                DEVICE     │
+│  ┌────────┐  ────────  ┌────────┐  ──────  ┌────────┐  ──────  ┌────────┐  │
+│  │ OP7Pro │  build.py  │release │  adb     │Magisk  │  reboot  │Screen  │  │
+│  │ source │ ─────────▶ │  ZIP   │ ────────▶│Manager │ ───────▶ │animates│  │
+│  └────────┘            └────────┘  push    └────────┘          └────────┘  │
+│  ┌────────┐                                                                 │
+│  │Univ.   │  build-                                                         │
+│  │source  │  universal.py  20+ ZIPs (12 res × 4 variant)                   │
+│  └────────┘                                                                 │
+│                                                                             │
+│   BOOT LIFECYCLE                                                            │
+│   customize.sh → post-fs-data.sh → service.sh (5MB threshold guard)        │
+│   [flash]         [early mount]      [late repair]                          │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
 This workspace builds and maintains a Cyberpunk 2077 Android visual layer:
 
-- systemless boot/shutdown animation replacement through Magisk-style modules
-- OnePlus 7 Pro native packaging at `1440x3120`
-- Universal all-device packaging with ROM and resolution detection
-- CP2077-inspired system audio overlays
-- WebUI and ADB control surfaces for variant switching and diagnostics
-- Linux/Wayland theme references for a matching desktop environment
+- **Systemless** boot/shutdown animation replacement through Magisk-style modules
+- **OnePlus 7 Pro** native packaging at `1440×3120 · 60fps`
+- **Universal** all-device packaging with ROM and resolution auto-detection
+- **CP2077-inspired** system audio overlays (7 OGG UI event sounds)
+- **WebUI and ADB** control surfaces for variant switching and diagnostics
+- **Linux/Wayland** theme references for a matching Arch desktop environment
 
 The root repository is intentionally a control and documentation repository. The
 large source trees live under `01-DEVELOPMENT/` through `08-HACKING-RESEARCH/`
@@ -161,18 +185,23 @@ after `post-fs-data`, the late service pass can detect and repair it.
 
 ---
 
-## Animation Variants
+## 🎬 Animation Variants
 
-| Variant | Key | Boot | Shutdown | Role |
-|:--|:--|:--|:--|:--|
-| CyberGlitch-2077 | `glitch` | 1440x3120 / 60 fps | included | Default active profile |
-| Cyberpunk Flatline | `flatline` | 1440x3120 / 60 fps | included | Red diagnostic profile |
-| Re-Boot Animation | `reboot` | 1440x3120 / 60 fps | included | Looping reboot identity |
-| Original 1080p | `og1080p` | 1080x2340 / 30 fps | included | Classic OnePlus port |
-| Original 4K | `og4k` | 2160x4800 / 30 fps | included | Development high-res asset |
+<div align="center">
 
-Full variant notes and source paths live in
-[`09-DOCS/VARIANTS.md`](09-DOCS/VARIANTS.md).
+| 🎬 Variant | 🔑 Key | ⚡ FPS | 📐 Resolution | 💀 Shutdown | 🎯 Role |
+|:----------|:------|:------|:------------|:----------|:------|
+| ⭐ CyberGlitch-2077 | `glitch` | 60 | 1440×3120 | ✅ | Default active profile |
+| Cyberpunk Flatline | `flatline` | 60 | 1440×3120 | ✅ | Red diagnostic profile |
+| Re-Boot Animation | `reboot` | 60 | 1440×3120 | ✅ | Looping reboot identity |
+| Original 1080p | `og1080p` | 30 | 1080×2340 | ✅ | Classic OnePlus port |
+| Original 4K | `og4k` | 30 | 2160×4800 | ✅ | Development high-res asset |
+| Phantom Liberty | `phantom-lib` | — | — | — | Added in v3.1.0 |
+| Dogtown | `dogtown` | — | — | — | Added in v3.1.0 |
+
+</div>
+
+Full variant notes and source paths: [`09-DOCS/VARIANTS.md`](09-DOCS/VARIANTS.md)
 
 ---
 
@@ -257,76 +286,92 @@ or changing release artifacts.
 
 ---
 
-## Design System
+## 🎨 Design System
 
-| Token | Hex | Usage |
-|:--|:--|:--|
-| Neon Yellow | `#FCEE0C` | primary CP2077 identity, warnings, active selectors |
-| Netrunner Cyan | `#00FFFF` | links, secondary accent, WebUI telemetry |
-| Flatline Red | `#FF003C` | danger states, flatline variant, destructive actions |
-| Signal Green | `#00FF9F` | success, verified state, active module |
-| Warning Orange | `#FF6B35` | pending work, sprint state, warnings |
-| Carbon Black | `#0A0A0A` | base background for WebUI and terminal themes |
-| Grid Border | `#2A2A2A` | dividers, card outlines, low-emphasis UI chrome |
+```
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  CP2077 NEON PALETTE — USED ACROSS WEBUI, WAYBAR, EWW, HYPRLOCK, BADGES   ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+```
+
+<div align="center">
+
+| 🎨 Token | 💡 Hex | 🎯 Usage |
+|:-------|:------|:-------|
+| 🟡 Neon Yellow | `#FCEE0C` | Primary CP2077 identity · warnings · active selectors |
+| 🔵 Netrunner Cyan | `#00FFFF` | Links · secondary accent · WebUI telemetry |
+| 🔴 Flatline Red | `#FF003C` | Danger states · flatline variant · destructive actions |
+| 🟢 Signal Green | `#00FF9F` | Success · verified state · active module |
+| 🟠 Warning Orange | `#FF6B35` | Pending work · sprint state · warnings |
+| ⬛ Carbon Black | `#0A0A0A` | Base background for WebUI and terminal themes |
+| 🔲 Grid Border | `#2A2A2A` | Dividers · card outlines · low-emphasis UI chrome |
+
+</div>
 
 The palette is reused across module WebUI, ADB ANSI output, Waybar, eww,
 hyprlock, Rofi, Plymouth, and README badges.
 
 ---
 
-## Workspace Map
+## 🗺 Workspace Map
 
-```text
+```
 cyberpunk-2077/
-├── 00-CONTROL/                       production status and workspace policy
-├── 01-DEVELOPMENT/repos/             module, root, ROM, kernel, and theme repos
-│   ├── cyberpunk/                    CP2077 module source trees
-│   ├── magisk-ecosystem/             Magisk, KernelSU, APatch, MMRL, Zygisk refs
-│   ├── oneplus-7-pro/                guacamole device trees and kernels
-│   └── android-roms/                 recovery and ROM references
-├── 02-PRODUCTION/magisk-modules/     release symlinks and device copies
-├── 03-BUILD/                         raw upstream assets and build workspace
-├── 04-ANDROID/                       ADB tools, APK staging, device snapshots
-├── 05-LINUX/                         Arch host scripts and desktop setup
-├── 06-UI-THEMES-ANIMATIONS/          animations, wallpapers, themes, audio
-├── 07-KERNEL-PACKAGE-MODULES/        kernel images, sources, modules, packages
-├── 08-HACKING-RESEARCH/              NetHunter and security research
-├── 09-DOCS/                          documentation vault
-├── 10-QUARANTINE-invalid-downloads/  invalid APK/ZIP downloads; never install
-├── 99-MANIFESTS/                     generated inventories and checksums
-└── releases/                         Magisk update JSON and changelogs
+├── 📋 00-CONTROL/                      production status and workspace policy
+├── 💻 01-DEVELOPMENT/repos/            module, root, ROM, kernel, and theme repos
+│   ├── cyberpunk/                      CP2077 module source trees
+│   ├── magisk-ecosystem/               Magisk, KernelSU, APatch, MMRL, Zygisk refs
+│   ├── oneplus-7-pro/                  guacamole device trees and kernels
+│   └── android-roms/                   recovery and ROM references
+├── 📦 02-PRODUCTION/magisk-modules/    release symlinks and device copies
+├── 🔨 03-BUILD/                        raw upstream assets and build workspace
+├── 🤖 04-ANDROID/                      ADB tools, APK staging, device snapshots
+├── 🐧 05-LINUX/                        Arch host scripts and desktop setup
+├── 🎨 06-UI-THEMES-ANIMATIONS/         animations, wallpapers, themes, audio
+├── ⚙️  07-KERNEL-PACKAGE-MODULES/      kernel images, sources, modules, packages
+├── 🔐 08-HACKING-RESEARCH/             NetHunter and security research
+├── 📚 09-DOCS/                         documentation vault
+├── 🚫 10-QUARANTINE-invalid-downloads/ invalid APK/ZIP downloads — never install
+├── 📊 99-MANIFESTS/                    generated inventories and checksums
+└── 📦 releases/                        Magisk update JSON and changelogs
 ```
 
 ---
 
-## Compatibility Matrix
+## ⚡ Compatibility Matrix
 
-| Surface | Supported / tracked |
-|:--|:--|
-| Root managers | Magisk 20.4+, KernelSU, APatch |
+<div align="center">
+
+| 🔑 Surface | ✅ Supported / Tracked |
+|:---------|:---------------------|
+| Root managers | Magisk 20.4+ · KernelSU · APatch |
 | Tested active root | Magisk v30.7 |
-| Android range | Android 8.0+ declared for OP7 Pro module, active test on Android 16 |
-| OP7 Pro display | 1440x3120 / 90 Hz |
-| Universal ROM families | AOSP, Pixel, CalyxOS, GrapheneOS, LineageOS, crDroid, DerpFest, OOS, ColorOS, MIUI, HyperOS, Samsung One UI, Evolution X, yaap, ArrowOS, PixelOS, RisingOS |
-| Primary mount paths | `/product/media`, `/system/product/media`, `/system/media`, `/my_product/media`, `/data/local`, `/data/misc/bootanim` |
+| Android range | Android 8.0+ (declared) · Android 16 (active test) |
+| OP7 Pro display | 1440×3120 / 90 Hz |
+| Universal ROM families | AOSP · Pixel · CalyxOS · GrapheneOS · LineageOS · crDroid · DerpFest · OOS · ColorOS · MIUI · HyperOS · Samsung One UI · Evolution X · yaap · ArrowOS · PixelOS · RisingOS |
+| Primary mount paths | `/product/media` · `/system/product/media` · `/system/media` · `/my_product/media` · `/data/local` · `/data/misc/bootanim` |
+
+</div>
 
 ---
 
-## Release and Version Rules
+## 📦 Release and Version Rules
 
 `module.prop` version codes use this formula:
 
-```text
-MAJOR * 100000 + MINOR * 1000 + PATCH
+```
+MAJOR × 100000 + MINOR × 1000 + PATCH
 ```
 
-Examples:
+<div align="center">
 
-| Version | Code |
-|:--|--:|
+| 🔢 Version | 🔑 versionCode |
+|:---------|:-------------|
 | v1.0.0 | 100000 |
 | v3.0.0 | 300000 |
 | v3.1.0 | 301000 |
+
+</div>
 
 When bumping a release, update the build scripts, `module.prop`, release ZIP
 filenames, root `releases/update-*.json`, ZIP-local `update.json`, changelogs,
@@ -349,31 +394,38 @@ being confused with production inputs.
 
 ---
 
-## Reference Layers
+## 🔗 Reference Layers
 
-| Layer | Examples |
-|:--|:--|
-| Root ecosystem | Magisk, KernelSU, APatch, ZygiskNext, ReZygisk, LSPosed, MMRL |
-| Device trees | LineageOS 23.2, DerpFest, Evolution X, crDroid references |
-| Kernels | blu-spark, Neptune, KernelSU guacamole, LineageOS SM8150 |
-| Linux themes | Cyberpunk-Neon, K-DE-Cyberpunk-Neon, cybrland, HyprPanel, rofi |
-| Visual assets | CP2077 boot/shutdown ZIPs, wallpapers, splash assets, icon themes |
+<div align="center">
 
-Full repository catalogue:
-[`09-DOCS/REPOS.md`](09-DOCS/REPOS.md).
+| 🔧 Layer | 📦 Examples |
+|:-------|:---------|
+| Root ecosystem | Magisk · KernelSU · APatch · ZygiskNext · ReZygisk · LSPosed · MMRL |
+| Device trees | LineageOS 23.2 · DerpFest · Evolution X · crDroid references |
+| Kernels | blu-spark · Neptune · KernelSU guacamole · LineageOS SM8150 |
+| Linux themes | Cyberpunk-Neon · K-DE-Cyberpunk-Neon · cybrland · HyprPanel · rofi |
+| Visual assets | CP2077 boot/shutdown ZIPs · wallpapers · splash assets · icon themes |
+
+</div>
+
+Full repository catalogue: [`09-DOCS/REPOS.md`](09-DOCS/REPOS.md)
 
 ---
 
-## Manifest Index
+## 📊 Manifest Index
 
-| Manifest | Contents |
-|:--|:--|
-| [`99-MANIFESTS/production-artifact-sha256.txt`](99-MANIFESTS/production-artifact-sha256.txt) | release ZIP checksums |
-| [`99-MANIFESTS/artifact-inventory.tsv`](99-MANIFESTS/artifact-inventory.tsv) | file inventory |
-| [`99-MANIFESTS/directory-map.txt`](99-MANIFESTS/directory-map.txt) | directory tree |
-| [`99-MANIFESTS/git-repositories.txt`](99-MANIFESTS/git-repositories.txt) | repo paths, remotes, categories |
-| [`99-MANIFESTS/workspace-size.txt`](99-MANIFESTS/workspace-size.txt) | workspace size snapshot |
-| [`99-MANIFESTS/symlinks.txt`](99-MANIFESTS/symlinks.txt) | symlink map |
+<div align="center">
+
+| 📄 Manifest | 📋 Contents |
+|:-----------|:---------|
+| [`99-MANIFESTS/production-artifact-sha256.txt`](99-MANIFESTS/production-artifact-sha256.txt) | Release ZIP SHA-256 checksums |
+| [`99-MANIFESTS/artifact-inventory.tsv`](99-MANIFESTS/artifact-inventory.tsv) | Full file-by-file workspace inventory |
+| [`99-MANIFESTS/directory-map.txt`](99-MANIFESTS/directory-map.txt) | All directories in workspace |
+| [`99-MANIFESTS/git-repositories.txt`](99-MANIFESTS/git-repositories.txt) | Repo paths · remotes · categories |
+| [`99-MANIFESTS/workspace-size.txt`](99-MANIFESTS/workspace-size.txt) | Workspace size snapshot |
+| [`99-MANIFESTS/symlinks.txt`](99-MANIFESTS/symlinks.txt) | Symlink map |
+
+</div>
 
 ---
 

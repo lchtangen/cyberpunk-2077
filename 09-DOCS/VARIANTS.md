@@ -13,6 +13,22 @@
 All variants are pre-scaled to **1440 × 3120** — native OnePlus 7 Pro resolution.  
 Universal edition auto-scales to any device resolution at install time.
 
+## ⚡ Quick Reference Matrix
+
+<div align="center">
+
+| 🎬 Variant | 🔑 Key | ⚡ FPS | 📐 Res | 💀 Shutdown | 📦 Boot ZIP |
+|:----------|:------|:------|:------|:----------|:-----------|
+| ⭐ CyberGlitch-2077 | `glitch` | 60 | 1440×3120 | ✅ | 66 MB |
+| Cyberpunk-Flatline | `flatline` | 60 | 1440×3120 | ✅ | 57 MB |
+| Re-Boot Animation | `reboot` | 60 | 1440×3120 | ✅ | 66 MB |
+| Original 1080p | `og1080p` | 30 | 1080×2340 | ✅ | 92 MB |
+| Original 4K | `og4k` | 30 | 2160×4800 | ✅ | 358 MB |
+| Phantom Liberty | `phantom-lib` | — | — | — | v3.1.0 |
+| Dogtown | `dogtown` | — | — | — | v3.1.0 |
+
+</div>
+
 ---
 
 ## 🎬 Boot Animation Variants
