@@ -19,10 +19,11 @@
 
 | 📄 Document | 🔗 Link | 📝 Description |
 |:------------|:--------|:--------------|
-| 🔴 **⚠️ KERNEL CRITICAL ISSUES** | [KERNEL-CRITICAL-ISSUES.md](KERNEL-CRITICAL-ISSUES.md) | **READ FIRST:** 10 failure scenarios · non-GKI challenges · Wi-Fi/audio breakage · bootloop recovery · emergency unbrick |
-| ⚡ **Installation Guide** | [INSTALLATION-GUIDE.md](INSTALLATION-GUIDE.md) | Step-by-step flash · Magisk · KernelSU · APatch |
-| 🔌 **Kernel Solutions (LOS 23.2)** | [KERNEL-SOLUTIONS-OP7PRO-LOS23.md](KERNEL-SOLUTIONS-OP7PRO-LOS23.md) | SukiSU Ultra · APatch · local builds · non-GKI challenges · troubleshooting |
-| ⚡ **Kernel Quick Reference** | [KERNEL-QUICK-REFERENCE.md](KERNEL-QUICK-REFERENCE.md) | TL;DR · 5-min GitHub Actions build · flash methods · backup/restore |
+| 🔌 **KERNEL GUIDE — START HERE** | [KERNEL-GUIDE-MASTER.md](KERNEL-GUIDE-MASTER.md) | Master navigation · decision tree · paths (A/B/C) · complete checklist |
+| 🔴 **⚠️ CRITICAL ISSUES** | [KERNEL-CRITICAL-ISSUES.md](KERNEL-CRITICAL-ISSUES.md) | 10 failure scenarios · Wi-Fi/audio breakage · bootloop recovery · emergency unbrick |
+| ⚡ **Quick Reference** | [KERNEL-QUICK-REFERENCE.md](KERNEL-QUICK-REFERENCE.md) | TL;DR · GitHub Actions build (40 min) · flash methods · troubleshooting |
+| 🔧 **Full Solutions** | [KERNEL-SOLUTIONS-OP7PRO-LOS23.md](KERNEL-SOLUTIONS-OP7PRO-LOS23.md) | All kernel options · SukiSU Ultra · APatch · local builds · advanced |
+| ⚡ **Installation Guide** | [INSTALLATION-GUIDE.md](INSTALLATION-GUIDE.md) | Step-by-step CP2077 module flash · Magisk · KernelSU · APatch |
 | 🎬 **Variants** | [VARIANTS.md](VARIANTS.md) | All boot/shutdown animation variants · audio pack · asset paths |
 | 🔧 **Build Guide** | [BUILD-GUIDE.md](BUILD-GUIDE.md) | Building · packaging · modifying from source |
 | 📱 **Device Specs** | [DEVICE-SPECS.md](DEVICE-SPECS.md) | OnePlus 7 Pro specs · ROM compat · ADB/fastboot reference |
