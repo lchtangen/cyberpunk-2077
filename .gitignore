@@ -77,14 +77,21 @@ Thumbs.db
 
 
 # Third-party cloned reference repos — too large for GitHub without LFS.
-# These are kernel sources, ROM device trees, and icon theme collections that
-# total 10+ GB. They are catalogued in 99-MANIFESTS/git-repositories.txt.
-# Re-clone locally with: bash 99-MANIFESTS/generate-manifests.sh
+# These are kernel sources, ROM device trees, icon theme collections, and
+# upstream reference repos (Magisk, FFmpeg, media tools, CI/CD tools, Wayland,
+# UI frameworks) that total 10+ GB. They are catalogued in
+# 99-MANIFESTS/git-repositories.txt. Re-clone locally with:
+# bash 99-MANIFESTS/generate-manifests.sh
 01-DEVELOPMENT/repos/android-roms/
+01-DEVELOPMENT/repos/android-frameworks/
 01-DEVELOPMENT/repos/arch-linux/
+01-DEVELOPMENT/repos/ci-cd-tools/
 01-DEVELOPMENT/repos/kali-nethunter/
 01-DEVELOPMENT/repos/magisk-ecosystem/
+01-DEVELOPMENT/repos/media-tools/
 01-DEVELOPMENT/repos/oneplus-7-pro/
+05-LINUX/ui-tools/
+05-LINUX/wayland-compositors/
 06-UI-THEMES-ANIMATIONS/repos/
 07-KERNEL-PACKAGE-MODULES/kernel/neptune-kernel-sm8150/
 07-KERNEL-PACKAGE-MODULES/kernel/blu-spark-kernel-op7/
