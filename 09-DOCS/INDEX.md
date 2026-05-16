@@ -19,6 +19,7 @@
 
 | 📄 Document | 🔗 Link | 📝 Description |
 |:------------|:--------|:--------------|
+| 🔴 **⚠️ KERNEL CRITICAL ISSUES** | [KERNEL-CRITICAL-ISSUES.md](KERNEL-CRITICAL-ISSUES.md) | **READ FIRST:** 10 failure scenarios · non-GKI challenges · Wi-Fi/audio breakage · bootloop recovery · emergency unbrick |
 | ⚡ **Installation Guide** | [INSTALLATION-GUIDE.md](INSTALLATION-GUIDE.md) | Step-by-step flash · Magisk · KernelSU · APatch |
 | 🔌 **Kernel Solutions (LOS 23.2)** | [KERNEL-SOLUTIONS-OP7PRO-LOS23.md](KERNEL-SOLUTIONS-OP7PRO-LOS23.md) | SukiSU Ultra · APatch · local builds · non-GKI challenges · troubleshooting |
 | ⚡ **Kernel Quick Reference** | [KERNEL-QUICK-REFERENCE.md](KERNEL-QUICK-REFERENCE.md) | TL;DR · 5-min GitHub Actions build · flash methods · backup/restore |

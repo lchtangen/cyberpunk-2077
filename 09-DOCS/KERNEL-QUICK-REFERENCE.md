@@ -1,5 +1,25 @@
 # Kernel Quick Reference — OnePlus 7 Pro (guacamole) / LOS 23.2
 
+## ⚠️ MANDATORY FIRST: Read Critical Issues
+
+**BEFORE FLASHING ANY KERNEL:** Read `KERNEL-CRITICAL-ISSUES.md`
+
+This covers 10 real failure scenarios that can brick your device:
+1. Non-GKI kernel = full ROM flash required (not just boot.img)
+2. KernelSU v0.9.5+ drops non-GKI support
+3. Data wipe requirement
+4. Wrong device codename = bootloop
+5. Android 16 suffix `_b` is mandatory
+6. SELinux enforcement issues
+7. Bootloop recovery procedures
+8. Wi-Fi breakdown (80% from kernel-only flash)
+9. Audio breakdown (85% from kernel-only flash)
+10. Thermal throttling & boot failures
+
+**Read it. Don't skip.**
+
+---
+
 ## 🚀 TL;DR: Fastest Path to SukiSU Ultra + Android 16
 
 ### 5-Minute Setup (GitHub Actions)

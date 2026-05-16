@@ -8,6 +8,24 @@
 
 ---
 
+## ⚠️ CRITICAL: Read KERNEL-CRITICAL-ISSUES.md First
+
+**BEFORE proceeding with any kernel build or flash:**
+
+📖 Read: **KERNEL-CRITICAL-ISSUES.md** (this repository)
+
+This document covers 10 real failure scenarios specific to SM8150 non-GKI kernels:
+- Why kernel-only flashes break Wi-Fi & audio
+- Data wipe requirement (data corruption risk)
+- Wrong device codename & Android suffix risks
+- SELinux enforcement on Android 16
+- Full bootloop recovery procedures
+- Emergency unbrick steps
+
+**These aren't theoretical. All have happened to real users.** Understanding them prevents device bricks.
+
+---
+
 ## Executive Summary
 
 OnePlus 7 Pro uses a **non-GKI kernel** (Qualcomm SM8150, Linux 4.14.x). This creates unique challenges for root manager integration on Android 16:
