@@ -9,13 +9,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 A Magisk theme suite workspace for Android (OnePlus 7 Pro, plus a Universal all-device edition). It installs Cyberpunk 2077 boot/shutdown animations, UI audio, and splash assets via Magisk/KernelSU/APatch. The workspace also contains Linux desktop theming for the Arch host (Plymouth, Waybar, eww, hyprlock, Hyprland).
 
 The **git repo itself only tracks**:
-- `README.md`, `CLAUDE.md`, `.gitignore`
+- `README.md`, `CLAUDE.md`, `AGENTS.md`, `.gitignore`, `.markdownlint.json`
 - `00-CONTROL/` — workspace policy and live device status
 - `09-DOCS/` — all documentation
 - `99-MANIFESTS/` — auto-generated inventories and checksums
-- `releases/` — `update.json` OTA pointers and changelogs (no ZIPs)
+- `releases/` — `update-*.json` OTA pointers and changelogs (no ZIPs)
 
 Everything under `01-DEVELOPMENT/` through `08-HACKING-RESEARCH/` is `.gitignore`d. Those directories contain nested git repos tracked by their own remotes (catalogued in `99-MANIFESTS/git-repositories.txt`).
+
+## Current release state
+
+| Module | Version | versionCode | Status |
+|--------|---------|-------------|--------|
+| `CP2077_OP7Pro_Full` | **v3.1.0** | 301000 | Active on device |
+| `CP2077_OP7Pro_Ultimate` | v3.0.0 | 300000 | Disabled on device |
+| `CP2077_Universal` | v1.0.0 | 100000 | Built |
+
+Active device: OnePlus 7 Pro `GM1911` (codename `guacamole`) · Android 16 (API 36) · Magisk v30.7 · variant `glitch`.
 
 ## Cloned reference repos
 
@@ -24,11 +34,12 @@ The workspace maintains shallow `--depth 1` clones of upstream references in the
 | Directory | What lives here |
 |-----------|-----------------|
 | `01-DEVELOPMENT/repos/magisk-ecosystem/` | Magisk, KernelSU, APatch, LSPosed, Vector, ZygiskNext, ReZygisk, zygisk-module-sample, MMRL, awesome-android-root |
-| `01-DEVELOPMENT/repos/cyberpunk/` | Primary modules (CP2077-OP7Pro, CP2077-OP7Pro-Ultimate, CP2077-Universal) + reference bootanimation repos |
-| `01-DEVELOPMENT/repos/oneplus-7-pro/` | LineageOS, DerpFest, Evolution-X device trees + kernels |
+| `01-DEVELOPMENT/repos/cyberpunk/` | Primary modules (CP2077-OP7Pro, CP2077-OP7Pro-Ultimate, CP2077-Universal) + reference bootanimation repos + Lawnchair/Lawnicons |
+| `01-DEVELOPMENT/repos/oneplus-7-pro/` | LineageOS, DerpFest, Evolution-X, crDroid device trees; engstk, Neptune, KernelSU-LineageOS, OnePlus OSS kernels; OrangeFox recovery; crDroid vendor blobs |
 | `01-DEVELOPMENT/repos/android-roms/` | TWRP/PBRP recovery trees |
 | `06-UI-THEMES-ANIMATIONS/repos/` | hyprdots, HyprPanel, rofi, plymouth-themes, mechabar, proxzima-plymouth, diinki-retrofuture, dotfiles, dots, widgets, TokyoNight-rofi-theme, catppuccin |
-| `07-KERNEL-PACKAGE-MODULES/repos/` | engstk op8 (blu-spark-16), op5 (blu-spark-10) |
+| `06-UI-THEMES-ANIMATIONS/themes/` | Cyberpunk-Neon, K-DE-Cyberpunk-Neon, cyber-hyprland-theme, cybrland, cybrcolors, cyberpunk-technotronic-icon-theme |
+| `07-KERNEL-PACKAGE-MODULES/` | engstk op8 (blu-spark-16), op5 (blu-spark-10); Neptune SM8150 kernel |
 
 ---
 
@@ -38,13 +49,15 @@ The workspace maintains shallow `--depth 1` clones of upstream references in the
 
 ```bash
 cd 01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro
-python3 build.py                                    # all 5 variants + megapack
+python3 build.py                                    # all variants + megapack
 python3 build.py --variants glitch,flatline         # specific variants
 python3 build.py --no-audio                         # skip audio generation
-python3 build.py --check-sources                    # validate upstream URLs
+python3 build.py --check-sources                    # validate upstream URLs against sources.lock.json
+python3 build.py --dry-run                          # print plan without writing files
+python3 build.py --list-variants                    # list known variant keys
 ```
 
-Output lands in `release/`. Source ZIPs are downloaded to `.downloads/` (cached by filename) and re-encoded to `1440×3120` with `ZIP_STORED` for the bootanimation inner ZIPs, while the release ZIP uses `ZIP_DEFLATED`. Timestamps are stripped to 1980-01-01 for reproducible SHA-256.
+Output lands in `release/`. Source ZIPs are downloaded to `.downloads/` (cached by filename) and re-encoded to `1440×3120` with `ZIP_STORED` for the bootanimation inner ZIPs, while the release ZIP uses `ZIP_DEFLATED`. Timestamps are stripped to 1980-01-01 for reproducible SHA-256. After build, `build.py` writes the real SHA-256 into `update.json` (supply chain gate).
 
 ### Universal Edition (all devices)
 
@@ -62,7 +75,7 @@ python3 build-universal.py           # full universal ZIP + per-variant packs
 bash 99-MANIFESTS/generate-manifests.sh
 ```
 
-Runs 5 passes: directory map, workspace size, artifact inventory (TSV), git repo status, and SHA-256 of all production ZIPs. Always run this after adding new release artifacts.
+Runs 5 passes: directory map, workspace size, artifact inventory (TSV), git repo status, and SHA-256 of all production ZIPs (parallelised — 8 workers, deterministic order). Always run this after adding new release artifacts.
 
 ---
 
@@ -123,15 +136,31 @@ The `service.sh` 5 MB threshold is the key correctness invariant — all CP2077 
 `/data/cp2077.conf` — plain key=value:
 
 ```
-variant=glitch    # glitch | flatline | reboot | og1080p
+variant=glitch    # glitch | flatline | reboot | og1080p | og4k | phantom-lib | dogtown
 audio=yes
 ```
 
-Re-read by `customize.sh` on every flash and by `cp2077-config.sh` for live changes.
+Re-read by `customize.sh` on every flash and by `cp2077-config.sh` for live changes. `lib/config-v2.sh` contains the authoritative variant registry and validator.
 
 ### `module.prop` version code formula
 
-`MAJOR * 100000 + MINOR * 1000 + PATCH` → v3.0.0 = `300000`, v1.0.0 = `100000`
+`MAJOR * 100000 + MINOR * 1000 + PATCH` → v3.1.0 = `301000`, v3.0.0 = `300000`, v1.0.0 = `100000`
+
+---
+
+## Animation variants
+
+| Key | Style | FPS | Resolution | Notes |
+|-----|-------|-----|------------|-------|
+| `glitch` | CP2077 logo glitch effect, neon cyan/yellow | 60 | 1440×3120 | **Active / recommended** |
+| `flatline` | Flatline ECG motif | 60 | 1440×3120 | |
+| `reboot` | OnePlus logo + glitch overlay | 60 | 1440×3120 | |
+| `og1080p` | Authentic OP8T Cyberpunk SE port | 30 | 1080×2340 | Lower res is intentional |
+| `og4k` | og1080p LANCZOS 2× upscale | 30 | 2160×4800 | Dev asset — not bundled by default |
+| `phantom-lib` | — | — | — | Added in v3.1.0 via `lib/config-v2.sh` |
+| `dogtown` | — | — | — | Added in v3.1.0 via `lib/config-v2.sh` |
+
+Each variant has matching boot + shutdown + reverse-boot animations. ZIP sizes range from 0.5 MB (shutdown) to 358 MB (og4k boot).
 
 ---
 
@@ -152,24 +181,73 @@ bootanimation.zip (ZIP_STORED — no compression)
 
 ## OTA update flow
 
-`releases/update-full.json` and `releases/update-universal.json` are served via `raw.githubusercontent.com` and referenced in each `module.prop`'s `updateJson=` field. Magisk Manager polls these on module refresh. The JSON schema:
+Three update JSON files under `releases/`, served via `raw.githubusercontent.com` and referenced in each `module.prop`'s `updateJson=` field. Magisk Manager polls these on module refresh.
+
+| File | Module | Current version |
+|------|--------|-----------------|
+| `releases/update-full.json` | `CP2077_OP7Pro_Full` | v3.1.0 |
+| `releases/update-ultimate.json` | `CP2077_OP7Pro_Ultimate` | v3.0.0 |
+| `releases/update-universal.json` | `CP2077_Universal` | v1.0.0 |
+
+JSON schema:
 
 ```json
 {
-  "version": "v3.0.0",
-  "versionCode": 300000,
-  "zipUrl": "https://github.com/.../releases/download/.../CP2077-OP7Pro-v3.0.0.zip",
-  "changelog": "https://raw.githubusercontent.com/.../releases/CHANGELOG-full.md"
+  "version": "v3.1.0",
+  "versionCode": 301000,
+  "zipUrl": "https://github.com/lchtangen/cyberpunk-2077/releases/download/v3.1.0-full/CP2077-OP7Pro-v3.1.0.zip",
+  "checksum": "<sha256-written-by-build.py>",
+  "changelog": "https://raw.githubusercontent.com/lchtangen/cyberpunk-2077/main/releases/CHANGELOG-full.md"
 }
 ```
+
+Each release ZIP also embeds its own local `update.json`. That file is separate from the root `releases/` pointers.
 
 ---
 
 ## WebUI panel
 
-`01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/webroot/index.html` — served by Magisk's built-in WebView (v26+). Communicates with the device via `window.mmrl.exec()` (MMRL bridge) or `window.__ksuExec` (KernelSU bridge). Falls back to mock responses if neither bridge is available so the UI still renders.
+`01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/webroot/index.html` — served by Magisk's built-in WebView (v26+). Communicates with the device via bridge priority order:
+
+1. `window.mmrl.exec()` — MMRL
+2. `window.__ksuExec` — KernelSU
+3. `window.ksu` — APatch native (added v3.1.0)
+4. Mock responses — no bridge available (UI still renders)
 
 Key JS functions: `refreshStatus()`, `applyConfig()`, `restartAnim()`, `showDiag()`. Config is written by `printf 'variant=...\naudio=...' > /data/cp2077.conf` via the exec bridge.
+
+MMRL module metadata: `mmrl.json`. KernelSU module JSON: `module.json`.
+
+---
+
+## CI/CD and supply chain tooling (v3.1.0+)
+
+Located under `01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/`:
+
+| File | Purpose |
+|------|---------|
+| `.github/workflows/release.yml` | Tag-triggered: validate sources → build all variants → SLSA provenance → draft GitHub Release |
+| `.github/workflows/nightly.yml` | Daily dry-run: `--check-sources`, per-variant verify, ShellCheck, lock drift detection |
+| `.github/workflows/codeql.yml` | CodeQL for Python + JavaScript; ShellCheck SARIF upload |
+| `.github/workflows/scorecard.yml` | OpenSSF Scorecard weekly scan + SARIF to GitHub Advanced Security |
+| `.pre-commit-config.yaml` | shellcheck, shfmt, ruff, JSON/YAML validation, ZIP integrity, sepolicy lint |
+| `sources.lock.json` | SHA-256 lock for all upstream source ZIPs — CI gate fails on mismatch |
+| `SOURCES` | Upstream source URL inventory consumed by `build.py --check-sources` |
+| `cp2077-slsa-provenance.sh` | Generates in-toto Statement v1 for every release ZIP |
+| `cp2077-ci-local.sh` | `act` wrapper to run any workflow locally without pushing |
+
+---
+
+## Utility scripts (v3.1.0+)
+
+Located under `01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/scripts/`:
+
+| Script | Purpose |
+|--------|---------|
+| `cp2077-zip-diff.py` | OTA safety diff: added/removed/changed files, desc.txt delta, versionCode regression detection |
+| `cp2077-palette-gen.py` | Design token SVG/CSS/JSON/PNG generator for all 14 tokens + 10 variant palettes |
+| `cp2077-bench.sh` | 5-run ADB boot timing benchmark with mean/min/max/stddev aggregation |
+| `check-github-remotes.sh` | Parallel HTTP check for all workspace remotes; `--fix-stale` flag |
 
 ---
 
@@ -201,8 +279,25 @@ Used consistently across WebUI, ADB script ANSI output, Waybar, eww, hyprlock, R
 
 ---
 
+## Release checklist
+
+When bumping a version, update all of these in one pass — version drift across surfaces is a P0 bug:
+
+1. `build.py`: banner/version strings, release filenames, `VARIANT_LABELS`, hardcoded changelog/update references
+2. `build-universal.py`: same pattern for Universal release filenames
+3. `module.prop` in every affected module source tree
+4. `module.prop` inside each final release ZIP
+5. `releases/update-full.json`, `releases/update-universal.json`, `releases/update-ultimate.json`
+6. ZIP-local `update.json` files
+7. Changelogs under `releases/`
+8. Run `bash 99-MANIFESTS/generate-manifests.sh`
+
+---
+
 ## What NOT to do
 
 - Do not install anything from `10-QUARANTINE-invalid-downloads/` — those files are HTML documents masquerading as APKs/ZIPs.
-- Do not run `git add -A` or commit from the workspace root — only `00-CONTROL/`, `09-DOCS/`, `99-MANIFESTS/`, `releases/`, and `README.md` belong in the workspace git history.
-- Do not edit `module.prop` version strings without also updating `build.py` constants and the corresponding `releases/update-*.json`.
+- Do not run `git add -A` or commit from the workspace root — only `00-CONTROL/`, `09-DOCS/`, `99-MANIFESTS/`, `releases/`, `README.md`, `CLAUDE.md`, `AGENTS.md`, `.gitignore`, and `.markdownlint.json` belong in the workspace git history.
+- Do not edit `module.prop` version strings without also updating `build.py` constants and the corresponding `releases/update-*.json` files.
+- Do not trust `99-MANIFESTS/` files as live state — they are snapshots from the last manifest generation run.
+- Do not treat `10-QUARANTINE-invalid-downloads/` files as source artifacts — they are invalid downloads flagged for disposal.
