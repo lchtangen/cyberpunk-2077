@@ -1,0 +1,11 @@
+[submodule "01-DEVELOPMENT/repos/cyberpunk/Lawnchair-Launcher-Module"]
+	path = 01-DEVELOPMENT/repos/cyberpunk/Lawnchair-Launcher-Module
+	url = https://github.com/Unofficial-Life/Lawnchair-Launcher-Module.git
+
+[submodule "06-UI-THEMES-ANIMATIONS/themes/K-DE-Cyberpunk-Neon"]
+	path = 06-UI-THEMES-ANIMATIONS/themes/K-DE-Cyberpunk-Neon
+	url = https://github.com/UtkarshKunwar/K-DE-Cyberpunk-Neon
+
+[submodule "06-UI-THEMES-ANIMATIONS/themes/cyberpunk-technotronic-icon-theme"]
+	path = 06-UI-THEMES-ANIMATIONS/themes/cyberpunk-technotronic-icon-theme
+	url = https://github.com/dreifacherspass/cyberpunk-technotronic-icon-theme

@@ -38,14 +38,16 @@ The workspace maintains shallow `--depth 1` clones of upstream references in the
 | Directory | What lives here |
 |-----------|-----------------|
 | `01-DEVELOPMENT/repos/magisk-ecosystem/` | Magisk, KernelSU, APatch, LSPosed, Vector, ZygiskNext, ReZygisk, zygisk-module-sample, MMRL, awesome-android-root |
-| `01-DEVELOPMENT/repos/cyberpunk/` | Primary modules (CP2077-OP7Pro, CP2077-OP7Pro-Ultimate, CP2077-Universal) + reference bootanimation repos + Lawnchair/Lawnicons |
+| `01-DEVELOPMENT/repos/cyberpunk/` | Primary modules (CP2077-OP7Pro, CP2077-OP7Pro-Ultimate, CP2077-Universal); submodule: Lawnchair-Launcher-Module |
 | `01-DEVELOPMENT/repos/oneplus-7-pro/` | LineageOS, DerpFest, Evolution-X, crDroid device trees; engstk, Neptune, KernelSU-LineageOS, OnePlus OSS kernels; OrangeFox recovery; crDroid vendor blobs |
 | `01-DEVELOPMENT/repos/android-roms/` | TWRP/PBRP recovery trees |
 | `06-UI-THEMES-ANIMATIONS/repos/` | hyprdots, HyprPanel, rofi, plymouth-themes, mechabar, proxzima-plymouth, diinki-retrofuture, dotfiles, dots, widgets, TokyoNight-rofi-theme, catppuccin |
-| `06-UI-THEMES-ANIMATIONS/themes/` | Cyberpunk-Neon, K-DE-Cyberpunk-Neon, cyber-hyprland-theme, cybrland, cybrcolors, cyberpunk-technotronic-icon-theme |
+| `06-UI-THEMES-ANIMATIONS/themes/` | K-DE-Cyberpunk-Neon (submodule), cyberpunk-technotronic-icon-theme (submodule), cp2077-linux-hud, CP2077-splash-assets, CP2077-system-audio |
 | `07-KERNEL-PACKAGE-MODULES/` | engstk op8 (blu-spark-16), op5 (blu-spark-10); Neptune SM8150 kernel |
 
 > **Note:** All directories above except `01-DEVELOPMENT/repos/cyberpunk/` and `06-UI-THEMES-ANIMATIONS/themes/` are excluded from git via `.gitignore` (too large — 10+ GB of kernel sources and icon theme SVGs). They are catalogued in `99-MANIFESTS/git-repositories.txt` and can be re-cloned locally.
+>
+> `01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/` is a nested git repo with no separate GitHub remote — it is part of this workspace and gitignored at the parent level. Its source is physically present on disk at that path. Three git submodules are registered in `.gitmodules`: `Lawnchair-Launcher-Module`, `K-DE-Cyberpunk-Neon`, and `cyberpunk-technotronic-icon-theme`.
 
 ---
 

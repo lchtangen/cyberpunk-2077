@@ -42,6 +42,12 @@ Thumbs.db
 04-ANDROID/device/**/*.tar.xz
 04-ANDROID/device/**/*.tar.gz
 04-ANDROID/device/**/*.tar.bz2
+# ARM64 root filesystem archives.
+04-ANDROID/arm64/
+
+# Device-specific kernel/boot images — never commit binary blobs to this repo.
+07-KERNEL-PACKAGE-MODULES/kernel/boot.img
+07-KERNEL-PACKAGE-MODULES/kernel/magisk_patched*.img
 
 # Known oversized artifacts (>50 MB) that GitHub rejects or warns on.
 # Keep manifests and checksums tracked instead; use GitHub Releases for ZIPs.
@@ -64,6 +70,12 @@ Thumbs.db
 # Generated artifact inventory TSV — too large (53 MB) and always stale.
 99-MANIFESTS/artifact-inventory.tsv
 
+# Primary module source — nested git repo, part of this workspace.
+# No separate GitHub remote; source is tracked within lchtangen/cyberpunk-2077.
+# Re-clone locally if accidentally deleted: the directory lives here as a standalone git repo.
+01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/
+
+
 # Third-party cloned reference repos — too large for GitHub without LFS.
 # These are kernel sources, ROM device trees, and icon theme collections that
 # total 10+ GB. They are catalogued in 99-MANIFESTS/git-repositories.txt.
@@ -76,12 +88,12 @@ Thumbs.db
 06-UI-THEMES-ANIMATIONS/repos/
 07-KERNEL-PACKAGE-MODULES/kernel/neptune-kernel-sm8150/
 07-KERNEL-PACKAGE-MODULES/kernel/blu-spark-kernel-op7/
-07-KERNEL-PACKAGE-MODULES/kernel/kali-nethunter-kernel-builder/
+07-KERNEL-PACKAGE-MODULES/kernel/kali-nethunter-kernel-builder
 07-KERNEL-PACKAGE-MODULES/kernel/kernelsu-lineageos-guacamole/
 07-KERNEL-PACKAGE-MODULES/repos/op5/
 07-KERNEL-PACKAGE-MODULES/repos/op7/
 07-KERNEL-PACKAGE-MODULES/repos/op8/
-08-HACKING-RESEARCH/nethunter/hightech-kali-nethunter-suite/
+08-HACKING-RESEARCH/nethunter/hightech-kali-nethunter-suite
 
 # Generated dependency/build caches commonly present in cloned reference repos.
 node_modules/
