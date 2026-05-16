@@ -28,8 +28,8 @@
 | 📱 **Device** | OnePlus 7 Pro `GM1911` · codename `guacamole` |
 | 🤖 **Android** | API **36** (Android 16) |
 | 🔑 **Root** | Magisk **v30.7** |
-| ✅ **Active Module** | `CP2077_OP7Pro_Full` **v3.0.0** |
-| 🎬 **Active Variant** | `CyberGlitch-2077` · glitch logo · 60 fps |
+| ✅ **Active Module** | `CP2077_OP7Pro_Full` **v3.1.0** |
+| 🎬 **Active Variant** | `glitch` · CyberGlitch logo · 60 fps |
 | 🔊 **Audio Pack** | ✅ Installed |
 | 🗂 **Previous Module** | `CP2077_OP7Pro_Ultimate` v3.0.0 — disabled, not deleted |
 
@@ -74,7 +74,7 @@ All paths confirmed present and non-zero after boot cycle against CP2077 Full v3
 
 | 🆔 Module ID | 🔢 Version | 📍 Source Path | 🏷 Status |
 |:------------|:----------|:--------------|:---------|
-| `CP2077_OP7Pro_Full` | **v3.0.0** | `01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/` | ✅ **Active** |
+| `CP2077_OP7Pro_Full` | **v3.1.0** | `01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro/` | ✅ **Active** |
 | `CP2077_OP7Pro_Ultimate` | v3.0.0 | `01-DEVELOPMENT/repos/cyberpunk/CP2077-OP7Pro-Ultimate/` | 🟡 Disabled |
 | `CP2077_Universal` | v1.0.0 | `01-DEVELOPMENT/repos/cyberpunk/CP2077-Universal/` | 🟢 Built |
 | `GlitchedCyberBoot` | 1.1 | `01-DEVELOPMENT/repos/cyberpunk/GlitchedCyberBoot/` | 🔵 Reference |
@@ -100,6 +100,47 @@ All paths confirmed present and non-zero after boot cycle against CP2077 Full v3
 </div>
 
 > ⚠️ **Do not install any file from `10-QUARANTINE-invalid-downloads/`.**
+
+---
+
+## 🔍 Audit Log — 2026-05-16 (Android 16 Hardening Sprint)
+
+```
+╔══════════════════════════════════════════════════════════════════════════╗
+║  ░░░ ANDROID 16 HARDENING — 10-TASK SPRINT ░░░░░░░░░░░░░░░░░░░░░░░░░  ║
+╚══════════════════════════════════════════════════════════════════════════╝
+```
+
+### HP-02: Android 16 prop-poll boot timing fix
+
+- ✅ **Ultimate `service.sh`**: Replaced `sleep 5` with `_wait_boot()` prop-poll loop (`sys.boot_completed=1`). Max wait: 60 s. Eliminates stall on Android 15/16 where `sys.boot_completed` fires before `sleep` ends.
+- ✅ **Universal `service.sh`**: Same fix applied. Both modules now use prop-poll.
+
+### HP-01: LOS 23.2 mount path audit
+
+- ✅ **Ultimate `post-fs-data.sh`**: Added `/my_product/media/bootanimation/bootanimation.zip` bind-mount (MIUI/OOS path) and `/my_product/media/bootanimation/rbootanimation.zip` for shutdown.
+- ✅ **Ultimate `service.sh`**: Added `/my_product/media/bootanimation/bootanimation.zip`, `/system/media/bootanimation.zip`, `/system/media/shutdownanimation.zip`, and `/data/misc/bootanim/bootanimation.zip` repair logic.
+- ✅ **Universal `service.sh`**: Added `/data/misc/bootanim/bootanimation.zip` copy-based repair for LOS 23.2 primary fallback path.
+
+### HP-03: SELinux sepolicy.rule
+
+- ✅ **Ultimate `sepolicy.rule`**: Created minimal SELinux policy for bind-mount operations on `bootanim_data` context under LOS 23.2 Android 16 enforcing mode. Covers Magisk, KernelSU, and APatch domains.
+
+### HP-06: KernelSU module.json parity
+
+- ✅ **Ultimate `module.json`**: Created KernelSU/APatch module metadata with full variant registry, 8-path mount matrix, device compatibility, stub threshold, and screenshot URL.
+
+### HP-08: Archive outdated builds
+
+- ✅ Removed 3 broken beta symlinks (`device-beta-fix-applied`, `device-copy-CP2077-OP7Pro-v2.0.0-beta.zip`, `device-copy-CP2077-OP7Pro-v2.0.0-ultimate-all-in-one.zip`).
+- ✅ Removed 2 invalid HTML stubs masquerading as ROM ZIPs (`lineage-22.1.zip`, `lineage-23.2.zip`).
+- ✅ Created `02-PRODUCTION/ARCHIVE.md` documenting all archived/deprecated artifacts and archive policy.
+
+### HP-08: DEVICE-SPECS.md refresh
+
+- ✅ Added LOS 23.2 / Android 16 dedicated row to ROM compatibility matrix.
+- ✅ Added full mount path audit table with per-path LOS 23.2 / A16 test results.
+- ✅ Added SELinux status note for enforcing mode on LOS 23.2.
 
 ---
 

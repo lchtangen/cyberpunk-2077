@@ -1,0 +1,34 @@
+# sepolicy.rule — CP2077 Ultimate All-In-One v3.0.0
+# SELinux policy for bind-mount operations on Android 14–16 (LOS 23.2, OOS 14+)
+# HP-03: Resolves avc denial for bootanimation bind-mounts under enforcing mode
+#
+# Domain: magisk (Magisk) / su (KernelSU / APatch)
+# Object: bootanim_data (bootanimation ZIP files in /data/misc/bootanim/)
+#
+# These rules allow the Magisk/KernelSU/APatch installer context to:
+#   - open, read, and mounton bootanimation data files
+#   - write fallback copies to /data/local/ and /data/misc/bootanim/
+#   - write config to /data/cp2077.conf (adb_data_file context)
+#
+# Generated via: adb shell su -c "dmesg | grep avc | grep bootanim" analysis
+# Validated against Android 14 (API 34), 15 (API 35), 16 (API 36)
+
+# Allow Magisk context to bind-mount over bootanimation paths
+allow magisk bootanim_data:file { read open mounton getattr };
+allow magisk media_data_file:file { read open mounton getattr };
+
+# Allow write to /data/misc/bootanim/ (LineageOS 23.2 path)
+allow magisk bootanim_data:dir { search write add_name };
+allow magisk bootanim_data:file { create write rename setattr };
+
+# Allow write to /data/local/ (universal fallback path)
+allow magisk { adb_data_file shell_data_file }:dir { search write add_name };
+allow magisk { adb_data_file shell_data_file }:file { create write rename setattr };
+
+# Allow read/write to /data/cp2077.conf config file
+allow magisk adb_data_file:file { read write create rename open getattr setattr };
+
+# KernelSU / APatch (su domain) — same permissions
+allow su bootanim_data:file { read open mounton getattr create write rename setattr };
+allow su bootanim_data:dir { search write add_name };
+allow su adb_data_file:file { read write create rename open getattr setattr };

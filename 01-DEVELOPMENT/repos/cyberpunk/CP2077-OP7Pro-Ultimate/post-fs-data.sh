@@ -27,7 +27,8 @@ for target in \
   /product/media/bootanimation-dark.zip \
   /system/product/media/bootanimation.zip \
   /system/product/media/bootanimation-dark.zip \
-  /system/media/bootanimation.zip; do
+  /system/media/bootanimation.zip \
+  /my_product/media/bootanimation/bootanimation.zip; do
   if [ -f "$target" ]; then
     umount "$target" 2>/dev/null
     mount --bind "$BA_FILE" "$target" 2>/dev/null
@@ -42,7 +43,8 @@ if [ -f "$SA_FILE" ]; then
     /product/media/shutdownanimation.zip \
     /product/media/rbootanimation.zip \
     /system/product/media/shutdownanimation.zip \
-    /system/product/media/rbootanimation.zip; do
+    /system/product/media/rbootanimation.zip \
+    /my_product/media/bootanimation/rbootanimation.zip; do
     [ -f "$target" ] && mount --bind "$SA_FILE" "$target" 2>/dev/null
   done
 fi
