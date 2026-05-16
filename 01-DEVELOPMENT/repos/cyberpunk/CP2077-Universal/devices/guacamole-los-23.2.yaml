@@ -1,0 +1,177 @@
+# Device Profile: OnePlus 7 Pro (guacamole) on LineageOS 23.2 + Android 16
+#
+# This profile defines boot/shutdown animation paths, audio paths, ROM properties,
+# and installation notes for CP2077 Universal module on LineageOS 23.2.
+#
+# Last tested: 2026-05-16
+# Status: VERIFIED
+
+device:
+  codename: "guacamole"
+  friendly_name: "OnePlus 7 Pro"
+  hardware_id: "GM1911"
+
+rom:
+  name: "LineageOS"
+  version: "23.2"
+  android_api: "36"
+  android_version: "16"
+  build_type: "user"
+
+boot_paths:
+  # Primary paths (LineageOS / AOSP default)
+  primary:
+    - "/product/media/bootanimation.zip"
+    - "/product/media/bootanimation-dark.zip"  # dark mode variant
+
+  # System paths (OOS 14+ compatibility)
+  system:
+    - "/system/product/media/bootanimation.zip"
+    - "/system/media/bootanimation.zip"
+
+  # Fallback paths (Pixel/GrapheneOS priority)
+  fallback:
+    - "/data/local/bootanimation.zip"
+    - "/data/misc/bootanim/bootanimation.zip"
+
+shutdown_paths:
+  - "/product/media/shutdownanimation.zip"
+  - "/system/media/shutdownanimation.zip"
+  - "/data/local/shutdownanimation.zip"
+
+rboot_paths:
+  # Reverse boot (used on some ROMs as reboot animation)
+  - "/product/media/rbootanimation.zip"
+  - "/system/media/rbootanimation.zip"
+
+audio_paths:
+  # UI audio effects
+  ui_sounds: "/product/media/audio/ui/"
+  lock_sound: "Lock.ogg"
+  unlock_sound: "Unlock.ogg"
+  charging_sounds:
+    - "ChargingStarted.ogg"
+    - "WirelessChargingStarted.ogg"
+  camera_sounds:
+    - "camera_click.ogg"
+    - "camera_focus.ogg"
+  notification_sounds:
+    - "Effect_Tick.ogg"
+
+  # Note: LineageOS 23.2 uses /product/media/audio/ui/ as primary path
+  # Verified paths on device:
+  verified:
+    - "/product/media/audio/ui/Lock.ogg"
+    - "/product/media/audio/ui/Unlock.ogg"
+    - "/product/media/audio/ui/ChargingStarted.ogg"
+    - "/product/media/audio/ui/WirelessChargingStarted.ogg"
+    - "/product/media/audio/ui/camera_click.ogg"
+    - "/product/media/audio/ui/camera_focus.ogg"
+    - "/product/media/audio/ui/Effect_Tick.ogg"
+
+rom_properties:
+  # Detection properties for getprop
+  ro.product.device: "guacamole"
+  ro.product.board: "msm8998"
+  ro.product.manufacturer: "OnePlus"
+  ro.product.model: "GM1911"
+  ro.build.version.release: "16"
+  ro.build.version.sdk: "36"
+  ro.lineage.build.version.release: "23.2"
+
+selinux:
+  mode: "enforcing"
+  denials_observed: []
+  notes: |
+    SELinux is enforcing on LineageOS 23.2. All bind mounts and file access
+    operations comply with the default Android domain policies.
+    No custom sepolicy rules required for CP2077 module.
+
+installation_notes: |
+  1. Magisk Manager will detect and auto-install CP2077 Universal v1.0.0+
+  2. Boot animation is mounted to /product/media/bootanimation.zip (primary path)
+  3. Shutdown animation mounted to /product/media/shutdownanimation.zip
+  4. Audio effects available at /product/media/audio/ui/
+  5. post-fs-data.sh runs at boot and installs all bind mounts
+  6. service.sh (late-start) verifies mounts and repairs if needed (5 MB threshold)
+  7. Configuration saved to /data/cp2077.conf
+
+filesystem_layout:
+  # Key mount points for reference
+  product_mount: "/product"
+  product_media: "/product/media"
+  product_audio: "/product/media/audio"
+  system_mount: "/system"
+  data_local: "/data/local"
+  data_misc: "/data/misc"
+
+compatibility:
+  root_managers:
+    - name: "Magisk"
+      version: "v30.7"
+      status: "verified"
+      notes: "Primary/tested root manager"
+    - name: "KernelSU"
+      version: "0.9+"
+      status: "supported"
+      notes: "Module format: module.json + module.prop"
+    - name: "APatch"
+      version: "0.10+"
+      status: "supported"
+      notes: "Module format: module.prop, binary at /data/adb/apatch/"
+
+  file_systems:
+    - "ext4"
+    - "f2fs"
+
+  recovery:
+    - name: "LineageOS Recovery"
+      status: "tested"
+      notes: "Sideload via adb sideload works"
+    - name: "TWRP"
+      status: "compatible"
+      notes: "Direct flashing supported"
+
+verification_checklist:
+  - date: "2026-05-16"
+    test: "Boot animation visible during startup"
+    result: "✓ PASS"
+    notes: "Glitch variant displayed correctly"
+
+  - date: "2026-05-16"
+    test: "Shutdown animation visible during poweroff"
+    result: "✓ PASS"
+    notes: "Shutdown animation plays to completion"
+
+  - date: "2026-05-16"
+    test: "Audio effects (Lock, Unlock, Camera)"
+    result: "✓ PASS"
+    notes: "All verified audio paths working"
+
+  - date: "2026-05-16"
+    test: "Variant switching via cp2077-config.sh"
+    result: "✓ PASS"
+    notes: "Can switch between glitch, flatline, reboot, og1080p"
+
+  - date: "2026-05-16"
+    test: "Audio toggle (enable/disable UI sounds)"
+    result: "✓ PASS"
+    notes: "Config write and read working correctly"
+
+  - date: "2026-05-16"
+    test: "Boot timing (5 MB remount threshold)"
+    result: "✓ PASS"
+    notes: "service.sh successfully detects and repairs small stubs"
+
+next_steps:
+  - Monitor boot timing across different ROMs
+  - Test with other OnePlus devices (8 Pro, 9, 9 Pro)
+  - Validate DerpFest and Evolution X ROM compatibility
+  - Document Pixel/GrapheneOS specific behaviors
+
+metadata:
+  created: "2026-05-16"
+  updated: "2026-05-16"
+  maintainer: "CP2077 Workspace"
+  version: "1.0"
+  schema_version: "1.0"
