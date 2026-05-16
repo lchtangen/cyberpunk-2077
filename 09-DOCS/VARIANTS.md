@@ -162,7 +162,7 @@ Installed to `/product/media/audio/ui/` and `/media/audio/ui/`:
 ```bash
 # Push updated module and reflash via Magisk
 # The installer reads /data/cp2077.conf to pre-fill your previous selection
-adb push CP2077-OP7Pro-v3.0.0.zip /sdcard/Download/
+adb push CP2077-OP7Pro-v3.1.0.zip /sdcard/Download/
 # Magisk → Modules → Install → select ZIP
 ```
 
@@ -259,7 +259,7 @@ print(f'Frames: {len(frames)}')
 
 ---
 
-## � Asset Dimensions Reference
+## 📐 Asset Dimensions Reference
 
 ```
 ╔══════════════════════════════════════════════════════════════════════════╗
@@ -296,7 +296,7 @@ print(f'Frames: {len(frames)}')
 
 ---
 
-## �🔗 Related Docs
+## 🔗 Related Docs
 
 | 📄 | 🔗 |
 |:---|:---|
