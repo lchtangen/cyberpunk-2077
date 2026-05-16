@@ -323,6 +323,169 @@ cmd_build() {
   done
 }
 
+cmd_thermal() {
+  echo -e "${YLW}── THERMAL STATUS ─────────────────────────────────────${RST}"
+  _print_device_info
+
+  echo -e "  ${DIM}CPU thermal zones:${RST}"
+  for zone in $(seq 0 9); do
+    local temp type
+    temp=$(_su "cat /sys/class/thermal/thermal_zone${zone}/temp 2>/dev/null" | tr -d '\r')
+    type=$(_su "cat /sys/class/thermal/thermal_zone${zone}/type 2>/dev/null" | tr -d '\r')
+    [ -z "$temp" ] || [ "$temp" = "0" ] && continue
+    local deg=$(( temp / 1000 ))
+    local col="${GRN}"
+    [ "$deg" -ge 65 ] && col="${YLW}"
+    [ "$deg" -ge 80 ] && col="${RED}"
+    printf "    ${col}%3d°C${RST}  ${DIM}zone%-2d  %s${RST}\n" "$deg" "$zone" "${type:-unknown}"
+  done
+  echo ""
+
+  echo -e "  ${DIM}CP2077 thermal log (last 5):${RST}"
+  _su "tail -5 /data/local/tmp/cp2077-thermal.log 2>/dev/null || echo '  (no log yet)'" | sed 's/^/    /'
+  echo ""
+}
+
+cmd_telemetry() {
+  local last="${1:-15}"
+  echo -e "${YLW}── BOOT TELEMETRY ─────────────────────────────────────${RST}"
+  _print_device_info
+
+  local data
+  data=$(_su "cat /data/local/tmp/cp2077-telemetry.jsonl 2>/dev/null | tail -${last}" | tr -d '\r')
+
+  if [[ -z "$data" ]]; then
+    echo -e "  ${DIM}No telemetry yet. Boot the device with the module active.${RST}"
+    return
+  fi
+
+  printf "  %-3s  %-18s  %-10s  %-8s  %-14s  %-7s\n" \
+    "#" "TIMESTAMP" "VARIANT" "API" "THERMAL" "ms"
+  echo -e "  ${DIM}$(printf '─%.0s' {1..70})${RST}"
+
+  local -a timings=()
+  while IFS= read -r line; do
+    [[ -z "$line" ]] && continue
+    local ts;      ts="$(echo "$line" | grep -o '"ts":"[^"]*"' | cut -d'"' -f4)"
+    local boot;    boot="$(echo "$line" | grep -o '"boot":[0-9]*' | cut -d: -f2)"
+    local variant; variant="$(echo "$line" | grep -o '"variant":"[^"]*"' | cut -d'"' -f4)"
+    local api;     api="$(echo "$line" | grep -o '"api":"[^"]*"' | cut -d'"' -f4)"
+    local thermal; thermal="$(echo "$line" | grep -o '"thermal":"[^"]*"' | cut -d'"' -f4)"
+    local timing;  timing="$(echo "$line" | grep -o '"timing_ms":[0-9]*' | cut -d: -f2)"
+    timings+=("${timing:-0}")
+    local deg="${thermal##*:}"
+    local tstate="${thermal%%:*}"
+    local col="${GRN}"
+    case "$tstate" in critical) col="${RED}" ;; throttle|warn) col="${YLW}" ;; esac
+    printf "  %-3s  %-18s  %-10s  %-8s  ${col}%-7s %3s°C${RST}  %-7s\n" \
+      "${boot:-?}" "${ts:5:15}" "${variant:-?}" "${api:-?}" "${tstate:-?}" "${deg:-?}" "${timing:-?}"
+  done <<< "$data"
+
+  echo -e "  ${DIM}$(printf '─%.0s' {1..70})${RST}"
+
+  if [[ ${#timings[@]} -gt 1 ]]; then
+    local sum=0
+    for t in "${timings[@]}"; do sum=$((sum + t)); done
+    local avg=$((sum / ${#timings[@]}))
+    local mn; mn="$(printf '%s\n' "${timings[@]}" | sort -n | head -1)"
+    local mx; mx="$(printf '%s\n' "${timings[@]}" | sort -n | tail -1)"
+    echo -e "\n  ${DIM}avg ${avg}ms  ·  min ${mn}ms  ·  max ${mx}ms  ·  ${#timings[@]} records${RST}"
+  fi
+  echo ""
+}
+
+cmd_integrity() {
+  echo -e "${YLW}── INTEGRITY CHECK ────────────────────────────────────${RST}"
+  _print_device_info
+
+  echo -e "  ${DIM}Checking SHA-256 baseline…${RST}"
+  local baseline
+  baseline=$(_su "cat /data/cp2077-baseline.sha256 2>/dev/null" | tr -d '\r')
+  if [[ -z "$baseline" ]]; then
+    echo -e "  ${YLW}  ! No baseline file (/data/cp2077-baseline.sha256)${RST}"
+    echo -e "  ${DIM}    Run: adb shell su -c \"sh ${MODULE_DIR_REMOTE}/lib/integrity.sh baseline\"${RST}"
+    return
+  fi
+
+  echo -e "  ${DIM}Baseline entries:${RST}"
+  echo "$baseline" | grep '^[0-9a-f]' | while IFS= read -r entry; do
+    local hash="${entry%% *}"
+    local path="${entry##* }"
+    local cur
+    cur=$(_su "sha256sum '${path}' 2>/dev/null | awk '{print \$1}'" | tr -d '\r')
+    if [[ "$cur" == "$hash" ]]; then
+      echo -e "    ${GRN}✓${RST}  ${path}"
+    elif [[ -z "$cur" ]]; then
+      echo -e "    ${DIM}–${RST}  ${path} (absent)"
+    else
+      echo -e "    ${RED}✗${RST}  ${path}"
+      echo -e "       ${DIM}expected: ${hash}${RST}"
+      echo -e "       ${RED}actual  : ${cur}${RST}"
+    fi
+  done
+
+  echo ""
+  echo -e "  ${DIM}Integrity log (last 5):${RST}"
+  _su "tail -5 /data/local/tmp/cp2077-integrity.log 2>/dev/null || echo '  (no log)'" | sed 's/^/    /'
+  echo ""
+}
+
+cmd_los232() {
+  echo -e "${YLW}── LOS 23.2 / ANDROID 16 VALIDATOR ───────────────────${RST}"
+  _print_device_info
+
+  local script="${MODULE_DIR_REMOTE}/scripts/cp2077-los232-validator.sh"
+  if _su "[ -f '${script}' ]" 2>/dev/null; then
+    echo -e "  ${DIM}Running on-device validator…${RST}"
+    echo ""
+    adb shell su -c "sh '${script}'"
+  else
+    echo -e "  ${YLW}  ! Validator script not found at ${script}${RST}"
+    echo -e "  ${DIM}    Run a fresh flash to install it, or copy manually.${RST}"
+    echo ""
+    echo -e "  ${DIM}Quick checks via ADB:${RST}"
+    echo -e "  LOS version  : $(adb shell getprop ro.lineage.version 2>/dev/null | tr -d '\r' || echo '—')"
+    echo -e "  Android API  : $(adb shell getprop ro.build.version.sdk 2>/dev/null | tr -d '\r')"
+    echo -e "  SELinux      : $(adb shell getenforce 2>/dev/null | tr -d '\r')"
+    echo -e "  Anim scale   : $(adb shell getprop wm.window.animation.scale 2>/dev/null | tr -d '\r')"
+    local dmSz; dmSz=$(adb shell su -c "wc -c < /data/misc/bootanim/bootanimation.zip 2>/dev/null || echo 0" | tr -d '\r')
+    local dmMb=$(( ${dmSz:-0} / 1024 / 1024 ))
+    echo -e "  /data/misc   : ${dmMb} MB"
+  fi
+  echo ""
+}
+
+cmd_watch() {
+  local interval="${1:-5}"
+  echo -e "${YLW}── LIVE WATCH (every ${interval}s) ─────────────────────────${RST}"
+  echo -e "  ${DIM}Press Ctrl+C to stop.${RST}"
+  while true; do
+    clear
+    echo -e "${YLW}${BOLD}  CP2077 LIVE MONITOR — $(date '+%H:%M:%S')${RST}"
+    echo ""
+    # Device telemetry quick view
+    local temp; temp=$(_su "for z in 0 1 2 3; do t=\$(cat /sys/class/thermal/thermal_zone\${z}/temp 2>/dev/null); [ -n \"\$t\" ] && [ \"\$t\" -gt 0 ] && echo \$t && break; done" | tr -d '\r')
+    local deg=$(( ${temp:-0} / 1000 ))
+    local ba_sz; ba_sz=$(_su "wc -c < /product/media/bootanimation.zip 2>/dev/null || echo 0" | tr -d '\r')
+    local ba_mb=$(( ${ba_sz:-0} / 1024 / 1024 ))
+    local variant; variant=$(_su "grep -m1 '^variant=' /data/cp2077.conf 2>/dev/null | cut -d= -f2" | tr -d '\r')
+    local boot_done; boot_done=$(adb shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')
+
+    echo -e "  ${DIM}Variant :${RST} ${CYN}${variant:-?}${RST}"
+    echo -e "  ${DIM}Boot anim:${RST} ${ba_mb} MB  (/product/media/bootanimation.zip)"
+    local tcol="${GRN}"; [ "$deg" -ge 65 ] && tcol="${YLW}"; [ "$deg" -ge 80 ] && tcol="${RED}"
+    echo -e "  ${DIM}CPU temp :${RST} ${tcol}${deg}°C${RST}"
+    echo -e "  ${DIM}Boot done:${RST} ${boot_done:-?}"
+
+    local last_tel; last_tel=$(_su "tail -1 /data/local/tmp/cp2077-telemetry.jsonl 2>/dev/null" | tr -d '\r')
+    [[ -n "$last_tel" ]] && echo -e "  ${DIM}Last boot:${RST} $(echo "$last_tel" | grep -o '"ts":"[^"]*"' | cut -d'"' -f4) — $(echo "$last_tel" | grep -o '"timing_ms":[0-9]*' | cut -d: -f2)ms"
+
+    echo ""
+    echo -e "  ${DIM}Refreshing every ${interval}s…${RST}"
+    sleep "$interval"
+  done
+}
+
 cmd_help() {
   echo -e "${YLW}── COMMANDS ───────────────────────────────────────────${RST}"
   echo ""
@@ -338,6 +501,11 @@ cmd_help() {
   echo -e "  ${CYN}logs${RST}                Pull filtered logcat snapshot to file"
   echo -e "  ${CYN}verify${RST}              Verify animation ZIPs on host"
   echo -e "  ${CYN}build${RST}               Build all module ZIPs from source"
+  echo -e "  ${CYN}thermal${RST}             CPU thermal zone readings + thermal log"
+  echo -e "  ${CYN}telemetry [N]${RST}       Show last N boot telemetry records (default 15)"
+  echo -e "  ${CYN}integrity${RST}           SHA-256 verify active ZIPs against baseline"
+  echo -e "  ${CYN}los232${RST}              Run LOS 23.2 / Android 16 compatibility validator"
+  echo -e "  ${CYN}watch [secs]${RST}        Live monitor: variant, temp, mount, last boot"
   echo ""
   echo -e "  Variants: ${DIM}glitch | flatline | reboot | og1080p | og4k | glitch-v2${RST}"
   echo ""
@@ -363,6 +531,11 @@ case "$CMD" in
   logs)         cmd_pull_logs ;;
   verify)       cmd_verify ;;
   build)        cmd_build ;;
+  thermal)      cmd_thermal ;;
+  telemetry)    cmd_telemetry "$@" ;;
+  integrity)    cmd_integrity ;;
+  los232)       cmd_los232 ;;
+  watch)        cmd_watch "${1:-5}" ;;
   help|--help|-h) cmd_help ;;
   *)
     echo -e "${RED}  Unknown command: $CMD${RST}"
